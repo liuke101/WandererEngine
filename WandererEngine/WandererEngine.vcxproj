@@ -131,6 +131,7 @@
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp" />
     <ClCompile Include="Engine\EngineFactory.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
+    <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\WandererEngine.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp" />
@@ -181,9 +182,11 @@
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h" />
     <ClInclude Include="Engine\Core\WinMainCommandParameters.h" />
+    <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
     <ClInclude Include="Engine\EngineMinimal.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h" />
+    <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.h" />

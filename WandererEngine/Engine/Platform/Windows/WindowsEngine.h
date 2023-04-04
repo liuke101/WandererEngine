@@ -6,7 +6,7 @@
 class FWindowsEngine :public FEngine
 {
 public:
-	virtual int PreInit(FWinMainCommandParameters Inparameters);
+	virtual int PreInit(FWinMainCommandParameters InParameters);
 	virtual int Init();
 	virtual int PostInit();
 
@@ -15,6 +15,10 @@ public:
 	virtual int PreExit();
 	virtual int Exit();
 	virtual int PostExit();
+
+private:
+	/* ³õÊ¼»¯Windows´°¿Ú */
+	bool InitWindows(FWinMainCommandParameters InParameters);
 };
 
 #endif

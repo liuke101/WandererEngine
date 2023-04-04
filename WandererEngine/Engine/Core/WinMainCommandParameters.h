@@ -1,6 +1,7 @@
 #pragma once
+/* 传递指令参数 */
 
-/* 传递Windows平台指令参数 */
+/* Windows平台 */
 #if defined(_WIN32)
 
 #include "../EngineMinimal.h"
