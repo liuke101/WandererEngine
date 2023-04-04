@@ -10,14 +10,14 @@
 class FEngine
 {
 public:
-	//初始化
-	virtual int PreInit(
+	// 初始化
+	virtual int PreInit(	
 #if defined(_WIN32) 
 		FWinMainCommandParameters Inparameters
 #endif //1
 	) = 0;
-	virtual int Init() = 0;
-	virtual int PostInit() = 0;
+	virtual int Init() = 0;		
+	virtual int PostInit() = 0;		
 
 	//Tick
 	virtual void Tick() = 0;

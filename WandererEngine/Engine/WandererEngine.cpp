@@ -7,6 +7,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, in
 
 	if (FEngine* Engine = FEngineFactory::CreatEngine())
 	{
+		// ³õÊ¼»¯
 		ReturnValue = Engine->PreInit(
 #if defined(_WIN32)
 			FWinMainCommandParameters(hInstance, hInstance, cmdLine, showCmd)
@@ -31,11 +32,13 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, in
 			return ReturnValue;
 		}
 
+		// Tick
 		while (true)
 		{
 			Engine->Tick();
 		}
 
+		// ÍË³ö
 		ReturnValue = Engine->PreExit();
 		if (ReturnValue != 0)
 		{
