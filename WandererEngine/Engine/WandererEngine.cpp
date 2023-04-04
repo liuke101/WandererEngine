@@ -69,7 +69,7 @@ int Exit(FEngine* InEngine)
 //preInstance 上次的实例
 //cmdLine 传递命令
 //int showCmd 多少条cmd
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE preInstance, _In_ PSTR cmdLine, _In_ int showCmd)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, int showCmd)
 {
 	int ReturnValue = 0;
 

@@ -6,10 +6,10 @@ int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
 	// 处理命令
 
-	/*if (InitWindows(InParameters))
+	if (InitWindows(InParameters))
 	{
 
-	}*/
+	}
 	return 0;
 }
 
@@ -49,6 +49,7 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	WNDCLASSEX WindowsClass;
 	WindowsClass.cbSize = sizeof(WNDCLASSEX); // 该对象实际占多大内存
 	WindowsClass.cbClsExtra = 0;	 // 是否需要额外空间
+	WindowsClass.cbWndExtra = 0;
 	WindowsClass.hbrBackground = NULL; //如果有设置那就是GDI擦除
 	WindowsClass.hCursor = LoadCursor(NULL, IDC_ARROW); // 设置一个箭头光标
 	WindowsClass.hIcon = NULL; // 应用程序放在磁盘上显示的图标
@@ -80,7 +81,7 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	HWND Hwnd = CreateWindowEx(
 		NULL, // 窗口的扩展窗口样式
 		L"Wanderer Engine", // 窗口名称
-		L"RENZHAI Engine", // 会显示在窗口的标题栏上去
+		L"Wanderer Engine", // 会显示在窗口的标题栏上去
 		WS_OVERLAPPEDWINDOW, // 窗口的样式。
 		100, // 窗口的初始水平位置。
 		100, // 窗口的初始垂直位置。
