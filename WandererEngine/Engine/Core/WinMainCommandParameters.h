@@ -1,11 +1,12 @@
 #pragma once
-/* 传递指令参数 */
+/* 传递WinMain参数 */
 
 /* Windows平台 */
 #if defined(_WIN32)
 
 #include "../EngineMinimal.h"
 
+// WinMain参数
 class FWinMainCommandParameters
 {
 public:
@@ -18,10 +19,10 @@ public:
 
 	}
 
-	HINSTANCE HInstance;
-	HINSTANCE PreInstance;
-	PSTR CmdLine;
-	int ShowCmd;
+	HINSTANCE HInstance;	// 当前应用程序的实例句柄
+	HINSTANCE PreInstance;  // 上个应用程序的实例句柄
+	PSTR CmdLine;			// 应用程序的命令行
+	int ShowCmd;			// 控制窗口显示方式			
 };
 
 #elif 1

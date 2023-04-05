@@ -1,8 +1,9 @@
 #pragma once
-
+/* Windows平台引擎 */
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
 
+// Windows平台引擎类
 class FWindowsEngine :public FEngine
 {
 public:
@@ -17,7 +18,7 @@ public:
 	virtual int PostExit();
 
 private:
-	/* 初始化Windows窗口 */
+	// 初始化Windows窗口 
 	bool InitWindows(FWinMainCommandParameters InParameters);
 };
 

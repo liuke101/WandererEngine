@@ -1,3 +1,4 @@
+/* Wanderer Engine */
 #include "EngineMinimal.h"
 #include "EngineFactory.h"
 #include "Debug/Log/SimpleLog.h"
@@ -42,7 +43,6 @@ void Tick(FEngine* InEngine)
 /* 退出 */
 int Exit(FEngine* InEngine)
 {
-	
 	int ReturnValue = InEngine->PreExit();
 	if (ReturnValue != 0)
 	{
@@ -63,20 +63,22 @@ int Exit(FEngine* InEngine)
 		Engine_Log_Error("[%i]Engine post-exit failed.", ReturnValue);
 		return ReturnValue;
 	}
+
+	return ReturnValue;
 }
 
-//hInstance 自己的实例
-//preInstance 上次的实例
-//cmdLine 传递命令
-//int showCmd 多少条cmd
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, int showCmd)
+//hInstance 当前应用程序的实例句柄
+//preInstance 上个应用程序的实例句柄
+//cmdLine 应用程序的命令行
+//int showCmd 控制窗口显示方式
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE preInstance, _In_ PSTR cmdLine, _In_ int showCmd)
 {
 	int ReturnValue = 0;
 
 	if (FEngine* Engine = FEngineFactory::CreatEngine())
 	{
 		// 初始化
-		ReturnValue = Init(Engine, hInstance, preInstance, cmdLine, showCmd); // 人宅这里把直接写Init，为什么？
+		ReturnValue = Init(Engine, hInstance, preInstance, cmdLine, showCmd); 
 
 		// Tick
 		while (true)
