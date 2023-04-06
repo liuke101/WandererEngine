@@ -1,37 +1,24 @@
 #pragma once
-//Copyright (C) RenZhai.2019.All Rights Reserved.
-//作者 人宅
-//该c库的详细源码讲解在AboutCG 《手把手入门硬核c语言》视频工程里面：
-//https://www.aboutcg.org/courseDetails/902/introduce
-//希望学习其他方面技术 比如做UE4游戏, 可以访问下列网址：
-//https://zhuanlan.zhihu.com/p/60117613
-//
-//bibi可以看到各个人宅系列教程介绍：
-//https://space.bilibili.com/29544409
-//
-//个人博客网站
-//http://renzhai.net
-//
-//关于本套案例的详细操作 :
-//文字版本(详细)：
-//https://zhuanlan.zhihu.com/p/144558934
-//视频版本：
-//https://www.bilibili.com/video/BV1x5411s7s3
+// 字符串算法
 #include "../simple_core_minimal.h"
 #include "../../../simple_library_macro.h"
 
 _CRT_BEGIN_C_HEADER
-void SIMPLE_LIBRARY_API remove_string_start(char *str, char const* sub_str);
 
-//从后往前找
+// 移除子字符串""
+void SIMPLE_LIBRARY_API remove_string_start(char *str, char const* sub_str);
+// 从前往后移除字符''
+void SIMPLE_LIBRARY_API remove_char_start(char* str, char sub_str);
+// 从后往前移除字符''
+void SIMPLE_LIBRARY_API remove_char_end(char* str, char sub_str);
+// 从后往前移除所有字符''
+void SIMPLE_LIBRARY_API remove_all_char_end(char* str, char sub_str);
+
+//从后往前找子字符串，返回索引
 int SIMPLE_LIBRARY_API find_string_from_end(const char* str, char const* sub_str, int start_pos);
 
-//从前往后找
+//从前往后找子字符串，返回索引
 int SIMPLE_LIBRARY_API find_string(const char *str, char const* sub_str,int start_pos);
-
-void SIMPLE_LIBRARY_API remove_char_start(char *str, char sub_str);
-
-void SIMPLE_LIBRARY_API remove_char_end(char *str, char sub_str);
 
 //判定字符串是否包含
 bool SIMPLE_LIBRARY_API c_str_contain(const char* buff_str,const char *sub_str);
@@ -47,9 +34,10 @@ void SIMPLE_LIBRARY_API trim_end_inline(char *buff);
 //拆分
 bool SIMPLE_LIBRARY_API split(const char *buf,const char* str_split,char *l,char *r, bool bcontain_str_split);
 
-void SIMPLE_LIBRARY_API remove_all_char_end(char *str, char sub_str);
 
+// 在内部替换字符串，将子字符串a替换为子字符串b
 void SIMPLE_LIBRARY_API replace_string_inline(char* str,const char* sub_char_a,const char* sub_char_b);
+// 在内部替换字符，将子字符a替换为子字符b
 void SIMPLE_LIBRARY_API replace_char_inline(char *str, const char sub_char_a, const char sub_char_b);
 
 int SIMPLE_LIBRARY_API get_printf(char *buf, const char *format, ...);
@@ -57,11 +45,12 @@ int SIMPLE_LIBRARY_API get_printf(char *buf, const char *format, ...);
 int SIMPLE_LIBRARY_API get_printf_s(char *out_buf, const char *format, ...);
 
 int SIMPLE_LIBRARY_API get_printf_s_s(int buffer_size,char *out_buf, const char *format, ...);
-
+// 切割指定的字符串
 char SIMPLE_LIBRARY_API*string_mid(const char *int_buf ,char *out_buf,int start,int count);
 
+// 窄字符串转宽字符串
 int SIMPLE_LIBRARY_API char_to_tchar(const char *str, wchar_t *tc);
-
+// 宽字符串转窄字符串
 int SIMPLE_LIBRARY_API tchar_to_char(const wchar_t *tc, char *str);
 
 //注意 ：str 必须是足够大的空间 不要传一个自动匹配内存的指针
@@ -78,8 +67,10 @@ void SIMPLE_LIBRARY_API wremove_all_wchar_end(wchar_t *str, wchar_t sub_str);
 void SIMPLE_LIBRARY_API wreplace_wchar_inline(wchar_t *str, const wchar_t sub_char_a, const wchar_t sub_char_b);
 void SIMPLE_LIBRARY_API wreplace_string_inline(wchar_t* str, const wchar_t* sub_char_a, const wchar_t* sub_char_b);
 
+// 获取合体字符串（多个字符串存入buf）
 int SIMPLE_LIBRARY_API wget_printf(wchar_t *buf, const wchar_t *format, ...);
 
+// 获取合体字符串（宽字符）
 int SIMPLE_LIBRARY_API wget_printf_s(wchar_t *out_buf, const wchar_t *format, ...);
 
 int SIMPLE_LIBRARY_API wget_printf_s_s(int buffer_size, wchar_t *out_buf,const wchar_t *format, ...);

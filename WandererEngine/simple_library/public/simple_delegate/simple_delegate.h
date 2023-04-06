@@ -1,4 +1,4 @@
-// Copyright (C) RenZhai.2022.All Rights Reserved.
+// 代理 单播和多播
 #pragma once
 #include <map>
 #include "../simple_core_minimal/simple_c_guid/simple_guid.h"

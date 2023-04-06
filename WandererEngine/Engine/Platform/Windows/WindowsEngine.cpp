@@ -118,6 +118,8 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 
 	// 显示窗口
 	ShowWindow(Hwnd, SW_SHOW);  // 疑问：这里第二项应该使用WinMain函数的InshowCmd参数
+
+	// 刷新窗口
 	UpdateWindow(Hwnd);
 
 	Engine_Log("InitWindows complete.");

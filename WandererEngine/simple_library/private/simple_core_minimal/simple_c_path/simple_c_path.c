@@ -4,10 +4,10 @@
 
 void get_path_directory_inline(char *path_buf)
 {
-	normalization_path(path_buf);// \\ /
+	normalization_path(path_buf);
 
 	char filename[1024] = { 0 };
-	get_path_clean_filename(filename, path_buf);
+	get_path_clean_filename(filename, path_buf); 
 
 	remove_string_start(path_buf,filename);
 }
@@ -17,6 +17,7 @@ void get_path_directory(char *buf, const char *path_buf)
 	strcpy(buf,path_buf);
 	get_path_directory_inline(buf);
 }
+
 
 void get_path_clean_filename(char *buf, const char *path_buf)
 {
@@ -35,6 +36,7 @@ void get_path_clean_filename(char *buf, const char *path_buf)
 	destroy_string(&c_string);
 }
 
+// 文件路径中的"\\"转换成"/"
 void normalization_path(char *path_buf)
 {	
 	//这种替换似乎有点问题 
