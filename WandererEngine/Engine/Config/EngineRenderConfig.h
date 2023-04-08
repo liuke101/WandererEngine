@@ -1,5 +1,5 @@
 #pragma once
-// ÒıÇæäÖÈ¾ÅäÖÃ
+/* ÒıÇæäÖÈ¾ÅäÖÃ */
 class FEngineRenderConfig
 {
 public:

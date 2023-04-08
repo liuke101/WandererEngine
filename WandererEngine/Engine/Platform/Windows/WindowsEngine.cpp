@@ -53,8 +53,8 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 int FWindowsEngine::PostInit()
 {
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
-	// 初始化交换链
+	
+	// 初始化交换链缓冲区
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer[i].Reset();
@@ -69,20 +69,24 @@ int FWindowsEngine::PostInit()
 		BackBufferFormat,
 		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 创建RTV
 	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); // 获取RTV描述符大小
-	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());	// 获取描述符堆中第一个描述符的句柄
+	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());		 // 获取描述符堆中第一个描述符的句柄
 	// 描述符大小作为偏移量，使用偏移量找到当前后台缓冲区的RTV
 	for (UINT i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
-		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));
-		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, HeapHandle);
-		HeapHandle.Offset(1,RTVDescriptorSize); // 偏移指针
+		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));						  // 获得交换链中的缓冲区资源
+		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, HeapHandle); // 为获取到的缓冲区创建RTV
+		HeapHandle.Offset(1,RTVDescriptorSize);											  // 偏移到描述符堆中的下一个缓冲区
 	}
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 	// 创建深度/模板缓冲区及其视图
 	// 创建深度/模板缓冲区
-	D3D12_RESOURCE_DESC ResourceDesc;												// 资源描述
+	D3D12_RESOURCE_DESC ResourceDesc;   											// 资源描述
 	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;					// 资源的维度（可选：缓冲区、1D纹理、2D纹理、3D纹理）
 	ResourceDesc.Alignment = 0;														// 对齐方式
 	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;		// 资源的宽度（对纹理来说是以纹素为单位的宽度，对缓冲区来说是占用的字节数）
@@ -119,6 +123,7 @@ int FWindowsEngine::PostInit()
 	
 	// 创建深度/模板视图
 	D3dDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVHeap->GetCPUDescriptorHandleForHeapStart());
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	// 资源状态转换
@@ -127,14 +132,16 @@ int FWindowsEngine::PostInit()
 		D3D12_RESOURCE_STATE_COMMON,		// 资源的“之前”用法
 		D3D12_RESOURCE_STATE_DEPTH_WRITE	// 资源的“后”用法
 	);
-	GraphicsCommandList->ResourceBarrier(1,	&Barrier);
+	GraphicsCommandList->ResourceBarrier(1,	&Barrier); // 设置转换资源屏障数组，只是加入命令列表，真正执行需要传入命令队列
+	GraphicsCommandList->Close();					   // 命令加入命令列表之后，提交命令列表之前必须结束命令的记录
 
-	GraphicsCommandList->Close();
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	// 命令提交
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
-	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);  //_countof返回数组中的元素数
-
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);  //将命令列表里的命令添加到命令队列中  //_countof()返回数组中的元素数
+	
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	Engine_Log("Engine post-initialization complete.");
 	return 0;
@@ -235,14 +242,18 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 
 bool FWindowsEngine::InitDirect3D()
 {
-	// 开启DX12的Debug功能，可以将信息打印在框里
+	// 开启DX12的调试层
 	ComPtr<ID3D12Debug> D3D12Debug;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&D3D12Debug))))
 	{
 		D3D12Debug->EnableDebugLayer();
 	}
-	// 1. 检测创建DXGI对象是否成功
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 1. 创建DXGI对象
 	ANALYSIS_HRESULT(CreateDXGIFactory1(IID_PPV_ARGS(&DXGIFactory))); //IID_PPV_ARGS宏用于获取COM ID(GUID)
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 	// 2. 创建DX12设备（显示适配器），通常使用的设备为硬件适配器（独立显卡）
@@ -254,9 +265,11 @@ bool FWindowsEngine::InitDirect3D()
 		ANALYSIS_HRESULT(DXGIFactory->EnumWarpAdapter(IID_PPV_ARGS(&WARPAdapter)));
 		ANALYSIS_HRESULT(D3D12CreateDevice(WARPAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&D3dDevice)));
 	}
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 	// 3. 创建围栏Fence
+	// 实现刷新命令队列功能：强制CPU等待，直到GPU完成所有命令的处理，达到某个指定的围栏点为止（效率不高的同步方法）
 	/*
 	渲染流程：
 		Fence->SetEventOnCompletion
@@ -266,6 +279,7 @@ bool FWindowsEngine::InitDirect3D()
 		wait
 	*/
 	ANALYSIS_HRESULT(D3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	// 4. 创建命令队列、命令分配器、命令列表
@@ -276,12 +290,12 @@ bool FWindowsEngine::InitDirect3D()
 
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		IID_PPV_ARGS(CommandAllocator.GetAddressOf()))); // GetAddressof(): 此方法可利用函数参数返回 COM接口的指针。
+		IID_PPV_ARGS(CommandAllocator.GetAddressOf()))); // GetAddressof(): 此方法可利用函数参数返回 COM接口的指针
 
 	HRESULT CMLResult = D3dDevice->CreateCommandList(
 		0,									// 单 GPU 操作
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		CommandAllocator.Get(),				// 将命令列表关联到命令分配器 //Get():此方法常用于把原始的 COM 接口指针作为参数传递给函数。
+		CommandAllocator.Get(),				// 将命令列表关联到命令分配器	//Get():此方法常用于把原始的 COM 接口指针作为参数传递给函数
 		nullptr,							// 如果是nullptr，则运行时设置虚拟初始管道状态， 开销较低
 		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf()));
 
@@ -289,7 +303,9 @@ bool FWindowsEngine::InitDirect3D()
 	{
 		Engine_Log_Error("Error = %i", (int)CMLResult); 
 	}
+	// 首先要将命令列表置于关闭状态，因为第一次引用命令列表时，我们要对它进行重置，在调用重置方法之前又需先将他关闭
 	GraphicsCommandList->Close();
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	// 5. 检测对4X MSAA质量级别的支持
@@ -301,13 +317,14 @@ bool FWindowsEngine::InitDirect3D()
 
 	ANALYSIS_HRESULT(D3dDevice->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &QualityLevels, sizeof(QualityLevels)));
 	MSAA4XQualityLevels = QualityLevels.NumQualityLevels;				// 4X MSAA质量级别
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	// 6. 描述并创建交换链
 	SwapChain.Reset(); // 释放之前创建的交换链，随后进行重建  
 	//Reset():将此 ComPtr 实例设置为 nullptr 释放与之相关的所有引用（同时减少其底层 COM 接口的引用计数)。此方法的功能与将 ComPtr 目标实例赋值为 nullptr 的效果相同。
 
-	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
+	DXGI_SWAP_CHAIN_DESC SwapChainDesc;																	 // 交换链描述
 	SwapChainDesc.BufferDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;				 // 缓冲区分辨率宽度
 	SwapChainDesc.BufferDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;				 // 缓冲区分辨率高度
 	SwapChainDesc.BufferDesc.RefreshRate.Numerator = FEngineRenderConfig::GetRenderConfig()->RefreshRate;// 刷新率分子
@@ -331,11 +348,12 @@ bool FWindowsEngine::InitDirect3D()
 	{
 		Engine_Log_Error("Error = %i", (int)CSCResult); 
 	}
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
 	// 7. 创建描述符堆
 	// RTV堆
-	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
+	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;												// 描述符堆描述
 	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;									// 堆中描述符的类型
 	RTVDescriptorHeapDesc.NumDescriptors = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;	// 堆中的描述符数量，RTV数量等应该等于交换链缓冲区数量
 	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;									// 指示堆的默认用法
@@ -348,6 +366,7 @@ bool FWindowsEngine::InitDirect3D()
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;		
 	DSVDescriptorHeapDesc.NodeMask = 0;									
 	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&DSVDescriptorHeapDesc, IID_PPV_ARGS(DSVHeap.GetAddressOf())));
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 
