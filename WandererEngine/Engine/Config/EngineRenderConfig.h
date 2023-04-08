@@ -4,6 +4,7 @@ class FEngineRenderConfig
 {
 public:
 	FEngineRenderConfig();
+
 	int ScreenWidth;	// 屏幕宽度
 	int ScreenHeight;	// 屏幕高度
 	int RefreshRate;	// 刷新率

@@ -5,6 +5,19 @@
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
 
+FWindowsEngine::FWindowsEngine()
+	: MSAA4XQualityLevels(0)
+	, bMSAA4XEnable(false)
+	, BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM) //UNORM： 表示归一化处理的无符号整数，范围[0,1]
+	, DepthStencilFormat(DXGI_FORMAT_D24_UNORM_S8_UINT)
+{
+	// 创建交换链缓冲区
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChainBuffer.push_back(ComPtr<ID3D12Resource>());
+	}
+}
+
 int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
 	// 日志系统初始化
@@ -16,23 +29,113 @@ int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 
 	//
 
-	if (InitWindows(InParameters))
-	{
-		
-	}
-
 	Engine_Log("Engine pre-initialization complete.");
 	return 0;
 }
 
-int FWindowsEngine::Init()
+int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 {
+
+	if (InitWindows(InParameters))
+	{
+
+	}
+
+	if (InitDirect3D())
+	{
+
+	}
+
 	Engine_Log("Engine initialization complete.");
 	return 0;
 }
 
 int FWindowsEngine::PostInit()
 {
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 初始化交换链
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChainBuffer[i].Reset();
+	}
+	DepthStencilBuffer.Reset();
+
+	// 更改交换链的后台缓冲区大小、格式和缓冲区数量。 应在调整应用程序窗口大小时调用此函数。
+	SwapChain->ResizeBuffers(
+		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
+		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+		FEngineRenderConfig::GetRenderConfig()->ScreenHeight,
+		BackBufferFormat,
+		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+
+	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); // 获取RTV描述符大小
+	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());	// 获取描述符堆中第一个描述符的句柄
+	// 描述符大小作为偏移量，使用偏移量找到当前后台缓冲区的RTV
+	for (UINT i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));
+		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, HeapHandle);
+		HeapHandle.Offset(1,RTVDescriptorSize); // 偏移指针
+	}
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	
+	// 创建深度/模板缓冲区及其视图
+	// 创建深度/模板缓冲区
+	D3D12_RESOURCE_DESC ResourceDesc;												// 资源描述
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;					// 资源的维度（可选：缓冲区、1D纹理、2D纹理、3D纹理）
+	ResourceDesc.Alignment = 0;														// 对齐方式
+	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;		// 资源的宽度（对纹理来说是以纹素为单位的宽度，对缓冲区来说是占用的字节数）
+	ResourceDesc.Height= FEngineRenderConfig::GetRenderConfig()->ScreenHeight;		// 资源的高度
+	ResourceDesc.DepthOrArraySize = 1;												// 资源的深度（如果为 3D）或数组大小（如果是 1D 或 2D 资源的数组）
+	ResourceDesc.MipLevels = 1;														// mipmap 级别
+	ResourceDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;								// 资源数据格式
+	ResourceDesc.SampleDesc.Count = bMSAA4XEnable ? 4 : 1;							// MSAA采样数
+	ResourceDesc.SampleDesc.Quality = bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;// MSAA质量级别
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;								// 纹理布局
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;					// 允许为资源创建深度/模板视图
+	
+
+	D3D12_CLEAR_VALUE ClearValue;			// 用于清除资源的优化值。
+	ClearValue.DepthStencil.Depth = 1.f;	// 用于清除深度缓冲区
+	ClearValue.DepthStencil.Stencil = 0;	// 用于清除模板缓冲区
+	ClearValue.Format = DepthStencilFormat;	// 清除颜色的数据格式必须与清除操作期间使用的视图的格式匹配
+
+	CD3DX12_HEAP_PROPERTIES Properties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	D3dDevice->CreateCommittedResource(						// 创建一个资源和一个堆，并把该资源提交到堆中				
+		&Properties,	// 默认堆（性能最佳），只允许GPU访问，性能最佳
+		D3D12_HEAP_FLAG_NONE,								// 指定堆选项，例如堆是否可以包含纹理，以及资源是否在适配器之间共享。
+		&ResourceDesc,										// 资源描述
+		D3D12_RESOURCE_STATE_COMMON,						// 资源的初始状态
+		&ClearValue,										// 用于清除资源的优化值
+		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf())		// 资源接口的COM ID
+	); 
+
+	D3D12_DEPTH_STENCIL_VIEW_DESC DSVDesc;					// 描述可从深度模具视图访问的纹理的子资源。
+	DSVDesc.Format = DepthStencilFormat;					// 资源数据格式
+	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;	// 访问深度模板视图中的资源的方式：资源将作为 2D 纹理进行访问
+	DSVDesc.Flags = D3D12_DSV_FLAG_NONE;					// 指定纹理是否为只读：None
+	DSVDesc.Texture2D.MipSlice = 0;							// Texture2D要使用的第一个 mipmap 级别
+	
+	// 创建深度/模板视图
+	D3dDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVHeap->GetCPUDescriptorHandleForHeapStart());
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 资源状态转换
+	CD3DX12_RESOURCE_BARRIER Barrier = CD3DX12_RESOURCE_BARRIER::Transition(	// 描述不同用法之间子资源转换的结构
+		DepthStencilBuffer.Get(),			// 转换中使用的资源
+		D3D12_RESOURCE_STATE_COMMON,		// 资源的“之前”用法
+		D3D12_RESOURCE_STATE_DEPTH_WRITE	// 资源的“后”用法
+	);
+	GraphicsCommandList->ResourceBarrier(1,	&Barrier);
+
+	GraphicsCommandList->Close();
+
+	// 命令提交
+	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);  //_countof返回数组中的元素数
+
+
 	Engine_Log("Engine post-initialization complete.");
 	return 0;
 }
@@ -132,9 +235,15 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 
 bool FWindowsEngine::InitDirect3D()
 {
+	// 开启DX12的Debug功能，可以将信息打印在框里
+	ComPtr<ID3D12Debug> D3D12Debug;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&D3D12Debug))))
+	{
+		D3D12Debug->EnableDebugLayer();
+	}
 	// 1. 检测创建DXGI对象是否成功
 	ANALYSIS_HRESULT(CreateDXGIFactory1(IID_PPV_ARGS(&DXGIFactory))); //IID_PPV_ARGS宏用于获取COM ID(GUID)
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 	// 2. 创建DX12设备（显示适配器），通常使用的设备为硬件适配器（独立显卡）
 	HRESULT D3dDeviceResult = D3D12CreateDevice(NULL, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&D3dDevice));
@@ -145,7 +254,7 @@ bool FWindowsEngine::InitDirect3D()
 		ANALYSIS_HRESULT(DXGIFactory->EnumWarpAdapter(IID_PPV_ARGS(&WARPAdapter)));
 		ANALYSIS_HRESULT(D3D12CreateDevice(WARPAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&D3dDevice)));
 	}
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 	// 3. 创建围栏Fence
 	/*
@@ -157,8 +266,8 @@ bool FWindowsEngine::InitDirect3D()
 		wait
 	*/
 	ANALYSIS_HRESULT(D3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————*/
-	
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
 	// 4. 创建命令队列、命令分配器、命令列表
 	D3D12_COMMAND_QUEUE_DESC QueueDesc = {};
 	QueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;	// 存储的是一系列可供 GPU 直接执行的命令
@@ -169,33 +278,78 @@ bool FWindowsEngine::InitDirect3D()
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(CommandAllocator.GetAddressOf()))); // GetAddressof(): 此方法可利用函数参数返回 COM接口的指针。
 
-	ANALYSIS_HRESULT(D3dDevice->CreateCommandList(
-		0,	//单 GPU 操作
+	HRESULT CMLResult = D3dDevice->CreateCommandList(
+		0,									// 单 GPU 操作
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		CommandAllocator.Get(),	// 将命令列表关联到命令分配器 //Get():此方法常用于把原始的 COM 接口指针作为参数传递给函数。
-		nullptr, //nullptr如果是，则运行时设置虚拟初始管道状态， 开销较低
-		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf())));
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————*/
-	
-	// 5. 描述并创建交换链
-	SwapChain.Reset(); // 释放之前创建的交换链，随后进行重建
+		CommandAllocator.Get(),				// 将命令列表关联到命令分配器 //Get():此方法常用于把原始的 COM 接口指针作为参数传递给函数。
+		nullptr,							// 如果是nullptr，则运行时设置虚拟初始管道状态， 开销较低
+		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf()));
+
+	if (FAILED(CMLResult))
+	{
+		Engine_Log_Error("Error = %i", (int)CMLResult); 
+	}
+	GraphicsCommandList->Close();
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 5. 检测对4X MSAA质量级别的支持
+	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevels;
+	QualityLevels.Format = BackBufferFormat;							// 纹理数据格式
+	QualityLevels.SampleCount = 4;										// 采样次数
+	QualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;	// 用于控制质量级别的标志
+	QualityLevels.NumQualityLevels = 0;									// 质量级别数
+
+	ANALYSIS_HRESULT(D3dDevice->CheckFeatureSupport(D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &QualityLevels, sizeof(QualityLevels)));
+	MSAA4XQualityLevels = QualityLevels.NumQualityLevels;				// 4X MSAA质量级别
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 6. 描述并创建交换链
+	SwapChain.Reset(); // 释放之前创建的交换链，随后进行重建  
+	//Reset():将此 ComPtr 实例设置为 nullptr 释放与之相关的所有引用（同时减少其底层 COM 接口的引用计数)。此方法的功能与将 ComPtr 目标实例赋值为 nullptr 的效果相同。
+
 	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
-	SwapChainDesc.BufferDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;					// 缓冲区分辨率宽度
-	SwapChainDesc.BufferDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;					// 缓冲区分辨率高度
-	SwapChainDesc.BufferDesc.RefreshRate.Numerator = FEngineRenderConfig::GetRenderConfig()->RefreshRate;	// 刷新率分子
-	SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;													// 刷新率分母
-	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;						// 扫描线命令，标识如何在表面上绘制扫描线的值。
-	SwapChainDesc.BufferCount = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;					    // 缓冲区数量，默认为2即采用双缓冲
-	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;											// 将数据渲染到渲染目标（Render Target）
-	SwapChainDesc.OutputWindow = MainWindowsHandle;															// 渲染窗口的句柄
-	SwapChainDesc.Windowed = true;																			// ture：窗口模式 false：全屏模式
-	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;												// 缓冲区交换时，丢弃后台缓冲区的内容
-	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;											// 使能够通过调用 ResizeTarget 来切换窗口/全屏模式
+	SwapChainDesc.BufferDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;				 // 缓冲区分辨率宽度
+	SwapChainDesc.BufferDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;				 // 缓冲区分辨率高度
+	SwapChainDesc.BufferDesc.RefreshRate.Numerator = FEngineRenderConfig::GetRenderConfig()->RefreshRate;// 刷新率分子
+	SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;												 // 刷新率分母
+	SwapChainDesc.BufferDesc.Format = BackBufferFormat;													 // 纹理数据格式
+	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;					 // 扫描线命令，标识如何在表面上绘制扫描线的值。
 
-	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf()));
+	SwapChainDesc.SampleDesc.Count = bMSAA4XEnable ? 4 : 1;												 // MSAA采样数量
+	SwapChainDesc.SampleDesc.Quality = bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;					 // MSAA采样质量级别
 
+	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;										 // 将数据渲染到渲染目标（Render Target）
+	SwapChainDesc.BufferCount = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;					 // 缓冲区数量，默认为2即采用双缓冲
+	SwapChainDesc.OutputWindow = MainWindowsHandle;														 // 渲染窗口的句柄
+	SwapChainDesc.Windowed = true;																		 // ture：窗口模式 false：全屏模式
+	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;											 // 缓冲区交换时，丢弃后台缓冲区的内容
+	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;										 // 使能够通过调用 ResizeTarget 来切换窗口/全屏模式
+	
+	
+	HRESULT CSCResult = DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf());
+	if (FAILED(CSCResult))
+	{
+		Engine_Log_Error("Error = %i", (int)CSCResult); 
+	}
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
-
+	// 7. 创建描述符堆
+	// RTV堆
+	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
+	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;									// 堆中描述符的类型
+	RTVDescriptorHeapDesc.NumDescriptors = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;	// 堆中的描述符数量，RTV数量等应该等于交换链缓冲区数量
+	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;									// 指示堆的默认用法
+	RTVDescriptorHeapDesc.NodeMask = 0;																// 对于单适配器操作，设置为零
+	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&RTVDescriptorHeapDesc, IID_PPV_ARGS(RTVHeap.GetAddressOf())));
+	// DSV堆
+	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
+	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;		
+	DSVDescriptorHeapDesc.NumDescriptors = 1;		// 堆中的描述符数量，DSA数量为1
+	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;		
+	DSVDescriptorHeapDesc.NodeMask = 0;									
+	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&DSVDescriptorHeapDesc, IID_PPV_ARGS(DSVHeap.GetAddressOf())));
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	
 
 	return false;
 }

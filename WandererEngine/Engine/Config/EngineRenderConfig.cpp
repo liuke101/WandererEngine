@@ -1,5 +1,7 @@
 #include "EngineRenderConfig.h"
 
+FEngineRenderConfig* FEngineRenderConfig::RenderConfig = nullptr;
+
 FEngineRenderConfig::FEngineRenderConfig()
 	:ScreenWidth(1280)
 	,ScreenHeight(720)

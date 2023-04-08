@@ -18,7 +18,13 @@ public:
 		FWinMainCommandParameters InParameters
 #endif //1
 	) = 0;
-	virtual int Init() = 0;		
+
+	virtual int Init(	
+#if defined(_WIN32) 
+		FWinMainCommandParameters InParameters
+#endif //1
+	) = 0;	
+
 	virtual int PostInit() = 0;		
 
 	// Tick 
