@@ -46,7 +46,9 @@ int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmd
 /* Tick */
 void Tick(FEngine* InEngine)
 {
-	InEngine->Tick();
+	float DeltaTime = 0.03f;	//每帧之间的时间差
+	InEngine->Tick(DeltaTime);
+	Sleep(30);					// 单位ms
 }
 
 /* 退出 */

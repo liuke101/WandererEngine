@@ -10,6 +10,7 @@ FWindowsEngine::FWindowsEngine()
 	, bMSAA4XEnable(false)
 	, BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM) //UNORM： 表示归一化处理的无符号整数，范围[0,1]
 	, DepthStencilFormat(DXGI_FORMAT_D24_UNORM_S8_UINT)
+	, CurrentSwapBufferIndex(0)
 {
 	// 创建交换链缓冲区
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
@@ -130,8 +131,7 @@ int FWindowsEngine::PostInit()
 	CD3DX12_RESOURCE_BARRIER Barrier = CD3DX12_RESOURCE_BARRIER::Transition(	// 描述不同用法之间子资源转换的结构
 		DepthStencilBuffer.Get(),			// 转换中使用的资源
 		D3D12_RESOURCE_STATE_COMMON,		// 资源的“之前”用法
-		D3D12_RESOURCE_STATE_DEPTH_WRITE	// 资源的“后”用法
-	);
+		D3D12_RESOURCE_STATE_DEPTH_WRITE);	// 资源的“后”用法
 	GraphicsCommandList->ResourceBarrier(1,	&Barrier); // 设置转换资源屏障数组，只是加入命令列表，真正执行需要传入命令队列
 	GraphicsCommandList->Close();					   // 命令加入命令列表之后，提交命令列表之前必须结束命令的记录
 
@@ -143,13 +143,92 @@ int FWindowsEngine::PostInit()
 	
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
+	// 设置视口
+	// 描述视口尺寸
+	ViewportInfo.TopLeftX = 0;		// 左上角的 x 坐标
+	ViewportInfo.TopLeftY = 0;		// 左上角的 y 坐标
+	ViewportInfo.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	ViewportInfo.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
+	ViewportInfo.MinDepth = 0.0f;	//将深度值从区间[0,1]转换到区间[MinDepth,MaxDepth], 实现某些特殊效果
+	ViewportInfo.MaxDepth = 1.0f;
+
+	// 设置裁剪矩形
+	ViewportRect.left = 0;														// 左上角的 x 坐标
+	ViewportRect.top = 0;														// 左上角的 y 坐标
+	ViewportRect.right = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;	// 右下角的 x 坐标
+	ViewportRect.bottom = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;	// 右下角的 y 坐标
+
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	Engine_Log("Engine post-initialization complete.");
 	return 0;
 }
 
-void FWindowsEngine::Tick()
+void FWindowsEngine::Tick(float DeltaTime)
 {
+	// 重置命令分配器，为下一帧做准备
+	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
+	// 重置命令列表
+	GraphicsCommandList->Reset(CommandAllocator.Get(), NULL);
+
+	// 转换状态
+	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(	
+		GetCurrentSwapBuffer(),
+		D3D12_RESOURCE_STATE_PRESENT,			//和D3D12_RESOURCE_STATE_COMMON同义
+		D3D12_RESOURCE_STATE_RENDER_TARGET);
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresent);
+		
+	// 需要每帧执行
+	// 绑定视口/裁剪矩形
+	GraphicsCommandList->RSSetViewports(1, &ViewportInfo);
+	GraphicsCommandList->RSSetScissorRects(1, &ViewportRect);
+
+	// 清除RenderTarget
+	GraphicsCommandList->ClearRenderTargetView(
+		GetCurrentSwapBufferView(),		// CPU 描述符句柄,表示要清除的RT的堆的开始
+		DirectX::Colors::Red,			// 填充RT的颜色
+		0,								// 指定的结构数组中的矩形数
+		nullptr);						// 要清除的资源视图中矩形 的D3D12_RECT 结构数组。如果为NULL，将清除整个资源视图
+
+	// 清除深度/模板缓冲区
+	GraphicsCommandList->ClearDepthStencilView(
+		GetCurrentDepthStencilView(),						// CPU 描述符句柄,表示要清除的深度模板的堆的开始
+		D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL,	// 要清除的数据类型
+		1.0f,												// 用于清除深度缓冲区的值。此值将限制在 0 和 1 之间。
+		0,													// 清除模板缓冲区的值。
+		0,													// 指定的结构数组中的矩形数
+		NULL);												// 要清除的资源视图中矩形 的D3D12_RECT 结构数组。如果为NULL，将清除整个资源视图
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 输出的合并阶段
+	// 设置RT和深度模板的 CPU 描述符句柄
+	D3D12_CPU_DESCRIPTOR_HANDLE CurrentSwapBufferView = GetCurrentSwapBufferView();
+	D3D12_CPU_DESCRIPTOR_HANDLE CurrentDepthStencilView = GetCurrentDepthStencilView();
+	GraphicsCommandList->OMSetRenderTargets(1, &CurrentSwapBufferView,true,&CurrentDepthStencilView);	
+	
+	// 资源转换
+	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget= CD3DX12_RESOURCE_BARRIER::Transition(
+		GetCurrentSwapBuffer(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET,
+		D3D12_RESOURCE_STATE_PRESENT);
+
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrierPresentRenderTarget);
+
+	ANALYSIS_HRESULT(GraphicsCommandList->Close());							// 关闭命令分配器
+			
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 命令提交
+	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };		
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
+
+	// 交换两个Buffer缓冲区
+	ANALYSIS_HRESULT(SwapChain->Present(0, 0));								// 交换两个Buffer缓冲区
+	CurrentSwapBufferIndex = !(bool)CurrentSwapBufferIndex;
+
+	//CPU等GPU
 }
 
 int FWindowsEngine::PreExit()
@@ -170,6 +249,24 @@ int FWindowsEngine::PostExit()
 	
 	Engine_Log("Engine post-exit complete.");
 	return 0;
+}
+
+ID3D12Resource* FWindowsEngine::GetCurrentSwapBuffer() const
+{
+	return SwapChainBuffer[CurrentSwapBufferIndex].Get();
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentSwapBufferView() const
+{
+	return CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		RTVHeap->GetCPUDescriptorHandleForHeapStart(),	//获取表示堆开始的 CPU 描述符句柄
+		CurrentSwapBufferIndex,
+		RTVDescriptorSize);
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentDepthStencilView() const
+{
+	return DSVHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
 bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)

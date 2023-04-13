@@ -12,18 +12,30 @@ public:
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
 
-	virtual void Tick();
+	virtual void Tick(float DeltaTime);
 
 	virtual int PreExit();
 	virtual int Exit();
 	virtual int PostExit();
+	
+public:
+	// 获取当前的Buffer
+	ID3D12Resource* GetCurrentSwapBuffer() const;	
 
+	// 获取当前Buffer的描述符句柄
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const;
+
+	// 获取当前深度模板缓冲区的描述符句柄
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
 private:
 	// 初始化Windows窗口 
 	bool InitWindows(FWinMainCommandParameters InParameters);
 	// 初始化Direct3D 
 	bool InitDirect3D();
 
+
+protected:
+	int CurrentSwapBufferIndex = 0;		// 当前Buffer的索引
 protected:
 	ComPtr<IDXGIFactory4> DXGIFactory;	// 创建DirectX 图形基础结构(DXGI)对象
 	ComPtr<ID3D12Device> D3dDevice;     // 显示适配器; 它用于创建命令分配器、命令列表、命令队列、围栏Fence、资源、管道状态对象、堆、根签名、采样器和许多资源视图。
@@ -44,6 +56,13 @@ protected:
 	// 缓冲区
 	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;	// 交换链缓冲区
 	ComPtr<ID3D12Resource> DepthStencilBuffer;				// 深度/模板缓冲区
+
+	// 视口
+	// 后台缓冲区大小为整个窗口，有时只是希望把场景绘制到后台缓冲区的某个矩形子区域中，这个子区域称作视口。坐标系以缓冲区左上角为原点
+	D3D12_VIEWPORT ViewportInfo;
+
+	// 裁剪矩形
+	D3D12_RECT ViewportRect;
 
 protected:
 	HWND MainWindowsHandle;			// 主窗口句柄
