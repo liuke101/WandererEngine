@@ -27,6 +27,10 @@ public:
 
 	// 获取当前深度模板缓冲区的描述符句柄
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
+
+protected:
+	// 使用围栏Fence来刷新命令队列
+	void WaitGPUCommandQueueComplete();  
 private:
 	// 初始化Windows窗口 
 	bool InitWindows(FWinMainCommandParameters InParameters);
@@ -35,6 +39,7 @@ private:
 
 
 protected:
+	UINT64 CurrentFenceIndex = 0;       // 围栏值
 	int CurrentSwapBufferIndex = 0;		// 当前Buffer的索引
 protected:
 	ComPtr<IDXGIFactory4> DXGIFactory;	// 创建DirectX 图形基础结构(DXGI)对象

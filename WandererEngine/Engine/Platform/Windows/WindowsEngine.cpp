@@ -6,11 +6,12 @@
 #include "WindowsMessageProcessing.h"
 
 FWindowsEngine::FWindowsEngine()
-	: MSAA4XQualityLevels(0)
+	: CurrentFenceIndex(0)
+	, CurrentSwapBufferIndex(0)
+	, MSAA4XQualityLevels(0)
 	, bMSAA4XEnable(false)
 	, BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM) //UNORM： 表示归一化处理的无符号整数，范围[0,1]
 	, DepthStencilFormat(DXGI_FORMAT_D24_UNORM_S8_UINT)
-	, CurrentSwapBufferIndex(0)
 {
 	// 创建交换链缓冲区
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
@@ -53,6 +54,9 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 int FWindowsEngine::PostInit()
 {
+	// CPU等GPU
+	WaitGPUCommandQueueComplete();
+
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	
 	// 初始化交换链缓冲区
@@ -160,6 +164,7 @@ int FWindowsEngine::PostInit()
 
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	WaitGPUCommandQueueComplete();
 	Engine_Log("Engine post-initialization complete.");
 	return 0;
 }
@@ -187,7 +192,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	// 清除RenderTarget
 	GraphicsCommandList->ClearRenderTargetView(
 		GetCurrentSwapBufferView(),		// CPU 描述符句柄,表示要清除的RT的堆的开始
-		DirectX::Colors::Red,			// 填充RT的颜色
+		DirectX::Colors::Blue,			// 填充RT的颜色
 		0,								// 指定的结构数组中的矩形数
 		nullptr);						// 要清除的资源视图中矩形 的D3D12_RECT 结构数组。如果为NULL，将清除整个资源视图
 
@@ -229,6 +234,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	CurrentSwapBufferIndex = !(bool)CurrentSwapBufferIndex;
 
 	//CPU等GPU
+	WaitGPUCommandQueueComplete();
 }
 
 int FWindowsEngine::PreExit()
@@ -267,6 +273,31 @@ D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentSwapBufferView() const
 D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentDepthStencilView() const
 {
 	return DSVHeap->GetCPUDescriptorHandleForHeapStart();
+}
+
+void FWindowsEngine::WaitGPUCommandQueueComplete()
+{
+	// 增加围栏值，接下来将命令标记到此围栏点
+	CurrentFenceIndex++;
+
+	// 向命令队列中添加一条用来设置新围栏点的命令
+	// 由于这条命令要交由GPU处理(即由GPU端来修改围栏值)，所以在GPU处理完命令队列中此signal()的所有命令之前,它并不会设置新的围栏点
+	ANALYSIS_HRESULT(CommandQueue->Signal(Fence.Get(), CurrentFenceIndex));
+
+	//在CPU端等待GPU，直到后者执行完这个围栏点之前的所有命令
+	if (Fence->GetCompletedValue() < CurrentFenceIndex)
+	{
+		// 创建或打开时间对象，并返回句柄，
+		HANDLE EventEX = CreateEventEx(NULL, NULL, 0, EVENT_ALL_ACCESS);
+
+		// 若GPU命中当前的矩形（即执行Siganl()命令，修改了围栏值），则激发预定事件
+		ANALYSIS_HRESULT(Fence->SetEventOnCompletion(CurrentFenceIndex, EventEX));
+
+		// 等待GPU命中围栏，激发事件
+		WaitForSingleObject(EventEX, INFINITE);
+		CloseHandle(EventEX);
+	}
+
 }
 
 bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
@@ -367,6 +398,7 @@ bool FWindowsEngine::InitDirect3D()
 	
 	// 3. 创建围栏Fence
 	// 实现刷新命令队列功能：强制CPU等待，直到GPU完成所有命令的处理，达到某个指定的围栏点为止（效率不高的同步方法）
+	// 除了用于CPU与GPU的同步之外，还可以在重置命令分配器之前，先刷新命令队列来确定GPU的命令已执行完毕。
 	/*
 	渲染流程：
 		Fence->SetEventOnCompletion
@@ -389,19 +421,15 @@ bool FWindowsEngine::InitDirect3D()
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(CommandAllocator.GetAddressOf()))); // GetAddressof(): 此方法可利用函数参数返回 COM接口的指针
 
-	HRESULT CMLResult = D3dDevice->CreateCommandList(
+	ANALYSIS_HRESULT(D3dDevice->CreateCommandList(
 		0,									// 单 GPU 操作
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		CommandAllocator.Get(),				// 将命令列表关联到命令分配器	//Get():此方法常用于把原始的 COM 接口指针作为参数传递给函数
 		nullptr,							// 如果是nullptr，则运行时设置虚拟初始管道状态， 开销较低
-		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf()));
+		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf())));
 
-	if (FAILED(CMLResult))
-	{
-		Engine_Log_Error("Error = %i", (int)CMLResult); 
-	}
 	// 首先要将命令列表置于关闭状态，因为第一次引用命令列表时，我们要对它进行重置，在调用重置方法之前又需先将他关闭
-	GraphicsCommandList->Close();
+	ANALYSIS_HRESULT(GraphicsCommandList->Close());
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
@@ -439,12 +467,7 @@ bool FWindowsEngine::InitDirect3D()
 	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;											 // 缓冲区交换时，丢弃后台缓冲区的内容
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;										 // 使能够通过调用 ResizeTarget 来切换窗口/全屏模式
 	
-	
-	HRESULT CSCResult = DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf());
-	if (FAILED(CSCResult))
-	{
-		Engine_Log_Error("Error = %i", (int)CSCResult); 
-	}
+	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf()));  //创建交换链
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
@@ -458,7 +481,7 @@ bool FWindowsEngine::InitDirect3D()
 	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&RTVDescriptorHeapDesc, IID_PPV_ARGS(RTVHeap.GetAddressOf())));
 	// DSV堆
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
-	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;		
+	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;		
 	DSVDescriptorHeapDesc.NumDescriptors = 1;		// 堆中的描述符数量，DSA数量为1
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;		
 	DSVDescriptorHeapDesc.NodeMask = 0;									

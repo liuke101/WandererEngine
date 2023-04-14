@@ -48,7 +48,7 @@ void Tick(FEngine* InEngine)
 {
 	float DeltaTime = 0.03f;	//每帧之间的时间差
 	InEngine->Tick(DeltaTime);
-	Sleep(30);					// 单位ms
+	//Sleep(30);					// 单位ms
 }
 
 /* 退出 */
@@ -89,12 +89,29 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE preInstance, _In
 	if (FEngine* Engine = FEngineFactory::CreatEngine())
 	{
 		// 初始化
-		ReturnValue = Init(Engine, hInstance, preInstance, cmdLine, showCmd); 
+		Init(Engine, hInstance, preInstance, cmdLine, showCmd); 
 
+		MSG EngineMsg = { 0 };
 		// Tick
-		while (true)
+		while (EngineMsg.message != WM_QUIT)
 		{
-			Tick(Engine);
+			// PM_NOREMOVE			PeekMessage 处理后不会从队列中删除消息。
+			// PM_REMOVE			PeekMessage 处理后，将从队列中删除消息。
+		    // PM_NOYIELD			防止系统释放等待调用方空闲(看到 WaitForInputIdle) 的任何线程。将此值与 PM_NOREMOVE 或 PM_REMOVE组合在一起。
+			// 
+			// PM_QS_INPUT			处理鼠标和键盘消息。
+			// PM_QS_PAINT			处理绘制消息。
+			// PM_QS_POSTMESSAGE	处理所有已发布的消息，包括计时器和热键。
+			// PM_QS_SENDMESSAGE	处理所有已发送的消息。
+			if (PeekMessage(&EngineMsg, 0, 0, 0, PM_REMOVE))
+			{
+				TranslateMessage(&EngineMsg);
+				DispatchMessage(&EngineMsg);
+			}
+			else
+			{
+				Tick(Engine);
+			}
 		}
 
 		// 退出
