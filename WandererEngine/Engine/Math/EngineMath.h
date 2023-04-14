@@ -1,0 +1,5 @@
+#pragma once
+/* ÊýÑ§¿â */
+
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>

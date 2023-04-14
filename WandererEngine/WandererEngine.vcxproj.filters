@@ -390,6 +390,11 @@
     <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp">
       <Filter>simple_library\third_party_library\tinyxml</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
+    <ClCompile Include="Engine\Mesh\Core\Mesh.cpp" />
+    <ClCompile Include="Engine\Mesh\Core\MeshType.cpp" />
+    <ClCompile Include="Engine\Math\EngineMath.cpp" />
+    <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Config\EngineRenderConfig.h">
@@ -597,5 +602,10 @@
       <Filter>simple_library\third_party_library\tinyxml</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
+    <ClInclude Include="Engine\Rendering\Core\Rendering.h" />
+    <ClInclude Include="Engine\Mesh\Core\Mesh.h" />
+    <ClInclude Include="Engine\Mesh\Core\MeshType.h" />
+    <ClInclude Include="Engine\Math\EngineMath.h" />
+    <ClInclude Include="Engine\Mesh\BoxMesh.h" />
   </ItemGroup>
 </Project>

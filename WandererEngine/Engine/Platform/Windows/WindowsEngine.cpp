@@ -1,6 +1,8 @@
 #include "WindowsEngine.h"
 #include "../../Debug/EngineDebug.h"
 #include "../../Config/EngineRenderConfig.h"
+#include "../../Rendering/Core/Rendering.h"
+#include "../../Mesh/BoxMesh.h"
 
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
@@ -112,7 +114,7 @@ int FWindowsEngine::PostInit()
 
 	CD3DX12_HEAP_PROPERTIES Properties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	D3dDevice->CreateCommittedResource(						// 创建一个资源和一个堆，并把该资源提交到堆中				
-		&Properties,	// 默认堆（性能最佳），只允许GPU访问，性能最佳
+		&Properties,										// 默认堆（性能最佳），只允许GPU访问，性能最佳
 		D3D12_HEAP_FLAG_NONE,								// 指定堆选项，例如堆是否可以包含纹理，以及资源是否在适配器之间共享。
 		&ResourceDesc,										// 资源描述
 		D3D12_RESOURCE_STATE_COMMON,						// 资源的初始状态
@@ -166,6 +168,10 @@ int FWindowsEngine::PostInit()
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	WaitGPUCommandQueueComplete();
 	Engine_Log("Engine post-initialization complete.");
+
+
+	// 构建Mesh
+	FBoxMesh* Box = FBoxMesh::CreateMesh();
 	return 0;
 }
 
@@ -212,7 +218,13 @@ void FWindowsEngine::Tick(float DeltaTime)
 	D3D12_CPU_DESCRIPTOR_HANDLE CurrentSwapBufferView = GetCurrentSwapBufferView();
 	D3D12_CPU_DESCRIPTOR_HANDLE CurrentDepthStencilView = GetCurrentDepthStencilView();
 	GraphicsCommandList->OMSetRenderTargets(1, &CurrentSwapBufferView,true,&CurrentDepthStencilView);	
-	
+
+	// 渲染
+	for(auto &Tmp : IRenderingInterface::RenderingInterface)
+	{
+		Tmp->Draw(DeltaTime);
+	}
+
 	// 资源转换
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresentRenderTarget= CD3DX12_RESOURCE_BARRIER::Transition(
 		GetCurrentSwapBuffer(),
@@ -316,7 +328,7 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	WindowsClass.lpszMenuName = NULL;					// 菜单：无默认菜单
 	WindowsClass.style = CS_VREDRAW | CS_HREDRAW;		// 窗口样式：宽度或高度发生改变时重绘窗口
 	WindowsClass.lpfnWndProc = EngineWindowProc;		// 消息处理函数
-
+	
 	// 注册窗口实例
 	ATOM RegisterAtom = RegisterClassEx(&WindowsClass); //注册窗口类
 	if (!RegisterAtom)

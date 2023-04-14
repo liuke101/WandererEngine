@@ -21,3 +21,5 @@
 
 
 using namespace Microsoft::WRL;				// wrl¿âµÄÃüÃû¿Õ¼ä
+using namespace DirectX;
+using namespace DirectX::PackedVector;
