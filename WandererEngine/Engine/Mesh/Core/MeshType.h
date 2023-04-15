@@ -1,5 +1,5 @@
 ﻿#pragma once
-/* 描述Mesh */
+/* Mesh描述 */
 #include "../../EngineMinimal.h"
 #include "../../Math/EngineMath.h"
 

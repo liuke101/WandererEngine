@@ -10,14 +10,7 @@
 class FWinMainCommandParameters
 {
 public:
-	FWinMainCommandParameters(HINSTANCE InhInstance, HINSTANCE InpreInstance, PSTR IncmdLine, int InshowCmd)
-		:HInstance(InhInstance)
-		, PreInstance(InpreInstance)
-		, CmdLine(IncmdLine)
-		, ShowCmd(InshowCmd)
-	{
-
-	}
+	FWinMainCommandParameters(HINSTANCE InhInstance, HINSTANCE InpreInstance, PSTR IncmdLine, int InshowCmd);
 
 	HINSTANCE HInstance;	// 当前应用程序的实例句柄
 	HINSTANCE PreInstance;  // 上个应用程序的实例句柄
@@ -25,7 +18,7 @@ public:
 	int ShowCmd;			// 控制窗口显示方式			
 };
 
-#elif 1
+#elif 0
 
 #endif 
 //其他平台

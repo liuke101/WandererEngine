@@ -2,12 +2,14 @@
 /* Windows平台引擎 */
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
-
 // Windows平台引擎类
 class FWindowsEngine :public FEngine
 {
+	friend class IRenderingInterface;
+
 public:
 	FWindowsEngine();
+	~FWindowsEngine();
 	virtual int PreInit(FWinMainCommandParameters InParameters);
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();

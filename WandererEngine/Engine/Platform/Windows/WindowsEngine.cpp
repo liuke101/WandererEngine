@@ -22,6 +22,11 @@ FWindowsEngine::FWindowsEngine()
 	}
 }
 
+FWindowsEngine::~FWindowsEngine()
+{
+
+}
+
 int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
 	// 晩崗狼由兜兵晒
@@ -58,6 +63,8 @@ int FWindowsEngine::PostInit()
 {
 	// CPU吉GPU
 	WaitGPUCommandQueueComplete();
+
+	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
 	/*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
 	
@@ -167,6 +174,7 @@ int FWindowsEngine::PostInit()
 
 	/*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
 	WaitGPUCommandQueueComplete();
+
 	Engine_Log("Engine post-initialization complete.");
 
 

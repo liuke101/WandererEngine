@@ -41,6 +41,8 @@ int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmd
 		Engine_Log_Error("[%i]Engine post-initialization error, check and initialization problem.", ReturnValue);
 		return ReturnValue;
 	}
+
+	return ReturnValue;
 }
 
 /* Tick */
@@ -78,6 +80,7 @@ int Exit(FEngine* InEngine)
 	return ReturnValue;
 }
 
+FEngine* Engine = nullptr;
 //hInstance 当前应用程序的实例句柄
 //preInstance 上个应用程序的实例句柄
 //cmdLine 应用程序的命令行
@@ -86,7 +89,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE preInstance, _In
 {
 	int ReturnValue = 0;
 
-	if (FEngine* Engine = FEngineFactory::CreatEngine())
+	FEngine* Engine = FEngineFactory::CreatEngine();
+    if (Engine)
 	{
 		// 初始化
 		Init(Engine, hInstance, preInstance, cmdLine, showCmd); 
@@ -116,8 +120,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE preInstance, _In
 
 		// 退出
 		ReturnValue = Exit(Engine);
-
-		ReturnValue = 0;
 	}
 	else
 	{

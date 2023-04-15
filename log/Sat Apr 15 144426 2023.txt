@@ -1,0 +1,12 @@
+[LOG] [Sat Apr 15 14:44:26 2023] Log Init. 
+[LOG] [Sat Apr 15 14:44:26 2023] Engine pre-initialization complete. 
+[LOG] [Sat Apr 15 14:44:26 2023] InitWindows complete. 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:26 2023] Success ! 
+[SUCCESS] [Sat Apr 15 14:44:36 2023] Success ! 
