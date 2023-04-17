@@ -9,7 +9,7 @@ FEngineFactory::FEngineFactory()
 
 }
 
-FEngine* FEngineFactory::CreatEngine()
+FEngine* FEngineFactory::CreateEngine()
 {
 	// 创建Windows平台引擎
 #if defined(_WIN32) 

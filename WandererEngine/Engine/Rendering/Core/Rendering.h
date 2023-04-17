@@ -24,6 +24,7 @@ public:
         return guid_equal(&Guid, &InOther.Guid);
     }
 
+    // 获取Guid
     simple_c_guid GetGuid() { return Guid; }
 
 protected:
@@ -33,11 +34,12 @@ protected:
     ComPtr<ID3D12Device> GetD3dDevice();
     ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
     ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
-#if defined(_WIN32)
-    FWindowsEngine* GetEngine();
-#else
-    FEngine* GetEngine();
-#endif
+
+// #if defined(_WIN32)
+//     FWindowsEngine* GetEngine();
+// #else
+//     FEngine* GetEngine();
+// #endif
 
 private:
     static vector<IRenderingInterface*> RenderingInterface;

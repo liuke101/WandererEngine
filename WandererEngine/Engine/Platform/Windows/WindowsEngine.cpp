@@ -45,15 +45,11 @@ int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 {
 
-	if (InitWindows(InParameters))
-	{
+	InitWindows(InParameters);
 
-	}
+	InitDirect3D();
 
-	if (InitDirect3D())
-	{
-
-	}
+	PostInitDirect3D();
 
 	Engine_Log("Engine initialization complete.");
 	return 0;
@@ -61,125 +57,22 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 int FWindowsEngine::PostInit()
 {
-	// CPU等GPU
-	WaitGPUCommandQueueComplete();
+	
+	Engine_Log("Engine post-initialization complete.");
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-	
-	// 初始化交换链缓冲区
-	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
-		SwapChainBuffer[i].Reset();
-	}
-	DepthStencilBuffer.Reset();
-
-	// 更改交换链的后台缓冲区大小、格式和缓冲区数量。 应在调整应用程序窗口大小时调用此函数。
-	SwapChain->ResizeBuffers(
-		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
-		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
-		FEngineRenderConfig::GetRenderConfig()->ScreenHeight,
-		BackBufferFormat,
-		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
-
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
-	// 创建RTV
-	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); // 获取RTV描述符大小
-	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());		 // 获取描述符堆中第一个描述符的句柄
-	// 描述符大小作为偏移量，使用偏移量找到当前后台缓冲区的RTV
-	for (UINT i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
-	{
-		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));						  // 获得交换链中的缓冲区资源
-		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, HeapHandle); // 为获取到的缓冲区创建RTV
-		HeapHandle.Offset(1,RTVDescriptorSize);											  // 偏移到描述符堆中的下一个缓冲区
+		// 构建Mesh
+		FBoxMesh* Box = FBoxMesh::CreateMesh();
 	}
 
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-	
-	// 创建深度/模板缓冲区及其视图
-	// 创建深度/模板缓冲区
-	D3D12_RESOURCE_DESC ResourceDesc;   											// 资源描述
-	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;					// 资源的维度（可选：缓冲区、1D纹理、2D纹理、3D纹理）
-	ResourceDesc.Alignment = 0;														// 对齐方式
-	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;		// 资源的宽度（对纹理来说是以纹素为单位的宽度，对缓冲区来说是占用的字节数）
-	ResourceDesc.Height= FEngineRenderConfig::GetRenderConfig()->ScreenHeight;		// 资源的高度
-	ResourceDesc.DepthOrArraySize = 1;												// 资源的深度（如果为 3D）或数组大小（如果是 1D 或 2D 资源的数组）
-	ResourceDesc.MipLevels = 1;														// mipmap 级别
-	ResourceDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;								// 资源数据格式
-	ResourceDesc.SampleDesc.Count = bMSAA4XEnable ? 4 : 1;							// MSAA采样数
-	ResourceDesc.SampleDesc.Quality = bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;// MSAA质量级别
-	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;								// 纹理布局
-	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;					// 允许为资源创建深度/模板视图
-	
+	GraphicsCommandList->Close();
 
-	D3D12_CLEAR_VALUE ClearValue;			// 用于清除资源的优化值。
-	ClearValue.DepthStencil.Depth = 1.f;	// 用于清除深度缓冲区
-	ClearValue.DepthStencil.Stencil = 0;	// 用于清除模板缓冲区
-	ClearValue.Format = DepthStencilFormat;	// 清除颜色的数据格式必须与清除操作期间使用的视图的格式匹配
-
-	CD3DX12_HEAP_PROPERTIES Properties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-	D3dDevice->CreateCommittedResource(						// 创建一个资源和一个堆，并把该资源提交到堆中				
-		&Properties,										// 默认堆（性能最佳），只允许GPU访问，性能最佳
-		D3D12_HEAP_FLAG_NONE,								// 指定堆选项，例如堆是否可以包含纹理，以及资源是否在适配器之间共享。
-		&ResourceDesc,										// 资源描述
-		D3D12_RESOURCE_STATE_COMMON,						// 资源的初始状态
-		&ClearValue,										// 用于清除资源的优化值
-		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf())		// 资源接口的COM ID
-	); 
-
-	D3D12_DEPTH_STENCIL_VIEW_DESC DSVDesc;					// 描述可从深度模具视图访问的纹理的子资源。
-	DSVDesc.Format = DepthStencilFormat;					// 资源数据格式
-	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;	// 访问深度模板视图中的资源的方式：资源将作为 2D 纹理进行访问
-	DSVDesc.Flags = D3D12_DSV_FLAG_NONE;					// 指定纹理是否为只读：None
-	DSVDesc.Texture2D.MipSlice = 0;							// Texture2D要使用的第一个 mipmap 级别
-	
-	// 创建深度/模板视图
-	D3dDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVHeap->GetCPUDescriptorHandleForHeapStart());
-
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
-	// 资源状态转换
-	CD3DX12_RESOURCE_BARRIER Barrier = CD3DX12_RESOURCE_BARRIER::Transition(	// 描述不同用法之间子资源转换的结构
-		DepthStencilBuffer.Get(),			// 转换中使用的资源
-		D3D12_RESOURCE_STATE_COMMON,		// 资源的“之前”用法
-		D3D12_RESOURCE_STATE_DEPTH_WRITE);	// 资源的“后”用法
-	GraphicsCommandList->ResourceBarrier(1,	&Barrier); // 设置转换资源屏障数组，只是加入命令列表，真正执行需要传入命令队列
-	GraphicsCommandList->Close();					   // 命令加入命令列表之后，提交命令列表之前必须结束命令的记录
-
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
-	// 命令提交
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
-	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);  //将命令列表里的命令添加到命令队列中  //_countof()返回数组中的元素数
-	
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
-	// 设置视口
-	// 描述视口尺寸
-	ViewportInfo.TopLeftX = 0;		// 左上角的 x 坐标
-	ViewportInfo.TopLeftY = 0;		// 左上角的 y 坐标
-	ViewportInfo.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
-	ViewportInfo.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
-	ViewportInfo.MinDepth = 0.0f;	//将深度值从区间[0,1]转换到区间[MinDepth,MaxDepth], 实现某些特殊效果
-	ViewportInfo.MaxDepth = 1.0f;
-
-	// 设置裁剪矩形
-	ViewportRect.left = 0;														// 左上角的 x 坐标
-	ViewportRect.top = 0;														// 左上角的 y 坐标
-	ViewportRect.right = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;	// 右下角的 x 坐标
-	ViewportRect.bottom = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;	// 右下角的 y 坐标
-
-
-	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	WaitGPUCommandQueueComplete();
-
-	Engine_Log("Engine post-initialization complete.");
-
-
-	// 构建Mesh
-	FBoxMesh* Box = FBoxMesh::CreateMesh();
 	return 0;
 }
 
@@ -511,6 +404,125 @@ bool FWindowsEngine::InitDirect3D()
 	
 
 	return false;
+}
+
+void FWindowsEngine::PostInitDirect3D()
+{
+	// CPU等GPU
+	WaitGPUCommandQueueComplete();
+
+	// 初始化命令列表
+	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 初始化交换链缓冲区
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChainBuffer[i].Reset();
+	}
+	DepthStencilBuffer.Reset();
+
+	// 更改交换链的后台缓冲区大小、格式和缓冲区数量。 应在调整应用程序窗口大小时调用此函数。
+	SwapChain->ResizeBuffers(
+		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
+		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+		FEngineRenderConfig::GetRenderConfig()->ScreenHeight,
+		BackBufferFormat,
+		DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 创建RTV
+	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); // 获取RTV描述符大小
+	CD3DX12_CPU_DESCRIPTOR_HANDLE HeapHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());		 // 获取描述符堆中第一个描述符的句柄
+	// 描述符大小作为偏移量，使用偏移量找到当前后台缓冲区的RTV
+	for (UINT i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));						  // 获得交换链中的缓冲区资源
+		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, HeapHandle); // 为获取到的缓冲区创建RTV
+		HeapHandle.Offset(1, RTVDescriptorSize);											  // 偏移到描述符堆中的下一个缓冲区
+	}
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 创建深度/模板缓冲区及其视图
+	// 创建深度/模板缓冲区
+	D3D12_RESOURCE_DESC ResourceDesc;   											// 资源描述
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;					// 资源的维度（可选：缓冲区、1D纹理、2D纹理、3D纹理）
+	ResourceDesc.Alignment = 0;														// 对齐方式
+	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;		// 资源的宽度（对纹理来说是以纹素为单位的宽度，对缓冲区来说是占用的字节数）
+	ResourceDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;		// 资源的高度
+	ResourceDesc.DepthOrArraySize = 1;												// 资源的深度（如果为 3D）或数组大小（如果是 1D 或 2D 资源的数组）
+	ResourceDesc.MipLevels = 1;														// mipmap 级别
+	ResourceDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;								// 资源数据格式
+	ResourceDesc.SampleDesc.Count = bMSAA4XEnable ? 4 : 1;							// MSAA采样数
+	ResourceDesc.SampleDesc.Quality = bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;// MSAA质量级别
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;								// 纹理布局
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;					// 允许为资源创建深度/模板视图
+
+
+	D3D12_CLEAR_VALUE ClearValue;			// 用于清除资源的优化值。
+	ClearValue.DepthStencil.Depth = 1.f;	// 用于清除深度缓冲区
+	ClearValue.DepthStencil.Stencil = 0;	// 用于清除模板缓冲区
+	ClearValue.Format = DepthStencilFormat;	// 清除颜色的数据格式必须与清除操作期间使用的视图的格式匹配
+
+	CD3DX12_HEAP_PROPERTIES Properties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	D3dDevice->CreateCommittedResource(						// 创建一个资源和一个堆，并把该资源提交到堆中				
+		&Properties,										// 默认堆（性能最佳），只允许GPU访问，性能最佳
+		D3D12_HEAP_FLAG_NONE,								// 指定堆选项，例如堆是否可以包含纹理，以及资源是否在适配器之间共享。
+		&ResourceDesc,										// 资源描述
+		D3D12_RESOURCE_STATE_COMMON,						// 资源的初始状态
+		&ClearValue,										// 用于清除资源的优化值
+		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf())		// 资源接口的COM ID
+	);
+
+	D3D12_DEPTH_STENCIL_VIEW_DESC DSVDesc;					// 描述可从深度模具视图访问的纹理的子资源。
+	DSVDesc.Format = DepthStencilFormat;					// 资源数据格式
+	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;	// 访问深度模板视图中的资源的方式：资源将作为 2D 纹理进行访问
+	DSVDesc.Flags = D3D12_DSV_FLAG_NONE;					// 指定纹理是否为只读：None
+	DSVDesc.Texture2D.MipSlice = 0;							// Texture2D要使用的第一个 mipmap 级别
+
+	// 创建深度/模板视图
+	D3dDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVHeap->GetCPUDescriptorHandleForHeapStart());
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 资源状态转换
+	CD3DX12_RESOURCE_BARRIER Barrier = CD3DX12_RESOURCE_BARRIER::Transition(	// 描述不同用法之间子资源转换的结构
+		DepthStencilBuffer.Get(),			// 转换中使用的资源
+		D3D12_RESOURCE_STATE_COMMON,		// 资源的“之前”用法
+		D3D12_RESOURCE_STATE_DEPTH_WRITE);	// 资源的“后”用法
+	GraphicsCommandList->ResourceBarrier(1, &Barrier); // 设置转换资源屏障数组，只是加入命令列表，真正执行需要传入命令队列
+	GraphicsCommandList->Close();					   // 命令加入命令列表之后，提交命令列表之前必须结束命令的记录
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 命令提交
+	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);  //将命令列表里的命令添加到命令队列中  //_countof()返回数组中的元素数
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
+	// 设置视口
+	// 描述视口尺寸
+	ViewportInfo.TopLeftX = 0;		// 左上角的 x 坐标
+	ViewportInfo.TopLeftY = 0;		// 左上角的 y 坐标
+	ViewportInfo.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	ViewportInfo.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
+	ViewportInfo.MinDepth = 0.0f;	//将深度值从区间[0,1]转换到区间[MinDepth,MaxDepth], 实现某些特殊效果
+	ViewportInfo.MaxDepth = 1.0f;
+
+	// 设置裁剪矩形
+	ViewportRect.left = 0;														// 左上角的 x 坐标
+	ViewportRect.top = 0;														// 左上角的 y 坐标
+	ViewportRect.right = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;	// 右下角的 x 坐标
+	ViewportRect.bottom = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;	// 右下角的 y 坐标
+
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+	WaitGPUCommandQueueComplete();
+
 }
 
 

@@ -38,7 +38,7 @@ private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 	// ≥ı ºªØDirect3D 
 	bool InitDirect3D();
-
+    void PostInitDirect3D();
 
 protected:
 	UINT64 CurrentFenceIndex = 0;       // Œß¿∏÷µ

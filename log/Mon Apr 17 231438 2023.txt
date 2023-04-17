@@ -1,0 +1,27 @@
+[LOG] [Mon Apr 17 23:14:38 2023] Log Init. 
+[LOG] [Mon Apr 17 23:14:38 2023] Engine pre-initialization complete. 
+[LOG] [Mon Apr 17 23:14:38 2023] InitWindows complete. 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[LOG] [Mon Apr 17 23:14:38 2023] Engine initialization complete. 
+[LOG] [Mon Apr 17 23:14:38 2023] Engine post-initialization complete. 
+[SUCCESS] [Mon Apr 17 23:14:38 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:43 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:43 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:49 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:49 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:50 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:50 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:50 2023] Success ! 
+[SUCCESS] [Mon Apr 17 23:14:50 2023] Success ! 

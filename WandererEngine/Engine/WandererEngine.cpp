@@ -89,7 +89,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE preInstance, _In
 {
 	int ReturnValue = 0;
 
-	FEngine* Engine = FEngineFactory::CreatEngine();
+	Engine = FEngineFactory::CreateEngine();
     if (Engine)
 	{
 		// ≥ı ºªØ
