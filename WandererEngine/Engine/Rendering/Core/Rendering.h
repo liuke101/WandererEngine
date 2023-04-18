@@ -2,6 +2,7 @@
 /* 渲染接口 */
 // 需要渲染的地方继承该接口即可
 #include "../../Core/Engine.h"
+
 #if defined(_WIN32)
 #include "../../Platform/Windows/WindowsEngine.h"
 #else
@@ -31,15 +32,15 @@ protected:
     // 构建默认缓冲区
     ComPtr<ID3D12Resource> ConstructDefaultBuffer(ComPtr<ID3D12Resource> &UploadBuffer, const void* InData,UINT64 InDataSize);
 protected:
+#if defined(_WIN32)
+    FWindowsEngine* GetEngine();
+#else
+    FEngine* GetEngine();
+#endif
+
     ComPtr<ID3D12Device> GetD3dDevice();
     ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
     ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
-
-// #if defined(_WIN32)
-//     FWindowsEngine* GetEngine();
-// #else
-//     FEngine* GetEngine();
-// #endif
 
 private:
     static vector<IRenderingInterface*> RenderingInterface;
@@ -52,20 +53,21 @@ public:
     FRenderingResourceUpdate();
     ~FRenderingResourceUpdate();
 
+    // 初始化常量缓冲区 
     void Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount);
 
     // 更新常量缓冲区
     void Update(int Index, const void* InData);
 
-    // 根据指定 TypeSize 计算常量缓冲区大小（256B的整数倍）
+    // 通过指定元素类型大小来计算常量缓冲区大小（256B的整数倍）
     UINT GetConstantBufferByteSize(UINT InTypeSize);
-    // 根据 ElementSize 计算常量缓冲区大小（256B的整数倍）
+    // 根据已知元素大小来计算常量缓冲区大小（256B的整数倍）
     UINT GetConstantBufferByteSize();
 
     ID3D12Resource* GetBuffer() { return UploadBuffer.Get(); }
 private:
-    ComPtr<ID3D12Resource> UploadBuffer;
-    UINT ElementSize;
+    ComPtr<ID3D12Resource> UploadBuffer;    // 上传堆
+    UINT ElementSize;                       // 元素大小
     BYTE* Data;
 };
 

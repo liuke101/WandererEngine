@@ -35,12 +35,12 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 {
     // 创建默认缓冲区
     ComPtr<ID3D12Resource> DefaultBuffer;
-    CD3DX12_RESOURCE_DESC BufferResourceDESC = CD3DX12_RESOURCE_DESC::Buffer(InDataSize);
+    CD3DX12_RESOURCE_DESC BufferResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InDataSize);
     CD3DX12_HEAP_PROPERTIES DefaultBufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
     ANALYSIS_HRESULT(GetD3dDevice()->CreateCommittedResource(
         &DefaultBufferProperties,
         D3D12_HEAP_FLAG_NONE,
-        &BufferResourceDESC,
+        &BufferResourceDesc,
         D3D12_RESOURCE_STATE_COMMON,
         NULL,
         IID_PPV_ARGS(DefaultBuffer.GetAddressOf())));
@@ -50,7 +50,7 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
     ANALYSIS_HRESULT(GetD3dDevice()->CreateCommittedResource(
         &UploadBufferProperties,
         D3D12_HEAP_FLAG_NONE,
-        &BufferResourceDESC,
+        &BufferResourceDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ,
         NULL,
         IID_PPV_ARGS(UploadBuffer.GetAddressOf())));
@@ -84,7 +84,7 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 
 ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 {
-     if (FWindowsEngine* InEngine = dynamic_cast<FWindowsEngine*>(Engine))
+     if (FWindowsEngine* InEngine = GetEngine())
      {
          return InEngine->D3dDevice;
      }
@@ -94,7 +94,7 @@ ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 
 ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList()
 {
-    if(FWindowsEngine* InEngine = dynamic_cast<FWindowsEngine*>(Engine))
+    if(FWindowsEngine* InEngine = GetEngine())
     {
         return InEngine->GraphicsCommandList;
     }
@@ -104,7 +104,7 @@ ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList()
 
 ComPtr<ID3D12CommandAllocator> IRenderingInterface::GetCommandAllocator()
 {
-    if (FWindowsEngine* InEngine = dynamic_cast<FWindowsEngine*>(Engine))
+    if (FWindowsEngine* InEngine = GetEngine())
     {
         return InEngine->CommandAllocator;
     }
@@ -112,17 +112,17 @@ ComPtr<ID3D12CommandAllocator> IRenderingInterface::GetCommandAllocator()
     return nullptr;
 }
 
-// #if defined(_WIN32)
-// FWindowsEngine* IRenderingInterface::GetEngine()
-// {
-//     return dynamic_cast<FWindowsEngine*>(Engine);
-// }
-// #else
-// FEngine* IRenderingInterface::GetEngine()
-// {
-//     return Engine;
-// }
-// #endif
+#if defined(_WIN32)
+FWindowsEngine* IRenderingInterface::GetEngine()
+{
+    return dynamic_cast<FWindowsEngine*>(Engine);
+}
+#else
+FEngine* IRenderingInterface::GetEngine()
+{
+    return Engine;
+}
+#endif
 
 FRenderingResourceUpdate::FRenderingResourceUpdate()
 {
@@ -133,18 +133,19 @@ FRenderingResourceUpdate::~FRenderingResourceUpdate()
 {
     if(UploadBuffer)
     {
-        UploadBuffer->Unmap(0, NULL); //取消映射：使指向资源中指定子资源的 CPU 指针失效
-        UploadBuffer = nullptr;
+        UploadBuffer->Unmap(0, NULL); // 在释放映射内存之前先取消映射：使指向资源中指定子资源的 CPU 指针失效
+        UploadBuffer = nullptr;       // 释放内存
     }
 }
 
 void FRenderingResourceUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount)
 {
+    // 创建常量缓冲区
     assert(InDevice);
     ElementSize = InElementSize;
-    CD3DX12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+    CD3DX12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);    // 常量缓冲区创建在上传堆，能通过CPU更新常量
     CD3DX12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElementSize * InElementCount);
-    ANALYSIS_HRESULT(InDevice->CreateCommittedResource(
+    ANALYSIS_HRESULT(InDevice->CreateCommittedResource(     // 创建一个资源和一个堆，并把该资源提交到堆中
         &HeapProperties,
         D3D12_HEAP_FLAG_NONE,
         &ResourceDesc,
@@ -152,11 +153,15 @@ void FRenderingResourceUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, 
         nullptr,
         IID_PPV_ARGS(&UploadBuffer)));
 
-    ANALYSIS_HRESULT(UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&Data)));
+    ANALYSIS_HRESULT(UploadBuffer->Map(     // 获得指向欲更新资源数据的指针，为更新常量缓冲区做准备
+        0,                                  // 子资源的索引，对于缓冲区来说，自身就是唯一的子资源，故设置为0
+        nullptr,                            // 内存的映射范围，空指针表示对整个资源进行映射
+        reinterpret_cast<void**>(&Data)));  // 双重指针，返回待映射资源数据的目标内存块
 }
 
 void FRenderingResourceUpdate::Update(int Index, const void* InData)
 {
+    // 将数据从系统内存复制到常量缓冲区
     memcpy(&Data[Index*ElementSize],InData,ElementSize);
 }
 

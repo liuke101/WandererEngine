@@ -30,9 +30,20 @@ public:
 	// 获取当前深度模板缓冲区的描述符句柄
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDepthStencilView() const;
 
+public:
+	// 获取后台缓冲区纹理数据格式
+	DXGI_FORMAT GetBackBufferFormat() const { return BackBufferFormat; }
+	// 获取深度模板缓冲区纹理数据格式
+	DXGI_FORMAT GetDepthStencilFormat() const { return DepthStencilFormat; }
+	// 获取MSAA采样数
+	UINT GetMSAASampleCount() const;
+	// 获取MSAA采样质量
+	UINT GetMSAASampleQuality() const;
+
 protected:
 	// 使用围栏Fence来刷新命令队列
-	void WaitGPUCommandQueueComplete();  
+	void WaitGPUCommandQueueComplete();
+
 private:
 	// 初始化Windows窗口 
 	bool InitWindows(FWinMainCommandParameters InParameters);

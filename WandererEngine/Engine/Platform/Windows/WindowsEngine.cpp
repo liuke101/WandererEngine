@@ -188,6 +188,16 @@ D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentDepthStencilView() const
 	return DSVHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
+UINT FWindowsEngine::GetMSAASampleCount() const
+{
+	return bMSAA4XEnable ? 4 : 1; ;
+}
+
+UINT FWindowsEngine::GetMSAASampleQuality() const
+{
+	return bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;
+}
+
 void FWindowsEngine::WaitGPUCommandQueueComplete()
 {
 	// 增加围栏值，接下来将命令标记到此围栏点
@@ -370,8 +380,8 @@ bool FWindowsEngine::InitDirect3D()
 	SwapChainDesc.BufferDesc.Format = BackBufferFormat;													 // 纹理数据格式
 	SwapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;					 // 扫描线命令，标识如何在表面上绘制扫描线的值。
 
-	SwapChainDesc.SampleDesc.Count = bMSAA4XEnable ? 4 : 1;												 // MSAA采样数量
-	SwapChainDesc.SampleDesc.Quality = bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;					 // MSAA采样质量级别
+	SwapChainDesc.SampleDesc.Count = GetMSAASampleCount();												 // MSAA采样数量
+	SwapChainDesc.SampleDesc.Quality = GetMSAASampleQuality();											 // MSAA采样质量级别
 
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;										 // 将数据渲染到渲染目标（Render Target）
 	SwapChainDesc.BufferCount = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;					 // 缓冲区数量，默认为2即采用双缓冲
@@ -456,8 +466,8 @@ void FWindowsEngine::PostInitDirect3D()
 	ResourceDesc.DepthOrArraySize = 1;												// 资源的深度（如果为 3D）或数组大小（如果是 1D 或 2D 资源的数组）
 	ResourceDesc.MipLevels = 1;														// mipmap 级别
 	ResourceDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;								// 资源数据格式
-	ResourceDesc.SampleDesc.Count = bMSAA4XEnable ? 4 : 1;							// MSAA采样数
-	ResourceDesc.SampleDesc.Quality = bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;// MSAA质量级别
+	ResourceDesc.SampleDesc.Count = GetMSAASampleCount();							// MSAA采样数
+	ResourceDesc.SampleDesc.Quality = GetMSAASampleQuality();						// MSAA质量级别
 	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;								// 纹理布局
 	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;					// 允许为资源创建深度/模板视图
 
