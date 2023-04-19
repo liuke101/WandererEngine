@@ -57,8 +57,6 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 int FWindowsEngine::PostInit()
 {
-	
-	Engine_Log("Engine post-initialization complete.");
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
@@ -102,7 +100,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	// 清除RenderTarget
 	GraphicsCommandList->ClearRenderTargetView(
 		GetCurrentSwapBufferView(),		// CPU 描述符句柄,表示要清除的RT的堆的开始
-		DirectX::Colors::Black,			// 填充RT的颜色
+		DirectX::Colors::Black,		// 填充RT的颜色
 		0,								// 指定的结构数组中的矩形数
 		nullptr);						// 要清除的资源视图中矩形 的D3D12_RECT 结构数组。如果为NULL，将清除整个资源视图
 
@@ -152,6 +150,8 @@ void FWindowsEngine::Tick(float DeltaTime)
 
 	//CPU等GPU
 	WaitGPUCommandQueueComplete();
+
+	Engine_Log("Engine post-initialization complete.");
 }
 
 int FWindowsEngine::PreExit()
@@ -535,6 +535,7 @@ void FWindowsEngine::PostInitDirect3D()
 
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+
 	WaitGPUCommandQueueComplete();
 
 }
