@@ -81,8 +81,11 @@ void FWindowsEngine::Tick(float DeltaTime)
 	// 重置命令分配器，为下一帧做准备
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
-	// 重置命令列表
-	GraphicsCommandList->Reset(CommandAllocator.Get(), NULL);
+	// 预渲染
+	for (auto& Tmp : IRenderingInterface::RenderingInterface)
+	{
+		Tmp->PreDraw(DeltaTime);
+	}
 
 	// 转换状态
 	CD3DX12_RESOURCE_BARRIER ResourceBarrierPresent = CD3DX12_RESOURCE_BARRIER::Transition(	
@@ -99,7 +102,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	// 清除RenderTarget
 	GraphicsCommandList->ClearRenderTargetView(
 		GetCurrentSwapBufferView(),		// CPU 描述符句柄,表示要清除的RT的堆的开始
-		DirectX::Colors::Blue,			// 填充RT的颜色
+		DirectX::Colors::Black,			// 填充RT的颜色
 		0,								// 指定的结构数组中的矩形数
 		nullptr);						// 要清除的资源视图中矩形 的D3D12_RECT 结构数组。如果为NULL，将清除整个资源视图
 
@@ -124,6 +127,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	for(auto &Tmp : IRenderingInterface::RenderingInterface)
 	{
 		Tmp->Draw(DeltaTime);
+		Tmp->PostDraw(DeltaTime);
 	}
 
 	// 资源转换

@@ -26,9 +26,19 @@ void IRenderingInterface::Init()
 {
 }
 
+void IRenderingInterface::PreDraw(float DeltaTime)
+{
+    // 重置命令列表
+    ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), NULL));
+}
+
 void IRenderingInterface::Draw(float DeltaTime)
 {
 
+}
+
+void IRenderingInterface::PostDraw(float DeltaTime)
+{
 }
 
 ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12Resource>& UploadBuffer, const void* InData, UINT64 InDataSize)
@@ -46,7 +56,7 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
         IID_PPV_ARGS(DefaultBuffer.GetAddressOf())));
 
     // 创建上传缓冲区，作为中介将CPU端内存中的数据复制到默认缓冲区
-    CD3DX12_HEAP_PROPERTIES UploadBufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+    CD3DX12_HEAP_PROPERTIES UploadBufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
     ANALYSIS_HRESULT(GetD3dDevice()->CreateCommittedResource(
         &UploadBufferProperties,
         D3D12_HEAP_FLAG_NONE,
@@ -124,21 +134,21 @@ FEngine* IRenderingInterface::GetEngine()
 }
 #endif
 
-FRenderingResourceUpdate::FRenderingResourceUpdate()
+FRenderingResourcesUpdate::FRenderingResourcesUpdate()
 {
 
 }
 
-FRenderingResourceUpdate::~FRenderingResourceUpdate()
+FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
 {
-    if(UploadBuffer)
+    if(UploadBuffer!=nullptr)
     {
         UploadBuffer->Unmap(0, NULL); // 在释放映射内存之前先取消映射：使指向资源中指定子资源的 CPU 指针失效
         UploadBuffer = nullptr;       // 释放内存
     }
 }
 
-void FRenderingResourceUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount)
+void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount)
 {
     // 创建常量缓冲区
     assert(InDevice);
@@ -159,13 +169,13 @@ void FRenderingResourceUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, 
         reinterpret_cast<void**>(&Data)));  // 双重指针，返回待映射资源数据的目标内存块
 }
 
-void FRenderingResourceUpdate::Update(int Index, const void* InData)
+void FRenderingResourcesUpdate::Update(int Index, const void* InData)
 {
     // 将数据从系统内存复制到常量缓冲区
     memcpy(&Data[Index*ElementSize],InData,ElementSize);
 }
 
-UINT FRenderingResourceUpdate::GetConstantBufferByteSize(UINT InTypeSize)
+UINT FRenderingResourcesUpdate::GetConstantBufferByteSize(UINT InTypeSize)
 {
     // 龙书p196
     // 常量缓冲区的大小必须是硬件最小分配空间(通常是256B）的整数倍
@@ -178,10 +188,10 @@ UINT FRenderingResourceUpdate::GetConstantBufferByteSize(UINT InTypeSize)
     // 0x022B &0xff00
     // 0x0200
     // 512
-    return (InTypeSize+255) & ~255;
+    return (InTypeSize + 255) & ~255;
 }
 
-UINT FRenderingResourceUpdate::GetConstantBufferByteSize()
+UINT FRenderingResourcesUpdate::GetConstantBufferByteSize()
 {
     return GetConstantBufferByteSize(ElementSize);
 }

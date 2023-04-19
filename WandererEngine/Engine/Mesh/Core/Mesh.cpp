@@ -1,11 +1,19 @@
 #include "Mesh.h"
+#include "../../Config/EngineRenderConfig.h"
+
 FObjectTransformation::FObjectTransformation()
-    :World(
+    :MVP(IdentifyMatrix4x4())
+{
+}
+
+// 4x4单位矩阵
+XMFLOAT4X4 FObjectTransformation::IdentifyMatrix4x4()
+{
+    return XMFLOAT4X4{
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f)
-{
+        0.0f, 0.0f, 0.0f, 1.0f};
 }
 
 FMesh::FMesh()
@@ -14,12 +22,26 @@ FMesh::FMesh()
     , IndexCount(0)
     , IndexSizeInBytes(0)
     , IndexFormat(DXGI_FORMAT_R16_UINT)
+    , ModelMatrix(FObjectTransformation::IdentifyMatrix4x4())
+    , ViewMatrix(FObjectTransformation::IdentifyMatrix4x4())
+    , ProjectionMatrix(FObjectTransformation::IdentifyMatrix4x4())
 {
+
 }
+
 
 void FMesh::Init()
 {
+    float AspectRattio = static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenWidth) / static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenHeight);
 
+    // 透视投影矩阵
+    XMMATRIX Project = XMMatrixPerspectiveFovLH(
+        0.25f * XM_PI,   //FOV：用弧度制表示的垂直视场角
+        AspectRattio,    //纵横比=宽度/高度
+        1.0f,            //到近裁剪平面的距离
+        1000.0f);        //到远裁剪平面的距离
+
+    XMStoreFloat4x4(&ProjectionMatrix, Project);
 }
 
 void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
@@ -35,14 +57,15 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
     GetD3dDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(&CBVHeap));
     
     // 创建CBV描述符
-    objectConstants = make_shared<FRenderingResourceUpdate>();
+    objectConstants = make_shared<FRenderingResourcesUpdate>();
     objectConstants->Init(GetD3dDevice().Get(), sizeof(FObjectTransformation), 1);
     D3D12_GPU_VIRTUAL_ADDRESS ObAddr = objectConstants.get()->GetBuffer()->GetGPUVirtualAddress();    // 缓冲区的起始地址(即索引为0的那个常量缓冲区的地址)
-    
+
     D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc;    // 描述要查看的常量缓冲区
     CBVDesc.BufferLocation = ObAddr;            
     CBVDesc.SizeInBytes = objectConstants->GetConstantBufferByteSize(); 
-    
+
+    // BUG：ObAddr太大了
     GetD3dDevice()->CreateConstantBufferView(&CBVDesc,CBVHeap->GetCPUDescriptorHandleForHeapStart()); // 创建用于访问资源数据的常量缓冲区视图
            
     // 创建描述符表，只存有一个CBV
@@ -85,14 +108,14 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
     // 【着色器Shader】
     
     // 编译shader
-    VertexShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "VertexShader", "vs_5_0");
-    PixelShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "PixelShader", "ps_5_0");
+    VertexShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "VertexShaderMain", "vs_5_0");
+    PixelShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "PixelShaderMain", "ps_5_0");
 
     // 输入布局描述符，要求hlsl中的输入签名与之匹配
     InputLayoutDESC =
     {
         {"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
-        {"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,12}
+        {"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}
     };
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
@@ -151,8 +174,19 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 
 }
 
+void FMesh::PreDraw(float DeltaTime)
+{
+    // 重置命令列表
+    ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get()));
+}
+
 void FMesh::Draw(float DeltaTime)
 {
+    //将CBV堆/根签名设置到命令列表
+    ID3D12DescriptorHeap* DescriptorHeap[] = { CBVHeap.Get() };
+    GetGraphicsCommandList()->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap); 
+    GetGraphicsCommandList()->SetGraphicsRootSignature(RootSignature.Get());                
+
     // 在顶点缓冲区及其对应视图创建完成后，将它与渲染流水线上的一个输入槽(input slot)相绑定。
     // 绑定后就能向流水线中的【输入装配器阶段】传递顶点数据了。
     D3D12_VERTEX_BUFFER_VIEW VBV = GetVertexBufferView();
@@ -167,6 +201,9 @@ void FMesh::Draw(float DeltaTime)
     // 指定图元（又称基元）拓扑，告知D3D如何用顶点数据表示几何图元
     GetGraphicsCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+    // 令描述符表与渲染流水线绑定
+    GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, CBVHeap->GetGPUDescriptorHandleForHeapStart());
+
     // 绘制索引，实例化图元
     GetGraphicsCommandList()->DrawIndexedInstanced(
         IndexCount,     // 每个实例将要绘制的索引数量
@@ -174,6 +211,31 @@ void FMesh::Draw(float DeltaTime)
         0,              // 指向索引缓冲区的某个元素，将其标记为起始索引
         0,              // 在本次绘制调用读取顶点之前，为每个索引加上该整数值
         0);             // 用于实例化技术
+}
+
+void FMesh::PostDraw(float DeltaTime)
+{
+    XMUINT3 MeshPos = XMUINT3(5.0f, 5.0f, 5.0f);
+
+    XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
+
+    // 观察变换矩阵
+    XMVECTOR ViewTarget = XMVectorZero();
+    XMVECTOR ViewUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+    XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
+    XMStoreFloat4x4(&ViewMatrix, ViewLookAt);
+
+    // MVP
+    XMMATRIX M_Model = XMLoadFloat4x4(&ModelMatrix);
+    XMMATRIX M_View = ViewLookAt;
+    XMMATRIX M_Projection = XMLoadFloat4x4(&ProjectionMatrix);
+    XMMATRIX M_MVP = M_Model * M_View * M_Projection;
+
+    FObjectTransformation ObjectTransformation;
+    XMStoreFloat4x4(&ObjectTransformation.MVP, XMMatrixTranspose(M_MVP));
+
+    objectConstants->Update(0, &ObjectTransformation);  //更新hlsl中的数据
+
 }
 
 FMesh* FMesh::CreateMesh(const FMeshRenderingData* InRenderingData)

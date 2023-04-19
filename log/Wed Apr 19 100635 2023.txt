@@ -1,0 +1,24 @@
+[LOG] [Wed Apr 19 10:06:35 2023] Log Init. 
+[LOG] [Wed Apr 19 10:06:35 2023] Engine pre-initialization complete. 
+[LOG] [Wed Apr 19 10:06:35 2023] InitWindows complete. 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[LOG] [Wed Apr 19 10:06:35 2023] Engine initialization complete. 
+[LOG] [Wed Apr 19 10:06:35 2023] Engine post-initialization complete. 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[SUCCESS] [Wed Apr 19 10:06:35 2023] Success ! 
+[ERROR] [Wed Apr 19 10:06:35 2023] C:\Users\22625\Desktop\WandererEngine\WandererEngine\Shader\Hello.hlsl(19,5-16): error X3000: syntax error: unexpected token 'VertexShader'
+ 
+[ERROR] [Wed Apr 19 10:06:35 2023] Error = -2147467259 

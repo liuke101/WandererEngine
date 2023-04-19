@@ -17,7 +17,9 @@ public:
 
     virtual void Init();
 
+    virtual void PreDraw(float DeltaTime);  
     virtual void Draw(float DeltaTime);
+    virtual void PostDraw(float DeltaTime);
 
     // 重载运算符，判断guid是否相等
     bool operator==(const IRenderingInterface &InOther)  
@@ -47,11 +49,11 @@ private:
     simple_c_guid Guid;
 };
 
-class FRenderingResourceUpdate : public enable_shared_from_this<FRenderingResourceUpdate>
+class FRenderingResourcesUpdate : public enable_shared_from_this<FRenderingResourcesUpdate>
 {
 public:
-    FRenderingResourceUpdate();
-    ~FRenderingResourceUpdate();
+    FRenderingResourcesUpdate();
+    ~FRenderingResourcesUpdate();
 
     // 初始化常量缓冲区 
     void Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount);

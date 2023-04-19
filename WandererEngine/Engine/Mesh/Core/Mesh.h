@@ -7,7 +7,9 @@
 struct FObjectTransformation
 {
     FObjectTransformation();
-    XMFLOAT4X4 World;
+    XMFLOAT4X4 MVP;
+
+    static XMFLOAT4X4 IdentifyMatrix4x4();
 };
 
 class FMesh : public IRenderingInterface
@@ -19,7 +21,9 @@ public:
 
     virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 
+    virtual void PreDraw(float DeltaTime);
     virtual void Draw(float DeltaTime);
+    virtual void PostDraw(float DeltaTime);
 
     static FMesh* CreateMesh(const FMeshRenderingData * InRenderingData);
 
@@ -37,7 +41,7 @@ protected:
     ComPtr<ID3D12Resource> IndexUploadBufferPtr;    // 索引上传缓冲区
 
     ComPtr<ID3D12DescriptorHeap> CBVHeap;           // CBV描述符堆：常量缓冲区视图（Constant Buffer View）
-    shared_ptr<FRenderingResourceUpdate> objectConstants;   // 对象常量
+    shared_ptr<FRenderingResourcesUpdate> objectConstants;   // 对象常量
     ComPtr<ID3D12RootSignature>  RootSignature;     // 根签名
 
     UINT VertexStrideInBytes;                       // 顶点缓冲区视图，单个顶点的大小(字节)
@@ -51,5 +55,9 @@ protected:
     FShader PixelShader;                                // 像素着色器
     vector<D3D12_INPUT_ELEMENT_DESC> InputLayoutDESC;   // 输入布局描述符
     ComPtr<ID3D12PipelineState> PSO;                    // PSO流水线状态对象
-    
+
+protected:
+    XMFLOAT4X4 ModelMatrix;
+    XMFLOAT4X4 ViewMatrix;
+    XMFLOAT4X4 ProjectionMatrix;
 };

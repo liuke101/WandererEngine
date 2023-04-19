@@ -1,7 +1,6 @@
-// ÉùÃ÷³£Á¿
 cbuffer ConstBuffer : register(b0) //b0-b14
 {
-    float4x4 World;
+    float4x4 MVP;
 }
 
 struct a2v
@@ -16,16 +15,16 @@ struct v2f
     float4 color : COLOR;
 };
 
-v2f VertexShader(a2v v)
+v2f VertexShaderMain(a2v v)
 {
     v2f o;
-    o.pos = mul(float4(v.vertex, 1.0f), World);
+    o.pos = mul(float4(v.vertex, 1.0f), MVP);
     o.color = v.color;
 
     return o;
 }
 
-float4 PixelShader(v2f o) : SV_TARGET
+float4 PixelShaderMain(v2f o) : SV_TARGET
 {
     return o.color;
 }
