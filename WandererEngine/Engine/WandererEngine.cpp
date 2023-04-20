@@ -4,7 +4,7 @@
 #include "Debug/Log/SimpleLog.h"
 
 /* 初始化 */
-int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, int showCmd)
+int Init(CEngine* InEngine, HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, int showCmd)
 {
 #if defined(_WIN32)
 	FWinMainCommandParameters WinMainParameters(hInstance, hInstance, cmdLine, showCmd);
@@ -46,7 +46,7 @@ int Init(FEngine* InEngine, HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmd
 }
 
 /* Tick */
-void Tick(FEngine* InEngine)
+void Tick(CEngine* InEngine)
 {
 	float DeltaTime = 0.03f;	//每帧之间的时间差
 	InEngine->Tick(DeltaTime);
@@ -54,7 +54,7 @@ void Tick(FEngine* InEngine)
 }
 
 /* 退出 */
-int Exit(FEngine* InEngine)
+int Exit(CEngine* InEngine)
 {
 	int ReturnValue = InEngine->PreExit();
 	if (ReturnValue != 0)
@@ -80,7 +80,7 @@ int Exit(FEngine* InEngine)
 	return ReturnValue;
 }
 
-FEngine* Engine = nullptr;
+CEngine* Engine = nullptr;
 //hInstance 当前应用程序的实例句柄
 //preInstance 上个应用程序的实例句柄
 //cmdLine 应用程序的命令行

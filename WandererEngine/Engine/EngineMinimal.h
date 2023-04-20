@@ -26,4 +26,4 @@ using namespace Microsoft::WRL;				// wrl库的命名空间
 using namespace DirectX;                    // DX数学库的命名空间
 using namespace DirectX::PackedVector;      // DX数学库的命名空间
 
-extern class FEngine* Engine;
+extern class CEngine* Engine;

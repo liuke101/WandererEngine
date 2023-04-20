@@ -1,17 +1,20 @@
 #pragma once
 /* 引擎抽象类 */
+#include "CoreObject/CoreMinimalObject.h"
 
-// Windows平台
 #if defined(_WIN32)
 
 #include "WinMainCommandParameters.h"
 
-#endif //1
+#endif 
+
 
 // 引擎抽象类
-class FEngine
+class CEngine : public CCoreMinimalObject
 {
 public:
+	CEngine();
+
 	// 初始化 
 	virtual int PreInit(	
 #if defined(_WIN32) 

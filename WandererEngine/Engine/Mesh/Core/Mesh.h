@@ -12,10 +12,10 @@ struct FObjectTransformation
     static XMFLOAT4X4 IdentifyMatrix4x4();
 };
 
-class FMesh : public IRenderingInterface
+class CMesh : public CCoreMinimalObject, public IRenderingInterface
 {
 public:
-    FMesh();
+    CMesh();
 
     virtual void Init();
 
@@ -25,7 +25,7 @@ public:
     virtual void Draw(float DeltaTime);
     virtual void PostDraw(float DeltaTime);
 
-    static FMesh* CreateMesh(const FMeshRenderingData * InRenderingData);
+    static CMesh* CreateMesh(const FMeshRenderingData * InRenderingData);
 
     
     D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView(); // 创建顶点缓冲区视图，与RTV不同，无需创建描述符堆

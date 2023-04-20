@@ -1,4 +1,5 @@
-// 代理 单播和多播
+// 委托（又称代理） 单播和多播
+// 模仿UE中的委托
 #pragma once
 #include <map>
 #include "../simple_core_minimal/simple_c_guid/simple_guid.h"
@@ -203,7 +204,10 @@ public:
 	}
 };
 
-#define SIMPLE_SINGLE_DELEGATE(Name,Return,...) FSingleDelegate<Return,__VA_ARGS__> Name
-#define MULTICAST_SINGLE_DELEGATE(Name,Return,...) FMulticastDelegate<Return,__VA_ARGS__> Name
+// 声明委托
+#define SIMPLE_SINGLE_DELEGATE(Name,Return,...) FSingleDelegate<Return,__VA_ARGS__> Name		// 单播委托：绑定一个函数
+#define MULTICAST_SINGLE_DELEGATE(Name,Return,...) FMulticastDelegate<Return,__VA_ARGS__> Name	// 多播委托：绑定多个函数
+
+// 定义委托
 #define DEFINITION_SIMPLE_SINGLE_DELEGATE(DefinitionName,Return,...) class DefinitionName :public FSingleDelegate<Return,__VA_ARGS__> {};
 #define DEFINITION_MULTICAST_SINGLE_DELEGATE(DefinitionName,Return,...) class DefinitionName :public FMulticastDelegate<Return,__VA_ARGS__> {};

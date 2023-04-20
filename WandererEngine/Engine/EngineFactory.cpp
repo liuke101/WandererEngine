@@ -9,11 +9,11 @@ FEngineFactory::FEngineFactory()
 
 }
 
-FEngine* FEngineFactory::CreateEngine()
+CEngine* FEngineFactory::CreateEngine()
 {
 	// 创建Windows平台引擎
 #if defined(_WIN32) 
-	return new FWindowsEngine();
+	return new CWindowsEngine();
 
 	// 其他平台
 #elif defined(_LINUX_)

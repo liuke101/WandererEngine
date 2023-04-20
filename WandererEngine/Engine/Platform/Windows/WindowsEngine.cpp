@@ -3,11 +3,14 @@
 #include "../../Config/EngineRenderConfig.h"
 #include "../../Rendering/Core/Rendering.h"
 #include "../../Mesh/BoxMesh.h"
-
+#include "../../Core/CoreObject/CoreMinimalObject.h"
+#include "../../Core/World.h"
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
 
-FWindowsEngine::FWindowsEngine()
+class CWorld;
+
+CWindowsEngine::CWindowsEngine()
 	: CurrentFenceIndex(0)
 	, CurrentSwapBufferIndex(0)
 	, MSAA4XQualityLevels(0)
@@ -20,14 +23,17 @@ FWindowsEngine::FWindowsEngine()
 	{
 		SwapChainBuffer.push_back(ComPtr<ID3D12Resource>());
 	}
+
+	//关闭Tick
+	bTick = false; 
 }
 
-FWindowsEngine::~FWindowsEngine()
+CWindowsEngine::~CWindowsEngine()
 {
 
 }
 
-int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
+int CWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 {
 	// 日志系统初始化
 	const char LogPath[] = "../log";  
@@ -42,7 +48,7 @@ int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 	return 0;
 }
 
-int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
+int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 {
 
 	InitWindows(InParameters);
@@ -51,20 +57,25 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 	PostInitDirect3D();
 
+	CWorld *World= CreateObject<CWorld>(new CWorld());
+
 	Engine_Log("Engine initialization complete.");
 	return 0;
 }
 
-int FWindowsEngine::PostInit()
+int CWindowsEngine::PostInit()
 {
-	
-	Engine_Log("Engine post-initialization complete.");
-
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
 	{
 		// 构建Mesh
-		FBoxMesh* Box = FBoxMesh::CreateMesh();
+		CBoxMesh* Box = CBoxMesh::CreateMesh();
+
+		// 对象初始化
+		for(auto &Tmp : GObjects)
+		{
+			Tmp->BeginInit();
+		}
 	}
 
 	GraphicsCommandList->Close();
@@ -73,11 +84,22 @@ int FWindowsEngine::PostInit()
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
 	WaitGPUCommandQueueComplete();
+
+	Engine_Log("Engine post-initialization complete.");
 	return 0;
 }
 
-void FWindowsEngine::Tick(float DeltaTime)
+void CWindowsEngine::Tick(float DeltaTime)
 {
+	// 对象Tick
+	for (auto& Tmp : GObjects)
+	{
+		if (Tmp->IsTick())
+		{
+			Tmp->Tick(DeltaTime);
+		}
+	}
+
 	// 重置命令分配器，为下一帧做准备
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
@@ -154,32 +176,32 @@ void FWindowsEngine::Tick(float DeltaTime)
 	WaitGPUCommandQueueComplete();
 }
 
-int FWindowsEngine::PreExit()
+int CWindowsEngine::PreExit()
 {
 	FEngineRenderConfig::Destory();
 	Engine_Log("Engine pre-exit complete.");
 	return 0;
 }
 
-int FWindowsEngine::Exit()
+int CWindowsEngine::Exit()
 {
 	Engine_Log("Engine exit complete.");
 	return 0;
 }
 
-int FWindowsEngine::PostExit()
+int CWindowsEngine::PostExit()
 {
 	
 	Engine_Log("Engine post-exit complete.");
 	return 0;
 }
 
-ID3D12Resource* FWindowsEngine::GetCurrentSwapBuffer() const
+ID3D12Resource* CWindowsEngine::GetCurrentSwapBuffer() const
 {
 	return SwapChainBuffer[CurrentSwapBufferIndex].Get();
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentSwapBufferView() const
+D3D12_CPU_DESCRIPTOR_HANDLE CWindowsEngine::GetCurrentSwapBufferView() const
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		RTVHeap->GetCPUDescriptorHandleForHeapStart(),	//获取表示堆开始的 CPU 描述符句柄
@@ -187,22 +209,22 @@ D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentSwapBufferView() const
 		RTVDescriptorSize);
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentDepthStencilView() const
+D3D12_CPU_DESCRIPTOR_HANDLE CWindowsEngine::GetCurrentDepthStencilView() const
 {
 	return DSVHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
-UINT FWindowsEngine::GetMSAASampleCount() const
+UINT CWindowsEngine::GetMSAASampleCount() const
 {
 	return bMSAA4XEnable ? 4 : 1; ;
 }
 
-UINT FWindowsEngine::GetMSAASampleQuality() const
+UINT CWindowsEngine::GetMSAASampleQuality() const
 {
 	return bMSAA4XEnable ? (MSAA4XQualityLevels - 1) : 0;
 }
 
-void FWindowsEngine::WaitGPUCommandQueueComplete()
+void CWindowsEngine::WaitGPUCommandQueueComplete()
 {
 	// 增加围栏值，接下来将命令标记到此围栏点
 	CurrentFenceIndex++;
@@ -227,7 +249,7 @@ void FWindowsEngine::WaitGPUCommandQueueComplete()
 
 }
 
-bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
+bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {
 	// 描述窗口特征
 	WNDCLASSEX WindowsClass;							// 窗口类
@@ -295,7 +317,7 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	Engine_Log("InitWindows complete.");
 }
 
-bool FWindowsEngine::InitDirect3D()
+bool CWindowsEngine::InitDirect3D()
 {
 	// 开启DX12的调试层
 	ComPtr<ID3D12Debug> D3D12Debug;
@@ -420,7 +442,7 @@ bool FWindowsEngine::InitDirect3D()
 	return false;
 }
 
-void FWindowsEngine::PostInitDirect3D()
+void CWindowsEngine::PostInitDirect3D()
 {
 	// CPU等GPU
 	WaitGPUCommandQueueComplete();

@@ -16,7 +16,7 @@ XMFLOAT4X4 FObjectTransformation::IdentifyMatrix4x4()
         0.0f, 0.0f, 0.0f, 1.0f};
 }
 
-FMesh::FMesh()
+CMesh::CMesh()
     : VertexStrideInBytes(0)
     , VertexSizeInBytes(0)
     , IndexCount(0)
@@ -30,7 +30,7 @@ FMesh::FMesh()
 }
 
 
-void FMesh::Init()
+void CMesh::Init()
 {
     float AspectRattio = static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenWidth) / static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenHeight);
 
@@ -44,7 +44,7 @@ void FMesh::Init()
     XMStoreFloat4x4(&ProjectionMatrix, Project);
 }
 
-void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
     // 【常量缓冲区】
@@ -174,13 +174,13 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 
 }
 
-void FMesh::PreDraw(float DeltaTime)
+void CMesh::PreDraw(float DeltaTime)
 {
     // 重置命令列表
     ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get()));
 }
 
-void FMesh::Draw(float DeltaTime)
+void CMesh::Draw(float DeltaTime)
 {
     //将CBV堆/根签名设置到命令列表
     ID3D12DescriptorHeap* DescriptorHeap[] = { CBVHeap.Get() };
@@ -213,7 +213,7 @@ void FMesh::Draw(float DeltaTime)
         0);             // 用于实例化技术
 }
 
-void FMesh::PostDraw(float DeltaTime)
+void CMesh::PostDraw(float DeltaTime)
 {
     XMUINT3 MeshPos = XMUINT3(5.0f, 5.0f, 5.0f);
 
@@ -238,14 +238,14 @@ void FMesh::PostDraw(float DeltaTime)
 
 }
 
-FMesh* FMesh::CreateMesh(const FMeshRenderingData* InRenderingData)
+CMesh* CMesh::CreateMesh(const FMeshRenderingData* InRenderingData)
 {
-    FMesh *InMesh = new FMesh(); 
+    CMesh *InMesh = new CMesh(); 
     InMesh->BuildMesh(InRenderingData);
     return InMesh;
 }
 
-D3D12_VERTEX_BUFFER_VIEW FMesh::GetVertexBufferView()
+D3D12_VERTEX_BUFFER_VIEW CMesh::GetVertexBufferView()
 {
     D3D12_VERTEX_BUFFER_VIEW VBV;
     VBV.BufferLocation = GPUVertexBufferPtr->GetGPUVirtualAddress();    // 待创建视图的顶点缓冲区资源虚拟地址
@@ -254,7 +254,7 @@ D3D12_VERTEX_BUFFER_VIEW FMesh::GetVertexBufferView()
     return VBV;
 }
 
-D3D12_INDEX_BUFFER_VIEW FMesh::GetIndexBufferView()
+D3D12_INDEX_BUFFER_VIEW CMesh::GetIndexBufferView()
 {
     D3D12_INDEX_BUFFER_VIEW IBV;
     IBV.BufferLocation = GPUIndexBufferPtr->GetGPUVirtualAddress();

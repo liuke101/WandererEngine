@@ -9,5 +9,5 @@ public:
 	// 构造函数
 	FEngineFactory();
 	// 创建引擎
-	static FEngine *CreateEngine();  
+	static CEngine *CreateEngine();  
 };

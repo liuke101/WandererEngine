@@ -1,6 +1,7 @@
 ﻿#pragma once
 /* 渲染接口 */
 // 需要渲染的地方继承该接口即可
+#include "../../Core/CoreObject/GuidInterface.h"
 #include "../../Core/Engine.h"
 
 #if defined(_WIN32)
@@ -8,9 +9,9 @@
 #else
 #endif
 
-class IRenderingInterface
+class IRenderingInterface:public IGuidInterface
 {
-    friend class FWindowsEngine;
+    friend class CWindowsEngine;
 public:
     IRenderingInterface();
     virtual ~IRenderingInterface();
@@ -21,23 +22,14 @@ public:
     virtual void Draw(float DeltaTime);
     virtual void PostDraw(float DeltaTime);
 
-    // 重载运算符，判断guid是否相等
-    bool operator==(const IRenderingInterface &InOther)  
-    {
-        return guid_equal(&Guid, &InOther.Guid);
-    }
-
-    // 获取Guid
-    simple_c_guid GetGuid() { return Guid; }
-
 protected:
     // 构建默认缓冲区
     ComPtr<ID3D12Resource> ConstructDefaultBuffer(ComPtr<ID3D12Resource> &UploadBuffer, const void* InData,UINT64 InDataSize);
 protected:
 #if defined(_WIN32)
-    FWindowsEngine* GetEngine();
+    CWindowsEngine* GetEngine();
 #else
-    FEngine* GetEngine();
+    CEngine* GetEngine();
 #endif
 
     ComPtr<ID3D12Device> GetD3dDevice();
@@ -46,7 +38,6 @@ protected:
 
 private:
     static vector<IRenderingInterface*> RenderingInterface;
-    simple_c_guid Guid;
 };
 
 class FRenderingResourcesUpdate : public enable_shared_from_this<FRenderingResourcesUpdate>

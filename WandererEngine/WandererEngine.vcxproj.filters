@@ -396,6 +396,16 @@
     <ClCompile Include="Engine\Math\EngineMath.cpp" />
     <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
     <ClCompile Include="Engine\Shader\Core\Shader.cpp" />
+    <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
+    <ClCompile Include="Engine\Core\Viewport.cpp" />
+    <ClCompile Include="Engine\Core\Camera.cpp" />
+    <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
+    <ClCompile Include="Engine\Component\Core\Component.cpp" />
+    <ClCompile Include="Engine\Component\InputComponent.cpp" />
+    <ClCompile Include="Engine\Component\Input\InputType.cpp" />
+    <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
+    <ClCompile Include="Engine\Core\World.cpp" />
+    <ClCompile Include="Engine\Mesh\SphereMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Config\EngineRenderConfig.h">
@@ -609,5 +619,17 @@
     <ClInclude Include="Engine\Math\EngineMath.h" />
     <ClInclude Include="Engine\Mesh\BoxMesh.h" />
     <ClInclude Include="Engine\Shader\Core\Shader.h" />
+    <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
+    <ClInclude Include="Engine\Core\Viewport.h" />
+    <ClInclude Include="Engine\Core\Camera.h" />
+    <ClInclude Include="Engine\Component\TransformationComponent.h" />
+    <ClInclude Include="Engine\Component\Core\Component.h" />
+    <ClInclude Include="Engine\Component\InputComponent.h" />
+    <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
+    <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
+    <ClInclude Include="Engine\Component\Input\InputType.h" />
+    <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
+    <ClInclude Include="Engine\Core\World.h" />
+    <ClInclude Include="Engine\Mesh\SphereMesh.h" />
   </ItemGroup>
 </Project>

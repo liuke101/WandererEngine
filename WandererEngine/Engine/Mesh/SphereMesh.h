@@ -1,8 +1,8 @@
-#pragma once
-/* Õı·½Ìå */
+ï»¿#pragma once
+/* çƒä½“ */
 #include "Core/Mesh.h"
 
-class CBoxMesh : public CMesh
+class CSphereMesh : public CMesh
 {
     typedef CMesh Super;
 public:
@@ -12,5 +12,5 @@ public:
 
     virtual void Draw(float DeltaTime);
 
-    static CBoxMesh* CreateMesh();
+    static CSphereMesh* CreateMesh();
 };

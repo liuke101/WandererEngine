@@ -3,23 +3,25 @@
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
 // Windows平台引擎类
-class FWindowsEngine :public FEngine
+class CWindowsEngine :public CEngine
 {
 	friend class IRenderingInterface;
 
 public:
-	FWindowsEngine();
-	~FWindowsEngine();
+	CWindowsEngine();
+	~CWindowsEngine();
 	virtual int PreInit(FWinMainCommandParameters InParameters);
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
 
+	
 	virtual void Tick(float DeltaTime);
 
 	virtual int PreExit();
 	virtual int Exit();
 	virtual int PostExit();
-	
+
+
 public:
 	// 获取当前的Buffer
 	ID3D12Resource* GetCurrentSwapBuffer() const;	
