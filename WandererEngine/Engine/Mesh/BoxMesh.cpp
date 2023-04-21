@@ -16,19 +16,24 @@ void CBoxMesh::Draw(float DeltaTime)
     Super::Draw(DeltaTime);
 }
 
-CBoxMesh* CBoxMesh::CreateMesh()
+CBoxMesh* CBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
 {
     FMeshRenderingData MeshData;
 
+    // 除以2便于将模型设置为以世界坐标原点为中心
+    float Height = 0.5f * InHeight;
+    float Width = 0.5f * InWidth;
+    float Depth = 0.5f * InDepth;
+
     // 构建顶点
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT4(Colors::White)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(0.f, 1.f, 0.f), XMFLOAT4(Colors::AliceBlue)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(1.f, 1.f, 0.f), XMFLOAT4(Colors::Aqua)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(1.f, 0.f, 0.f), XMFLOAT4(Colors::Aquamarine)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(0.f, 0.f, 1.f), XMFLOAT4(Colors::Bisque)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(0.f, 1.f, 1.f), XMFLOAT4(Colors::Blue)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(1.f, 1.f, 1.f), XMFLOAT4(Colors::Chocolate)));
-    MeshData.VertexData.push_back(FVertex(XMFLOAT3(1.f, 0.f, 1.f), XMFLOAT4(Colors::Chocolate)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(-Width, -Height, -Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(-Width, Height, -Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, Height, -Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, -Height, -Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(-Width, -Height, Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(-Width, Height, Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, Height, Depth), XMFLOAT4(Colors::White)));
+    MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, -Height, Depth), XMFLOAT4(Colors::White)));
 
     // 构建索引
     // 前

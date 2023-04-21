@@ -142,8 +142,12 @@
     <ClCompile Include="Engine\EngineFactory.cpp" />
     <ClCompile Include="Engine\Math\EngineMath.cpp" />
     <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
+    <ClCompile Include="Engine\Mesh\ConeMesh.cpp" />
     <ClCompile Include="Engine\Mesh\Core\Mesh.cpp" />
     <ClCompile Include="Engine\Mesh\Core\MeshType.cpp" />
+    <ClCompile Include="Engine\Mesh\CustomMesh.cpp" />
+    <ClCompile Include="Engine\Mesh\CylinderMesh.cpp" />
+    <ClCompile Include="Engine\Mesh\PlaneMesh.cpp" />
     <ClCompile Include="Engine\Mesh\SphereMesh.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
@@ -216,8 +220,12 @@
     <ClInclude Include="Engine\EngineMinimal.h" />
     <ClInclude Include="Engine\Math\EngineMath.h" />
     <ClInclude Include="Engine\Mesh\BoxMesh.h" />
+    <ClInclude Include="Engine\Mesh\ConeMesh.h" />
     <ClInclude Include="Engine\Mesh\Core\Mesh.h" />
     <ClInclude Include="Engine\Mesh\Core\MeshType.h" />
+    <ClInclude Include="Engine\Mesh\CustomMesh.h" />
+    <ClInclude Include="Engine\Mesh\CylinderMesh.h" />
+    <ClInclude Include="Engine\Mesh\PlaneMesh.h" />
     <ClInclude Include="Engine\Mesh\SphereMesh.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />

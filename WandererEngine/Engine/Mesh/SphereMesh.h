@@ -1,7 +1,7 @@
 ﻿#pragma once
-/* 球体 */
 #include "Core/Mesh.h"
 
+// 球体
 class CSphereMesh : public CMesh
 {
     typedef CMesh Super;
