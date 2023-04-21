@@ -141,35 +141,49 @@ void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 
     // 【PSO流水线状态对象】
     // 流水线绑定
-    // 绑定输入布局
     D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
     memset(&GPSDesc, 0, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-    GPSDesc.InputLayout.pInputElementDescs = InputLayoutDESC.data();
-    GPSDesc.InputLayout.NumElements = (UINT)InputLayoutDESC.size();
     // 绑定根签名
-    GPSDesc.pRootSignature = RootSignature.Get();
-    // 绑定顶点/像素着色器代码
-    GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader.GetBufferPointer());
+    GPSDesc.pRootSignature = RootSignature.Get();                           
+
+    // 绑定着色器
+    GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader.GetBufferPointer());  // 顶点着色器
     GPSDesc.VS.BytecodeLength = VertexShader.GetBufferSize();
-    GPSDesc.PS.pShaderBytecode = reinterpret_cast<BYTE*>(PixelShader.GetBufferPointer());
+    GPSDesc.PS.pShaderBytecode = reinterpret_cast<BYTE*>(PixelShader.GetBufferPointer());   // 像素着色器
     GPSDesc.PS.BytecodeLength = PixelShader.GetBufferSize();
+    // GPSDesc.DS // 绑定域着色器
+    // GPSDesc.HS // 绑定外壳着色器
+    // GPSDesc.HS // 绑定几何着色器
+    // GPSDesc.StreamOutput // 实现流输出技术
+    GPSDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);                 // 混合状态
+    GPSDesc.SampleMask = UINT_MAX;                                          // 混合状态的示例掩码
 
-    // 光栅器状态
-    GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);   //这里使用默认状态，,可以对参数进行设置
-    GPSDesc.SampleMask = UINT_MAX;
-    GPSDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-    GPSDesc.NumRenderTargets = 1;
+    // 光栅器的光栅化状态
+    GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);                       
+    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;                             // 填充模式(固体/线框)
+    //GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;                                // 裁剪模式
+    //GPSDesc.RasterizerState.FrontCounterClockwise = FALSE;                                  // 三角形顶点顺序逆时针为正面
+    //GPSDesc.RasterizerState.DepthBias = D3D12_DEFAULT_DEPTH_BIAS;                           // 深度偏差
+    //GPSDesc.RasterizerState.DepthBiasClamp = D3D12_DEFAULT_DEPTH_BIAS_CLAMP;                // 最大深度偏差
+    //GPSDesc.RasterizerState.SlopeScaledDepthBias = D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS;   // 给定像素斜率上的标量
+    //GPSDesc.RasterizerState.DepthClipEnable = TRUE;                                         // 是否启用基于距离的剪裁
+    //GPSDesc.RasterizerState.MultisampleEnable = FALSE;                                      // MSAA使用四边形还是 alpha 线抗锯齿算法，false为alpha线抗锯齿
+    //GPSDesc.RasterizerState.AntialiasedLineEnable = FALSE;                                  // 是否启用行抗锯齿，MSAA关闭时才可使用
+    //GPSDesc.RasterizerState.ForcedSampleCount = 0;                                          // UAV 渲染或栅格化时强制的样本计数
+    //GPSDesc.RasterizerState.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF; // 标识保守栅格化是打开还是关闭
 
-    GPSDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-    GPSDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
-    GPSDesc.SampleDesc.Count = GetEngine()->GetMSAASampleCount();
-    GPSDesc.SampleDesc.Quality = GetEngine()->GetMSAASampleQuality();
-
-    GPSDesc.RTVFormats[0] = GetEngine()->GetBackBufferFormat();
-    GPSDesc.DSVFormat = GetEngine()->GetDepthStencilFormat();
-
-
+    GPSDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);  // 深度/模板测试的状态
+    GPSDesc.InputLayout.pInputElementDescs = InputLayoutDESC.data();        // 输入布局描述
+    GPSDesc.InputLayout.NumElements = (UINT)InputLayoutDESC.size();
+    GPSDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 指定图元拓扑类型
+    GPSDesc.NumRenderTargets = 1;                                           // 同时所用的RT数量，即RTVFormats数组中渲染目标格式的数量
+    GPSDesc.RTVFormats[0] = GetEngine()->GetBackBufferFormat();             // 渲染目标的格式
+    GPSDesc.DSVFormat = GetEngine()->GetDepthStencilFormat();               // 深度/模板缓冲区的格式
+    GPSDesc.SampleDesc.Count = GetEngine()->GetMSAASampleCount();           // 多重采样数量
+    GPSDesc.SampleDesc.Quality = GetEngine()->GetMSAASampleQuality();       // 多重采样质量级别
+    // GPSDesc.NodeMask //单GPU设置为0
+    
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO)));
 
 }

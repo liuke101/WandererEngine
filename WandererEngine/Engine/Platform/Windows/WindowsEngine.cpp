@@ -3,6 +3,7 @@
 #include "../../Config/EngineRenderConfig.h"
 #include "../../Rendering/Core/Rendering.h"
 #include "../../Mesh/BoxMesh.h"
+#include "../../Mesh/SphereMesh.h"
 #include "../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../Core/World.h"
 #if defined(_WIN32)
@@ -69,7 +70,8 @@ int CWindowsEngine::PostInit()
 
 	{
 		// 构建Mesh
-		CBoxMesh* Box = CBoxMesh::CreateMesh();
+		//CBoxMesh* Box = CBoxMesh::CreateMesh();
+		CSphereMesh* Sphere = CSphereMesh::CreateMesh(2.0f, 20, 20);
 
 		// 对象初始化
 		for(auto &Tmp : GObjects)
