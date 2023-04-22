@@ -16,10 +16,8 @@ void CConeMesh::Draw(float DeltaTime)
     Super::Draw(DeltaTime);
 }
 
-CConeMesh* CConeMesh::CreateMesh(float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+void CConeMesh::CreateMesh(FMeshRenderingData& MeshData, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-    FMeshRenderingData MeshData;
-
     float RadiusInterval = (0 - InBottomRadius) / static_cast<float>(InHeightSubdivision); // 相邻环的半径间隔(类比柱体算法，顶部半径视为0)
     float HeightInterval = InHeight / static_cast<float>(InHeightSubdivision);             // 相邻环的高度间隔
     float betaValue = XM_2PI / static_cast<float>(InAxialSubdivision);                     // 原点到目标点的连线在xz平面的投影线与正x轴之间的“方位角”
@@ -79,7 +77,7 @@ CConeMesh* CConeMesh::CreateMesh(float InBottomRadius, float InHeight, uint32_t 
             MeshData.IndexData.push_back(BaseIndex + (i + 1) * VertexCircleCount + j + 1);
         }
     }
-    
+
     // 底面
     uint32_t BottomCenterIndex = static_cast<uint32_t>(MeshData.VertexData.size()) - 1;   // 底面中点是最后一个顶点
     BaseIndex = BottomCenterIndex - VertexCircleCount;                       // 将索引偏移到最后一个环中第一个顶点的索引。
@@ -89,12 +87,4 @@ CConeMesh* CConeMesh::CreateMesh(float InBottomRadius, float InHeight, uint32_t 
         MeshData.IndexData.push_back(BaseIndex + i);
         MeshData.IndexData.push_back(BaseIndex + i + 1);
     }
-
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-    //【构建模型】
-    CConeMesh* ConeMesh = new CConeMesh;
-    ConeMesh->BuildMesh(&MeshData);
-    ConeMesh->Init();
-
-    return ConeMesh;
 }

@@ -13,7 +13,7 @@ public:
 	//ªÒ»°‰÷»æ≈‰÷√
 	static FEngineRenderConfig* GetRenderConfig(); 
 	//œ˙ªŸ‰÷»æ≈‰÷√
-	static void Destory(); 
+	static void Destroy(); 
 
 private:
 	static FEngineRenderConfig* RenderConfig;

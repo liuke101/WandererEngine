@@ -16,11 +16,9 @@ void CCylinderMesh::Draw(float DeltaTime)
     Super::Draw(DeltaTime);
 }
 
-CCylinderMesh* CCylinderMesh::CreateMesh(float InTopRadius, float InBottomRadius, float InHeight,
+void CCylinderMesh::CreateMesh(FMeshRenderingData& MeshData, float InTopRadius, float InBottomRadius, float InHeight,
     uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-    FMeshRenderingData MeshData;
-
     float RadiusInterval = (InTopRadius - InBottomRadius) / static_cast<float>(InHeightSubdivision); // 相邻环的半径间隔
     float HeightInterval = InHeight / static_cast<float>(InHeightSubdivision);                       // 相邻环的高度间隔
     float betaValue = XM_2PI / static_cast<float>(InAxialSubdivision);                               // 原点到目标点的连线在xz平面的投影线与正x轴之间的“方位角”
@@ -118,13 +116,5 @@ CCylinderMesh* CCylinderMesh::CreateMesh(float InTopRadius, float InBottomRadius
         MeshData.IndexData.push_back(BaseIndex + i + 1);
         MeshData.IndexData.push_back(BaseIndex + i);
     }
-
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-    //【构建模型】
-    CCylinderMesh* CylinderMesh = new CCylinderMesh;
-    CylinderMesh->BuildMesh(&MeshData);
-    CylinderMesh->Init();
-
-    return CylinderMesh;
 }
 

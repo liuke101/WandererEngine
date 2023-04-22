@@ -20,7 +20,7 @@ FEngineRenderConfig* FEngineRenderConfig::GetRenderConfig()
 	return RenderConfig;
 }
 
-void FEngineRenderConfig::Destory()
+void FEngineRenderConfig::Destroy()
 {
 	if (RenderConfig)
 	{

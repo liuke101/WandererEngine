@@ -16,10 +16,8 @@ void CPlaneMesh::Draw(float DeltaTime)
     Super::Draw(DeltaTime);
 }
 
-CPlaneMesh* CPlaneMesh::CreateMesh(float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide)
+void CPlaneMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide)
 {
-    FMeshRenderingData MeshData;
-
     // 获取细分后每段的属性值
     auto SubdivideValue = [&](float InValue, uint32_t InSubdivideValue)->float
     {
@@ -79,12 +77,4 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float InHeight, float InWidth, uint32_t InHei
 
         }
     }
-
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-    // 【构建模型】
-    CPlaneMesh* PlaneMesh = new CPlaneMesh;
-    PlaneMesh->BuildMesh(&MeshData);
-    PlaneMesh->Init();
-
-    return PlaneMesh;
 }

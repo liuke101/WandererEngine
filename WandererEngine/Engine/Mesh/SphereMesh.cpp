@@ -17,9 +17,8 @@ void CSphereMesh::Draw(float DeltaTime)
 }
 
 
-CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+void CSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-    FMeshRenderingData MeshData;
     FVertex NorthPoleVertex(XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::Red));     // 北极点（顶面顶点/第一个顶点）
     FVertex SouthPoleVertex(XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::Red));    // 南极点（底面顶点/最后一个顶点）
 
@@ -104,12 +103,4 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
         MeshData.IndexData.push_back(BaseIndex + i);
         MeshData.IndexData.push_back(BaseIndex + i + 1);
     }
-
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-    // 【构建模型】
-    CSphereMesh* SphereMesh = new CSphereMesh;
-    SphereMesh->BuildMesh(&MeshData);
-    SphereMesh->Init();
-
-    return SphereMesh;
 }

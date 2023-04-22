@@ -8,7 +8,7 @@ DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureKeyboardInfoDelegate, void, const FInp
 class CInputComponent : public CComponent
 {
 public:
-    //CVARIABLE()
+    CVARIABLE()
     FCaptureKeyboardInfoDelegate CaptureKeyboardInfoDelegate;
 
 public:

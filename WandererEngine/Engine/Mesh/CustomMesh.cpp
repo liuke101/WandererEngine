@@ -17,10 +17,8 @@ void CCustomMesh::Draw(float DeltaTime)
     Super::Draw(DeltaTime);
 }
 
-CCustomMesh* CCustomMesh::CreateMesh(string& InPath)
+void CCustomMesh::CreateMesh(FMeshRenderingData& MeshData, string& InPath)
 {
-    FMeshRenderingData MeshData;
-
     // 获取文件大小
     unsigned int FileSize = get_file_size_by_filename(InPath.c_str());
     // 根据文件大小创建Buffer
@@ -36,14 +34,6 @@ CCustomMesh* CCustomMesh::CreateMesh(string& InPath)
     }
 
     delete Buffer;
-
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-    // 【构建模型】
-    CCustomMesh* CustomMesh = new CCustomMesh;
-    CustomMesh->BuildMesh(&MeshData);
-    CustomMesh->Init();
-
-    return CustomMesh;
 }
 
 bool CCustomMesh::LoadObjFromBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InMeshData)
@@ -127,6 +117,7 @@ bool CCustomMesh::LoadObjFromBuffer(char* InBuffer, uint32_t InBufferSize, FMesh
                 }
             }
         }
+        return true;
     }
     return false;
 }

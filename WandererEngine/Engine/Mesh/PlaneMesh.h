@@ -12,6 +12,11 @@ public:
 
     virtual void Draw(float DeltaTime);
 
-    // (高度，宽度，高度细分，宽度细分)
-    static CPlaneMesh* CreateMesh(float InHeight,float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide);
+    // 创建平面(高度，宽度，高度细分，宽度细分)
+    void CreateMesh(
+        FMeshRenderingData& MeshData,
+        float InHeight,
+        float InWidth, 
+        uint32_t InHeightSubdivide, 
+        uint32_t InWidthSubdivide);
 };

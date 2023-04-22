@@ -13,6 +13,6 @@ public:
     virtual void Draw(float DeltaTime);
 
 
-    // 参考Maya模型参数：半径，轴向细分数，高度细分数
-    static CSphereMesh* CreateMesh(float InRadius,uint32_t InAxialSubdivision, uint32_t InHeightSubdivision);
+    // 创建球体（半径，轴向细分数，高度细分数）
+    void CreateMesh(FMeshRenderingData& MeshData, float InRadius,uint32_t InAxialSubdivision, uint32_t InHeightSubdivision);
 };

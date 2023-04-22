@@ -16,10 +16,8 @@ void CBoxMesh::Draw(float DeltaTime)
     Super::Draw(DeltaTime);
 }
 
-CBoxMesh* CBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
+void CBoxMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, float InDepth)
 {
-    FMeshRenderingData MeshData;
-
     // 茅參2宴噐繍庁侏譜崔葎參弊順恫炎圻泣葎嶄伉
     float Height = 0.5f * InHeight;
     float Width = 0.5f * InWidth;
@@ -61,12 +59,4 @@ CBoxMesh* CBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
     // 和
     MeshData.IndexData.push_back(4); MeshData.IndexData.push_back(0); MeshData.IndexData.push_back(3);
     MeshData.IndexData.push_back(4); MeshData.IndexData.push_back(3); MeshData.IndexData.push_back(7);
-
-    /*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
-    // ‐更秀庁侏／
-    CBoxMesh* BoxMesh= new CBoxMesh;
-    BoxMesh->BuildMesh(&MeshData);
-    BoxMesh->Init();
-
-    return BoxMesh;
 }

@@ -12,6 +12,10 @@ public:
 
     virtual void Draw(float DeltaTime);
 
-    // (高度，宽度，深度)
-    static CBoxMesh* CreateMesh(float InHeight,float InWidth,float InDepth);
+    // 创建Box(高度，宽度，深度)
+    void CreateMesh(
+        FMeshRenderingData& MeshData,
+        float InHeight,
+        float InWidth,
+        float InDepth);
 };
