@@ -175,7 +175,7 @@ void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 
     GPSDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);  // 深度/模板测试的状态
     GPSDesc.InputLayout.pInputElementDescs = InputLayoutDESC.data();        // 输入布局描述
-    GPSDesc.InputLayout.NumElements = (UINT)InputLayoutDESC.size();
+    GPSDesc.InputLayout.NumElements = static_cast<UINT>(InputLayoutDESC.size());
     GPSDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 指定图元拓扑类型
     GPSDesc.NumRenderTargets = 1;                                           // 同时所用的RT数量，即RTVFormats数组中渲染目标格式的数量
     GPSDesc.RTVFormats[0] = GetEngine()->GetBackBufferFormat();             // 渲染目标的格式

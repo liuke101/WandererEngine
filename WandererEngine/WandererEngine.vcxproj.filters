@@ -1,643 +1,768 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{6DE65A29-E344-4C22-BA58-159038778637}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Config">
-      <UniqueIdentifier>{06E2EC93-A4AE-4197-A503-9B05FFA112A9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Config\Core">
-      <UniqueIdentifier>{3EA4C63C-8233-4C06-B0BA-CE5F2932DD6B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Core">
-      <UniqueIdentifier>{9F21B040-ECBF-48A6-8127-42D5B5E7AFDB}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Debug">
-      <UniqueIdentifier>{974C2DAB-BBCE-46AA-8BD2-A70C516FBF35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Debug\Log">
-      <UniqueIdentifier>{62EA4AD6-51C8-4040-B26A-72F9A9E1BAF1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Platform">
-      <UniqueIdentifier>{6FB31894-BED4-4CD9-9D38-10A73665A30F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Platform\Windows">
-      <UniqueIdentifier>{65C4DD45-4495-458A-B917-F638B9B68393}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering">
-      <UniqueIdentifier>{1A8A8846-D175-42B5-BBCB-1E53080615D9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\DX">
-      <UniqueIdentifier>{6AAA0721-E56F-4BC1-9072-76673008A7B0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library">
-      <UniqueIdentifier>{0BB278F8-1AC4-4501-9186-9D585399CB01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private">
-      <UniqueIdentifier>{1547EFFE-6FD0-4B85-B990-D5830E086C35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_channel">
-      <UniqueIdentifier>{6484017C-DC93-4484-AD58-0BDF8145C9CB}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_channel\simple_io_stream">
-      <UniqueIdentifier>{75F640AD-ABE8-4905-B1AD-46056E60689C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_channel\simple_net_channel">
-      <UniqueIdentifier>{E34FCFAA-850A-4A8D-9EA3-EC134D4676AD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_channel\simple_net_connetion">
-      <UniqueIdentifier>{D2361AB4-81A8-4EB6-B2A3-5B851D5EFC65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_channel\simple_net_drive">
-      <UniqueIdentifier>{CBDEC93D-F11D-4EA1-B3F5-657FB129462E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal">
-      <UniqueIdentifier>{B0BCE577-0E0E-47B2-BD4F-CB959C33B573}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_core">
-      <UniqueIdentifier>{A7BCC475-DA3F-48CB-9276-55EF4AB2D8C8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array">
-      <UniqueIdentifier>{F2BAFDEF-5031-4DE5-B5F9-D7D7D6D081DD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm">
-      <UniqueIdentifier>{BD43A7C1-4B1B-422F-AD57-3083ED94BD88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_guid">
-      <UniqueIdentifier>{48FF2840-B03C-4278-8D62-851447520423}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_helper_file">
-      <UniqueIdentifier>{5D0E3839-E7BB-4CF6-B87B-4E13D78E7742}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_path">
-      <UniqueIdentifier>{E9477923-3167-471F-9EF7-615B04F259EB}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_time">
-      <UniqueIdentifier>{99C282DB-783F-4878-9E85-E5D6F54BEA92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_core_minimal\simple_c_windows">
-      <UniqueIdentifier>{5D01250F-D3A1-419B-8D0D-A832A7756373}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_cpp_core_minimal">
-      <UniqueIdentifier>{E065B333-6A9A-48F9-80C4-105F85663417}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file">
-      <UniqueIdentifier>{80AC74CA-5E41-48BD-8ED2-9F452709F400}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm">
-      <UniqueIdentifier>{F979588B-7844-4072-981A-34DECBDF9531}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_c_log">
-      <UniqueIdentifier>{F3190CC8-0C03-4C0D-9539-370422602E76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_image">
-      <UniqueIdentifier>{22D00521-326B-4A82-9FD9-7E4A17848191}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_image\Core">
-      <UniqueIdentifier>{F86AAC9D-7352-42A8-B5AD-1D9CA3902A78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math">
-      <UniqueIdentifier>{D2F9AC6D-ACD1-4AD3-A2D1-E146891DD260}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\soft_rasterization">
-      <UniqueIdentifier>{9F61843A-8AFE-45AA-A5D7-8535FB275013}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\transformation">
-      <UniqueIdentifier>{BEF63FC3-DF07-41F8-BE3A-054EC31B6AED}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\transformation\matrix">
-      <UniqueIdentifier>{41FA2FB6-B6E9-4F65-83D7-94CB8B1AEE5A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\transformation\primitives">
-      <UniqueIdentifier>{D7EFD58E-911C-4A66-B427-44D92A335745}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\transformation\quaternion">
-      <UniqueIdentifier>{E10F0563-D6C5-4ED5-A243-808AC248F9EF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\transformation\rotator">
-      <UniqueIdentifier>{AAA22E8C-B730-4E98-B243-3E18988B79EB}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\private\simple_math\transformation\vector">
-      <UniqueIdentifier>{15795EFE-054E-445D-B1B3-704AE07A7BCE}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public">
-      <UniqueIdentifier>{A957A9CB-524F-498B-AA0E-8F48D0AA4635}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_array">
-      <UniqueIdentifier>{4EA9C9C5-B6EE-4E18-8822-03201334FF62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_channel">
-      <UniqueIdentifier>{EFD4534E-DD05-4482-B939-96B7544C5C9B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_channel\simple_core">
-      <UniqueIdentifier>{17351CB5-3D54-4868-8BE1-91821BB12DBD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal">
-      <UniqueIdentifier>{8067037A-8B25-4664-A069-1306D6DC780B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_core">
-      <UniqueIdentifier>{4CF2C8C8-CB85-4651-9E7F-08B7570C4B80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array">
-      <UniqueIdentifier>{6CAA2F16-5951-434A-8138-4E9C26785699}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core">
-      <UniqueIdentifier>{020C3672-CBAA-4CDE-9EB9-162C3986A633}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm">
-      <UniqueIdentifier>{CBFBDF64-D84E-4BDF-8CDC-38140848BD06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_guid">
-      <UniqueIdentifier>{52591213-B7CB-463A-B557-9741990D58E5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_helper_file">
-      <UniqueIdentifier>{F7577B4A-2B2B-4D93-98A0-FE782E5A7AFD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_path">
-      <UniqueIdentifier>{EFFC8EBC-943A-494F-B272-8B77930F3868}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_time">
-      <UniqueIdentifier>{D8DEACC4-8A0B-49FD-AE70-B13C3560FFBF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_core_minimal\simple_c_windows">
-      <UniqueIdentifier>{8138AC52-5A41-475D-8EEE-18BA069D65EC}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_cpp_core_minimal">
-      <UniqueIdentifier>{CB6A8FAE-66E9-4B35-84F6-131E714D8EA4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_cpp_core_minimal\shared">
-      <UniqueIdentifier>{079CD0D3-9C7E-4127-8047-D0B08AC061B3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file">
-      <UniqueIdentifier>{5A45EC13-0E12-4F08-AED5-6BE483C722A0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm">
-      <UniqueIdentifier>{42E17EE3-1234-4CFD-9D7B-7CD9B7533B57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_c_log">
-      <UniqueIdentifier>{7D26D223-958F-466E-8FA9-C03D5FD32E70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_delegate">
-      <UniqueIdentifier>{B9151C63-459D-4F5B-B1D5-205475FF3E81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_http">
-      <UniqueIdentifier>{01FD59F4-1F02-47AA-9A70-9226D47D669A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_image">
-      <UniqueIdentifier>{F1EC2E2F-A535-4AD9-AD9B-C4B3FAD0A547}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_image\Core">
-      <UniqueIdentifier>{1A5333FD-4EB8-4A42-A982-02061155F232}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math">
-      <UniqueIdentifier>{0E1CD9AE-B23E-4A4B-9A99-259AD334D6DD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\soft_rasterization">
-      <UniqueIdentifier>{547D2936-A813-4BC5-9283-A8277476A54B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\transformation">
-      <UniqueIdentifier>{BC27CEF6-554E-4D7D-ABF5-C04F6120FEDC}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\transformation\matrix">
-      <UniqueIdentifier>{FB7460D8-E0A7-4ACE-815F-A30F212EEF07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\transformation\primitives">
-      <UniqueIdentifier>{1ED3678F-D80D-4617-9A97-5563E6407BC6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\transformation\quaternion">
-      <UniqueIdentifier>{2404F9DA-DE3B-4A7C-AD22-6CDBC061EAB9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\transformation\rotator">
-      <UniqueIdentifier>{5AED4026-42FB-4F3B-BCB2-23CB8B960CE1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_math\transformation\vector">
-      <UniqueIdentifier>{142EAA7D-57E6-4A48-A240-EE96910B2A16}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_mysql">
-      <UniqueIdentifier>{51C93881-E4EA-4E98-A57A-2AFC263F217F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_xml">
-      <UniqueIdentifier>{5730CBED-1B45-4166-AA60-03D895E8663E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\public\simple_xml\public">
-      <UniqueIdentifier>{EC358B5B-A584-4475-983B-63D6B14A2594}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\third_party_library">
-      <UniqueIdentifier>{3469CE7E-1939-4B70-A3BA-A1F4E3F98095}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="simple_library\third_party_library\tinyxml">
-      <UniqueIdentifier>{B723B408-1E08-419A-8BCB-084FD4A418AC}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Engine\Config\EngineRenderConfig.cpp">
-      <Filter>Engine\Config</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\Engine.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Debug\EngineDebug.cpp">
-      <Filter>Engine\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\EngineFactory.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp">
-      <Filter>Engine\Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp">
-      <Filter>Engine\Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\WandererEngine.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp">
-      <Filter>simple_library\private\simple_channel\simple_io_stream</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_channel</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_udp.cpp">
-      <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_net_type.cpp">
-      <Filter>simple_library\private\simple_channel</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_channel\simple_object.cpp">
-      <Filter>simple_library\private\simple_channel</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_core\simple_c_array</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_guid\simple_guid.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_guid</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_helper_file\simple_file_helper.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_helper_file</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_path\simple_c_path.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_path</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_locale_list.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_time</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_time.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_time</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_register.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_windows</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_setting.c">
-      <Filter>simple_library\private\simple_core_minimal\simple_c_windows</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.cpp">
-      <Filter>simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.cpp">
-      <Filter>simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_c_log\simple_c_log.c">
-      <Filter>simple_library\private\simple_c_log</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_image\Core\simple_image_bmp.cpp">
-      <Filter>simple_library\private\simple_image\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_image\simple_image.cpp">
-      <Filter>simple_library\private\simple_image</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\math_utils.cpp">
-      <Filter>simple_library\private\simple_math</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\simple_math.c">
-      <Filter>simple_library\private\simple_math</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
-      <Filter>simple_library\private\simple_math\soft_rasterization</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp">
-      <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_3x3.cpp">
-      <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x4.cpp">
-      <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\primitives\line.cpp">
-      <Filter>simple_library\private\simple_math\transformation\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\primitives\triangle.cpp">
-      <Filter>simple_library\private\simple_math\transformation\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\quaternion\quat.cpp">
-      <Filter>simple_library\private\simple_math\transformation\quaternion</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\rotator\rotator.cpp">
-      <Filter>simple_library\private\simple_math\transformation\rotator</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2d.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2id.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3d.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3id.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4d.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4id.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_color.cpp">
-      <Filter>simple_library\private\simple_math\transformation\vector</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinystr.cpp">
-      <Filter>simple_library\third_party_library\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxml.cpp">
-      <Filter>simple_library\third_party_library\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlerror.cpp">
-      <Filter>simple_library\third_party_library\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp">
-      <Filter>simple_library\third_party_library\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\Mesh.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\MeshType.cpp" />
-    <ClCompile Include="Engine\Math\EngineMath.cpp" />
-    <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
-    <ClCompile Include="Engine\Shader\Core\Shader.cpp" />
-    <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
-    <ClCompile Include="Engine\Core\Viewport.cpp" />
-    <ClCompile Include="Engine\Core\Camera.cpp" />
-    <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
-    <ClCompile Include="Engine\Component\Core\Component.cpp" />
-    <ClCompile Include="Engine\Component\InputComponent.cpp" />
-    <ClCompile Include="Engine\Component\Input\InputType.cpp" />
-    <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
-    <ClCompile Include="Engine\Core\World.cpp" />
-    <ClCompile Include="Engine\Mesh\SphereMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\CylinderMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\CustomMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\ConeMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\PlaneMesh.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Engine\Config\EngineRenderConfig.h">
-      <Filter>Engine\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\Engine.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\WinMainCommandParameters.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Debug\EngineDebug.h">
-      <Filter>Engine\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Debug\Log\SimpleLog.h">
-      <Filter>Engine\Debug\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\EngineFactory.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\EngineMinimal.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h">
-      <Filter>Engine\Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h">
-      <Filter>Engine\Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h">
-      <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h">
-      <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.h">
-      <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_udp.h">
-      <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_array\simple_hash_array.h">
-      <Filter>simple_library\public\simple_array</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_channel.h">
-      <Filter>simple_library\public\simple_channel\simple_core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_connetion.h">
-      <Filter>simple_library\public\simple_channel\simple_core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_io_stream.h">
-      <Filter>simple_library\public\simple_channel\simple_core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_net_macro.h">
-      <Filter>simple_library\public\simple_channel\simple_core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_object.h">
-      <Filter>simple_library\public\simple_channel\simple_core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_net_drive.h">
-      <Filter>simple_library\public\simple_channel</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_net_protocols.h">
-      <Filter>simple_library\public\simple_channel</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_net_type.h">
-      <Filter>simple_library\public\simple_channel</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_channel\simple_protocols_definition.h">
-      <Filter>simple_library\public\simple_channel</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_core_minimal.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core\simple_array_c_macro.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_array</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_array</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_guid\simple_guid.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_guid</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_helper_file\simple_file_helper.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_helper_file</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_path\simple_path.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_path</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_locale_list.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_time</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_time.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_time</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_register.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_windows</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_setting.h">
-      <Filter>simple_library\public\simple_core_minimal\simple_c_windows</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr.h">
-      <Filter>simple_library\public\simple_cpp_core_minimal\shared</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr_type.h">
-      <Filter>simple_library\public\simple_cpp_core_minimal\shared</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_core_minimal.h">
-      <Filter>simple_library\public\simple_cpp_core_minimal</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.h">
-      <Filter>simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.h">
-      <Filter>simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_c_log\simple_c_log.h">
-      <Filter>simple_library\public\simple_c_log</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_delegate\simple_delegate.h">
-      <Filter>simple_library\public\simple_delegate</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_image\Core\simple_image_bmp.h">
-      <Filter>simple_library\public\simple_image\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_image\Core\simple_image_type.h">
-      <Filter>simple_library\public\simple_image\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_image\simple_image.h">
-      <Filter>simple_library\public\simple_image</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_library.h">
-      <Filter>simple_library\public</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_library_macro.h">
-      <Filter>simple_library\public</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\math_libray.hpp">
-      <Filter>simple_library\public\simple_math</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\math_utils.h">
-      <Filter>simple_library\public\simple_math</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\simple_core_math.h">
-      <Filter>simple_library\public\simple_math</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\simple_math.h">
-      <Filter>simple_library\public\simple_math</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\soft_rasterization\soft_rasterization.h">
-      <Filter>simple_library\public\simple_math\soft_rasterization</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_2x2.h">
-      <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_3x3.h">
-      <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x4.h">
-      <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\primitives\line.h">
-      <Filter>simple_library\public\simple_math\transformation\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\primitives\triangle.h">
-      <Filter>simple_library\public\simple_math\transformation\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\quaternion\quat.h">
-      <Filter>simple_library\public\simple_math\transformation\quaternion</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\rotator\rotator.h">
-      <Filter>simple_library\public\simple_math\transformation\rotator</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2d.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2id.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3d.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3id.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4d.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4id.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_color.h">
-      <Filter>simple_library\public\simple_math\transformation\vector</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\third_party_library\tinyxml\tinystr.h">
-      <Filter>simple_library\third_party_library\tinyxml</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_library\third_party_library\tinyxml\tinyxml.h">
-      <Filter>simple_library\third_party_library\tinyxml</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
-    <ClInclude Include="Engine\Rendering\Core\Rendering.h" />
-    <ClInclude Include="Engine\Mesh\Core\Mesh.h" />
-    <ClInclude Include="Engine\Mesh\Core\MeshType.h" />
-    <ClInclude Include="Engine\Math\EngineMath.h" />
-    <ClInclude Include="Engine\Mesh\BoxMesh.h" />
-    <ClInclude Include="Engine\Shader\Core\Shader.h" />
-    <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
-    <ClInclude Include="Engine\Core\Viewport.h" />
-    <ClInclude Include="Engine\Core\Camera.h" />
-    <ClInclude Include="Engine\Component\TransformationComponent.h" />
-    <ClInclude Include="Engine\Component\Core\Component.h" />
-    <ClInclude Include="Engine\Component\InputComponent.h" />
-    <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
-    <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
-    <ClInclude Include="Engine\Component\Input\InputType.h" />
-    <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
-    <ClInclude Include="Engine\Core\World.h" />
-    <ClInclude Include="Engine\Mesh\SphereMesh.h" />
-    <ClInclude Include="Engine\Mesh\CylinderMesh.h" />
-    <ClInclude Include="Engine\Mesh\CustomMesh.h" />
-    <ClInclude Include="Engine\Mesh\ConeMesh.h" />
-    <ClInclude Include="Engine\Mesh\PlaneMesh.h" />
-  </ItemGroup>
+    <ItemGroup>
+        <Filter Include="Engine">
+            <UniqueIdentifier>{077FFD6A-F9D9-4F3C-A7A5-FC4AFEA16465}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\CodeReflection">
+            <UniqueIdentifier>{1D2454BC-5C77-4EED-AF56-B4A26D594B40}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Component">
+            <UniqueIdentifier>{64BA742A-F6DD-469B-840C-B732DBD142FB}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Component\Core">
+            <UniqueIdentifier>{CCAC165F-E196-4D1C-9A05-B6FBB0348BB3}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Component\Input">
+            <UniqueIdentifier>{6B154712-D96B-43C2-B3B9-D7A59A6509E8}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Config">
+            <UniqueIdentifier>{7A1B8361-2EAB-4594-87F8-A1527A51E638}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Config\Core">
+            <UniqueIdentifier>{90B5CE6B-92E6-411A-858A-D7D29E0D145C}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Core">
+            <UniqueIdentifier>{525707AF-A3ED-42EC-9BC1-82268B4F6775}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Core\CoreObject">
+            <UniqueIdentifier>{2F4A4B7B-551B-446A-B0FA-9CE686956631}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Debug">
+            <UniqueIdentifier>{DDD648DB-6D2D-4A16-9EB6-FE25EE05C256}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Debug\Log">
+            <UniqueIdentifier>{13FF465D-325D-41B9-92D3-1B034A4013E0}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Math">
+            <UniqueIdentifier>{C796EA97-7E05-4D26-8F0D-EA825191A3EF}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Mesh">
+            <UniqueIdentifier>{EE0138BC-9B7E-41DC-A71D-CC94331AC9D3}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Mesh\Core">
+            <UniqueIdentifier>{28CF5DC7-48EF-45BB-BF3D-FB35F53D6581}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Platform">
+            <UniqueIdentifier>{40858150-D84B-4640-9A83-D40C3F1CA63C}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Platform\Windows">
+            <UniqueIdentifier>{1E2B5494-7B75-43C0-AE71-73F09045E446}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Rendering">
+            <UniqueIdentifier>{4C9BB9A5-C9E0-41B6-A551-A948525FB9FE}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Rendering\Core">
+            <UniqueIdentifier>{FA23585F-F150-47E1-81A3-572CA7262830}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Rendering\DirectX12">
+            <UniqueIdentifier>{80C4DA4E-0932-416C-B377-A0FEEDA1C606}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Shader">
+            <UniqueIdentifier>{05AD869C-7FBF-4AB3-9243-E38709E1BE34}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Engine\Shader\Core">
+            <UniqueIdentifier>{32E0E5A5-83E6-464A-82A4-859C013FBC3F}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="Shader">
+            <UniqueIdentifier>{2D4C8DE8-9277-47B8-A4C6-C15D976A0963}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library">
+            <UniqueIdentifier>{8202B509-B074-4EF3-ACD0-AC1AEA508D07}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private">
+            <UniqueIdentifier>{294998F0-2585-4BA8-9D9F-CC32B995D21F}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_channel">
+            <UniqueIdentifier>{3246532F-E90C-417E-BE41-9B5B6502A9EC}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_channel\simple_io_stream">
+            <UniqueIdentifier>{5508509E-EF00-46D2-A444-2BF68B75F060}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_channel\simple_net_channel">
+            <UniqueIdentifier>{5D9DB6A3-3604-4BA1-988B-75DAFC0CDEB2}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_channel\simple_net_connetion">
+            <UniqueIdentifier>{6CB00B64-16C6-4CE3-98A1-5FBDFD26C2CE}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_channel\simple_net_drive">
+            <UniqueIdentifier>{C0FB2B02-2146-476C-AC0A-DE3BCFF2BC16}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal">
+            <UniqueIdentifier>{75225679-F34D-4317-9AFE-C5552D295B6F}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_core">
+            <UniqueIdentifier>{8736AD32-F53A-416A-ABA6-4420055F3694}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array">
+            <UniqueIdentifier>{589A7759-523B-4FDC-9DCA-F25B51787327}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm">
+            <UniqueIdentifier>{D551F121-2FC9-467E-8594-375A900A9421}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_guid">
+            <UniqueIdentifier>{5E1FF211-173C-46B5-9313-FD59661649A3}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_helper_file">
+            <UniqueIdentifier>{146ACC0F-73AE-4622-8F7A-BA8C6D588C37}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_path">
+            <UniqueIdentifier>{1FF24490-AEAA-4DCA-A685-6B677FE0D492}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_time">
+            <UniqueIdentifier>{C1E62ABE-5068-436C-BBA8-C507FD349CC8}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_core_minimal\simple_c_windows">
+            <UniqueIdentifier>{0FDD1341-AF1F-4D83-876E-DEA44256C04A}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_cpp_core_minimal">
+            <UniqueIdentifier>{8B85AB9A-43C9-4C11-B439-E7D50A9637F2}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file">
+            <UniqueIdentifier>{25011D4D-E93E-4C6B-82C0-79EC66066A50}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm">
+            <UniqueIdentifier>{3809C97E-1AAA-4440-9D31-7983EBABF507}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_c_log">
+            <UniqueIdentifier>{5F0192AB-E099-4F83-88AA-AEA695AEDBAA}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_image">
+            <UniqueIdentifier>{4CF76986-36DA-4ED9-BD1E-A636AF6CD22A}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_image\Core">
+            <UniqueIdentifier>{66B8D66D-D74B-4C02-90C0-888A7530A0B1}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math">
+            <UniqueIdentifier>{0322C48B-0FF1-45E2-86EA-55E960ACD293}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\soft_rasterization">
+            <UniqueIdentifier>{875D753F-3BD2-4379-8694-F8DE0284FC88}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\transformation">
+            <UniqueIdentifier>{3ECF7712-2DF4-4C57-818E-E2F43FC25560}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\transformation\matrix">
+            <UniqueIdentifier>{3F201749-4464-4CE5-B368-BAD8CD63823D}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\transformation\primitives">
+            <UniqueIdentifier>{689327B5-310D-4A59-B3F0-252DB6CCA69F}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\transformation\quaternion">
+            <UniqueIdentifier>{7A36A4A3-0441-4078-87A1-19D357729340}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\transformation\rotator">
+            <UniqueIdentifier>{90B551FC-7E50-4574-9ACD-F29C1562C19F}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\private\simple_math\transformation\vector">
+            <UniqueIdentifier>{342CD132-02B8-4ACE-A086-F5B5300A4993}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public">
+            <UniqueIdentifier>{31CB0E80-65F1-40F9-8289-76DF0C08C4A4}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_array">
+            <UniqueIdentifier>{08A198A1-2549-4982-8108-3B2610F636D1}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_channel">
+            <UniqueIdentifier>{E49ECA5A-DF60-4806-92E8-30668B394E95}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_channel\simple_core">
+            <UniqueIdentifier>{2FEAF67D-0446-415F-B28E-60860088301F}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal">
+            <UniqueIdentifier>{FFF5F24E-ED99-4903-9D7C-A0F9AECDD391}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_core">
+            <UniqueIdentifier>{085CFC5A-3702-4656-AFEC-A31550C347D6}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array">
+            <UniqueIdentifier>{241C8644-AC89-413B-942F-1C54FF957657}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core">
+            <UniqueIdentifier>{74401E99-29DC-4154-A406-0984DE8D2DCF}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm">
+            <UniqueIdentifier>{4FF73346-451A-47B4-A875-73343EA5C353}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_guid">
+            <UniqueIdentifier>{96EACCDF-60A0-4AFA-A7CE-A870BBCCECD1}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_helper_file">
+            <UniqueIdentifier>{90DCC24A-2672-4332-9F97-F7538BCAF383}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_path">
+            <UniqueIdentifier>{ADE57860-7F1C-42D1-AEA6-56B5FDA8C4F8}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_time">
+            <UniqueIdentifier>{DF106E47-C04D-49E2-B0E7-8B1CBE780EB1}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_core_minimal\simple_c_windows">
+            <UniqueIdentifier>{FF71062B-ABD8-4567-A0F3-C23C876A526E}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_cpp_core_minimal">
+            <UniqueIdentifier>{EDD434AC-5E97-4E2E-911D-EB1DC4BFFFB4}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_cpp_core_minimal\shared">
+            <UniqueIdentifier>{A0E165F8-776F-4C5A-895C-E51594E4F3ED}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file">
+            <UniqueIdentifier>{CDC361FD-4B16-4FFD-AAA8-70F98987900C}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm">
+            <UniqueIdentifier>{2C05BCD6-63A0-4DB4-AF4A-46C5493C68BF}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_c_log">
+            <UniqueIdentifier>{9FFB9314-1FFB-40C4-9A14-4CB1D030EEB9}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_delegate">
+            <UniqueIdentifier>{82BF00A8-7266-4586-B1D7-ADF0DA446516}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_http">
+            <UniqueIdentifier>{D4D0B09A-4DF1-42AC-9F35-262499845283}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_image">
+            <UniqueIdentifier>{F6D1B98A-C37C-41E3-AABC-91A124CD0834}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_image\Core">
+            <UniqueIdentifier>{AFF2CC08-6AF4-4643-8D61-93EF98389CDC}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math">
+            <UniqueIdentifier>{1A3C01E8-8F8F-43D9-A17E-F989E9E05015}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\soft_rasterization">
+            <UniqueIdentifier>{18BAF7F7-BDC4-4C4D-9956-5AE701DD26CF}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\transformation">
+            <UniqueIdentifier>{DEABC60D-2B45-4269-81D2-548465A65530}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\transformation\matrix">
+            <UniqueIdentifier>{926D491E-7CAF-46C0-A8BE-7398C8F46C67}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\transformation\primitives">
+            <UniqueIdentifier>{E15B8E5A-E187-4DC7-9E8C-106215AFC1AA}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\transformation\quaternion">
+            <UniqueIdentifier>{4AC4DA53-2FA6-4AB0-BEDF-0F96BF09AE34}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\transformation\rotator">
+            <UniqueIdentifier>{3BCB9C61-CE2C-4AA3-82E6-A457A09E96ED}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_math\transformation\vector">
+            <UniqueIdentifier>{885DD9E1-7977-4422-BBF7-786E3044BF98}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_mysql">
+            <UniqueIdentifier>{592A7EC5-7683-40FA-AA7B-0E52214F5C4D}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_xml">
+            <UniqueIdentifier>{9B2B8401-8694-4CA1-B174-E4091434EE37}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\public\simple_xml\public">
+            <UniqueIdentifier>{EFA240C2-601B-458D-B987-706BAE113270}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\third_party_library">
+            <UniqueIdentifier>{5E279055-A833-48A8-B529-B319C1A44F8D}</UniqueIdentifier>
+        </Filter>
+        <Filter Include="simple_library\third_party_library\tinyxml">
+            <UniqueIdentifier>{7DAA74B2-1D44-4610-8840-B208171F27B8}</UniqueIdentifier>
+        </Filter>
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="Engine\Component\Core\Component.cpp">
+            <Filter>Engine\Component\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Component\Input\InputType.cpp">
+            <Filter>Engine\Component\Input</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Component\InputComponent.cpp">
+            <Filter>Engine\Component</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Component\TransformationComponent.cpp">
+            <Filter>Engine\Component</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Config\EngineRenderConfig.cpp">
+            <Filter>Engine\Config</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\Camera.cpp">
+            <Filter>Engine\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp">
+            <Filter>Engine\Core\CoreObject</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp">
+            <Filter>Engine\Core\CoreObject</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\Engine.cpp">
+            <Filter>Engine\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\Viewport.cpp">
+            <Filter>Engine\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp">
+            <Filter>Engine\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Core\World.cpp">
+            <Filter>Engine\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Debug\EngineDebug.cpp">
+            <Filter>Engine\Debug</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\EngineFactory.cpp">
+            <Filter>Engine</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Math\EngineMath.cpp">
+            <Filter>Engine\Math</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\BoxMesh.cpp">
+            <Filter>Engine\Mesh</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\ConeMesh.cpp">
+            <Filter>Engine\Mesh</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\Core\Mesh.cpp">
+            <Filter>Engine\Mesh\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\Core\MeshType.cpp">
+            <Filter>Engine\Mesh\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\CustomMesh.cpp">
+            <Filter>Engine\Mesh</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\CylinderMesh.cpp">
+            <Filter>Engine\Mesh</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\PlaneMesh.cpp">
+            <Filter>Engine\Mesh</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Mesh\SphereMesh.cpp">
+            <Filter>Engine\Mesh</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp">
+            <Filter>Engine\Platform\Windows</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp">
+            <Filter>Engine\Platform\Windows</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Rendering\Core\Rendering.cpp">
+            <Filter>Engine\Rendering\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\Shader\Core\Shader.cpp">
+            <Filter>Engine\Shader\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="Engine\WandererEngine.cpp">
+            <Filter>Engine</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp">
+            <Filter>simple_library\private\simple_channel\simple_io_stream</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_channel</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_udp.cpp">
+            <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_net_type.cpp">
+            <Filter>simple_library\private\simple_channel</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_channel\simple_object.cpp">
+            <Filter>simple_library\private\simple_channel</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_core\simple_c_array</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_guid\simple_guid.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_guid</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_helper_file\simple_file_helper.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_helper_file</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_path\simple_c_path.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_path</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_locale_list.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_time</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_time.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_time</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_register.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_windows</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_setting.c">
+            <Filter>simple_library\private\simple_core_minimal\simple_c_windows</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.cpp">
+            <Filter>simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.cpp">
+            <Filter>simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_c_log\simple_c_log.c">
+            <Filter>simple_library\private\simple_c_log</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_image\Core\simple_image_bmp.cpp">
+            <Filter>simple_library\private\simple_image\Core</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_image\simple_image.cpp">
+            <Filter>simple_library\private\simple_image</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\math_utils.cpp">
+            <Filter>simple_library\private\simple_math</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\simple_math.c">
+            <Filter>simple_library\private\simple_math</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp">
+            <Filter>simple_library\private\simple_math\soft_rasterization</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp">
+            <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_3x3.cpp">
+            <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x4.cpp">
+            <Filter>simple_library\private\simple_math\transformation\matrix</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\primitives\line.cpp">
+            <Filter>simple_library\private\simple_math\transformation\primitives</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\primitives\triangle.cpp">
+            <Filter>simple_library\private\simple_math\transformation\primitives</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\quaternion\quat.cpp">
+            <Filter>simple_library\private\simple_math\transformation\quaternion</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\rotator\rotator.cpp">
+            <Filter>simple_library\private\simple_math\transformation\rotator</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2d.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2id.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3d.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3id.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4d.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4id.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_color.cpp">
+            <Filter>simple_library\private\simple_math\transformation\vector</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\third_party_library\tinyxml\tinystr.cpp">
+            <Filter>simple_library\third_party_library\tinyxml</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxml.cpp">
+            <Filter>simple_library\third_party_library\tinyxml</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlerror.cpp">
+            <Filter>simple_library\third_party_library\tinyxml</Filter>
+        </ClCompile>
+        <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp">
+            <Filter>simple_library\third_party_library\tinyxml</Filter>
+        </ClCompile>
+    </ItemGroup>
+    <ItemGroup>
+        <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
+            <Filter>Engine\CodeReflection</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Component\Core\Component.h">
+            <Filter>Engine\Component\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Component\Input\InputType.h">
+            <Filter>Engine\Component\Input</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Component\InputComponent.h">
+            <Filter>Engine\Component</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Component\TransformationComponent.h">
+            <Filter>Engine\Component</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Config\EngineRenderConfig.h">
+            <Filter>Engine\Config</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\Camera.h">
+            <Filter>Engine\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h">
+            <Filter>Engine\Core\CoreObject</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h">
+            <Filter>Engine\Core\CoreObject</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\Engine.h">
+            <Filter>Engine\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\Viewport.h">
+            <Filter>Engine\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\WinMainCommandParameters.h">
+            <Filter>Engine\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Core\World.h">
+            <Filter>Engine\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Debug\EngineDebug.h">
+            <Filter>Engine\Debug</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Debug\Log\SimpleLog.h">
+            <Filter>Engine\Debug\Log</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\EngineFactory.h">
+            <Filter>Engine</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\EngineMinimal.h">
+            <Filter>Engine</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Math\EngineMath.h">
+            <Filter>Engine\Math</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\BoxMesh.h">
+            <Filter>Engine\Mesh</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\ConeMesh.h">
+            <Filter>Engine\Mesh</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\Core\Mesh.h">
+            <Filter>Engine\Mesh\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\Core\MeshType.h">
+            <Filter>Engine\Mesh\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\CustomMesh.h">
+            <Filter>Engine\Mesh</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\CylinderMesh.h">
+            <Filter>Engine\Mesh</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\PlaneMesh.h">
+            <Filter>Engine\Mesh</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Mesh\SphereMesh.h">
+            <Filter>Engine\Mesh</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h">
+            <Filter>Engine\Platform\Windows</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h">
+            <Filter>Engine\Platform\Windows</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h">
+            <Filter>Engine\Platform\Windows</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Rendering\Core\Rendering.h">
+            <Filter>Engine\Rendering\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h">
+            <Filter>Engine\Rendering\DirectX12</Filter>
+        </ClInclude>
+        <ClInclude Include="Engine\Shader\Core\Shader.h">
+            <Filter>Engine\Shader\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="Shader\Hello.hlsl">
+            <Filter>Shader</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h">
+            <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h">
+            <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.h">
+            <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_udp.h">
+            <Filter>simple_library\private\simple_channel\simple_net_drive</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_array\simple_hash_array.h">
+            <Filter>simple_library\public\simple_array</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_channel.h">
+            <Filter>simple_library\public\simple_channel\simple_core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_connetion.h">
+            <Filter>simple_library\public\simple_channel\simple_core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_io_stream.h">
+            <Filter>simple_library\public\simple_channel\simple_core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_net_macro.h">
+            <Filter>simple_library\public\simple_channel\simple_core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_object.h">
+            <Filter>simple_library\public\simple_channel\simple_core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_net_drive.h">
+            <Filter>simple_library\public\simple_channel</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_net_protocols.h">
+            <Filter>simple_library\public\simple_channel</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_net_type.h">
+            <Filter>simple_library\public\simple_channel</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_channel\simple_protocols_definition.h">
+            <Filter>simple_library\public\simple_channel</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_core_minimal.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core\simple_array_c_macro.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_array</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_array</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_guid\simple_guid.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_guid</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_helper_file\simple_file_helper.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_helper_file</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_path\simple_path.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_path</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_locale_list.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_time</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_time.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_time</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_register.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_windows</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_setting.h">
+            <Filter>simple_library\public\simple_core_minimal\simple_c_windows</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr.h">
+            <Filter>simple_library\public\simple_cpp_core_minimal\shared</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr_type.h">
+            <Filter>simple_library\public\simple_cpp_core_minimal\shared</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_core_minimal.h">
+            <Filter>simple_library\public\simple_cpp_core_minimal</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.h">
+            <Filter>simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.h">
+            <Filter>simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_c_log\simple_c_log.h">
+            <Filter>simple_library\public\simple_c_log</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_delegate\simple_delegate.h">
+            <Filter>simple_library\public\simple_delegate</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_image\Core\simple_image_bmp.h">
+            <Filter>simple_library\public\simple_image\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_image\Core\simple_image_type.h">
+            <Filter>simple_library\public\simple_image\Core</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_image\simple_image.h">
+            <Filter>simple_library\public\simple_image</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_library.h">
+            <Filter>simple_library\public</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_library_macro.h">
+            <Filter>simple_library\public</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\math_libray.hpp">
+            <Filter>simple_library\public\simple_math</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\math_utils.h">
+            <Filter>simple_library\public\simple_math</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\simple_core_math.h">
+            <Filter>simple_library\public\simple_math</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\simple_math.h">
+            <Filter>simple_library\public\simple_math</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\soft_rasterization\soft_rasterization.h">
+            <Filter>simple_library\public\simple_math\soft_rasterization</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_2x2.h">
+            <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_3x3.h">
+            <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x4.h">
+            <Filter>simple_library\public\simple_math\transformation\matrix</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\primitives\line.h">
+            <Filter>simple_library\public\simple_math\transformation\primitives</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\primitives\triangle.h">
+            <Filter>simple_library\public\simple_math\transformation\primitives</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\quaternion\quat.h">
+            <Filter>simple_library\public\simple_math\transformation\quaternion</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\rotator\rotator.h">
+            <Filter>simple_library\public\simple_math\transformation\rotator</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2d.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2id.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3d.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3id.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4d.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4id.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_color.h">
+            <Filter>simple_library\public\simple_math\transformation\vector</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\third_party_library\tinyxml\tinystr.h">
+            <Filter>simple_library\third_party_library\tinyxml</Filter>
+        </ClInclude>
+        <ClInclude Include="simple_library\third_party_library\tinyxml\tinyxml.h">
+            <Filter>simple_library\third_party_library\tinyxml</Filter>
+        </ClInclude>
+    </ItemGroup>
 </Project>

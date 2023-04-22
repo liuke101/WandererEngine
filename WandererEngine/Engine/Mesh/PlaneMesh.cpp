@@ -29,7 +29,7 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float InHeight, float InWidth, uint32_t InHei
             return InValue;
         }
 
-        return InValue / ((float)InSubdivideValue - 1);
+        return InValue / (static_cast<float>(InSubdivideValue) - 1);
     };
 
     // 除以2便于将模型设置为以世界坐标原点为中心
@@ -40,13 +40,14 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float InHeight, float InWidth, uint32_t InHei
     float HeightSubdivideValue = SubdivideValue(InHeight, InHeightSubdivide);
     float WidthSubdivideValue = SubdivideValue(InWidth, InWidthSubdivide);
 
-    // 顶点位置
+    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+    // 【构建顶点】
     for (uint32_t i = 0; i < InHeightSubdivide; ++i)
     {
-        float z = Height - i * HeightSubdivideValue;
+        float z = Height - static_cast<float>(i) * HeightSubdivideValue;
         for (uint32_t j = 0; j < InWidthSubdivide; ++j)
         {
-            float x = Width - j * WidthSubdivideValue;
+            float x = Width - static_cast<float>(j) * WidthSubdivideValue;
             MeshData.VertexData.push_back(FVertex(
                 XMFLOAT3(
                     x,   // x
@@ -56,7 +57,8 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float InHeight, float InWidth, uint32_t InHei
         }
     }
 
-    // 保存索引
+    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+    // 【构建索引】
     for (uint32_t i = 0; i < InHeightSubdivide-1; ++i)
     {
         for (uint32_t j = 0; j < InWidthSubdivide-1; ++j)
@@ -78,8 +80,11 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float InHeight, float InWidth, uint32_t InHei
         }
     }
 
+    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+    // 【构建模型】
     CPlaneMesh* PlaneMesh = new CPlaneMesh;
     PlaneMesh->BuildMesh(&MeshData);
     PlaneMesh->Init();
+
     return PlaneMesh;
 }

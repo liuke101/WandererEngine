@@ -1,7 +1,9 @@
 #pragma once
 // °üº¬¸÷ÖÖ¿â
+#include <iostream>
 #include <vector>
-
+#include <string>
+#include <sstream>
 #include "../simple_library/public/simple_library.h"
 #include "Debug/Log/SimpleLog.h"
 

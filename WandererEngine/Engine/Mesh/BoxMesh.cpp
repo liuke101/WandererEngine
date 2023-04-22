@@ -25,7 +25,8 @@ CBoxMesh* CBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
     float Width = 0.5f * InWidth;
     float Depth = 0.5f * InDepth;
 
-    // 更秀競泣
+    /*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
+    // ‐更秀競泣／
     MeshData.VertexData.push_back(FVertex(XMFLOAT3(-Width, -Height, -Depth), XMFLOAT4(Colors::White)));
     MeshData.VertexData.push_back(FVertex(XMFLOAT3(-Width, Height, -Depth), XMFLOAT4(Colors::White)));
     MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, Height, -Depth), XMFLOAT4(Colors::White)));
@@ -35,7 +36,8 @@ CBoxMesh* CBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
     MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, Height, Depth), XMFLOAT4(Colors::White)));
     MeshData.VertexData.push_back(FVertex(XMFLOAT3(Width, -Height, Depth), XMFLOAT4(Colors::White)));
 
-    // 更秀沫哈
+    /*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
+    // ‐更秀沫哈／
     // 念
     MeshData.IndexData.push_back(0); MeshData.IndexData.push_back(1); MeshData.IndexData.push_back(2);
     MeshData.IndexData.push_back(0); MeshData.IndexData.push_back(2); MeshData.IndexData.push_back(3);
@@ -60,10 +62,10 @@ CBoxMesh* CBoxMesh::CreateMesh(float InHeight, float InWidth, float InDepth)
     MeshData.IndexData.push_back(4); MeshData.IndexData.push_back(0); MeshData.IndexData.push_back(3);
     MeshData.IndexData.push_back(4); MeshData.IndexData.push_back(3); MeshData.IndexData.push_back(7);
 
-
+    /*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
+    // ‐更秀庁侏／
     CBoxMesh* BoxMesh= new CBoxMesh;
     BoxMesh->BuildMesh(&MeshData);
-
     BoxMesh->Init();
 
     return BoxMesh;

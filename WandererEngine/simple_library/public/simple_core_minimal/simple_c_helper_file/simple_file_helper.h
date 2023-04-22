@@ -49,8 +49,9 @@ bool open_by_operation(const char* in_operation, const char* url, const char* pa
 // 打开一个文件夹
 bool open_explore(const char* url);
 
-// 使用该接口 一定要初始化buf
-// 比如：char buf[1024] = { 0 };
+
+// 从指定的文件路径读取内容，并将内容存储到传入的字符缓冲区中。如果读取文件成功，则返回 true，否则返回 false。
+// 使用该接口 一定要初始化buf,比如：char buf[1024] = { 0 };
 bool get_file_buf(const char *path,char *buf);
 
 bool save_file_buff(const char* path, char* buf);
@@ -63,8 +64,9 @@ bool add_new_file_buf(const char *path, char *buf);
 // 以二进制方式读取
 bool load_data_from_disk(const char* path, char* buf);
 
+// 计算指定文件名的文件大小
 unsigned int get_file_size_by_filename(const char *filename);
-
+// 计算指定文件的文件大小并返回结果。它接受一个已经打开的文件指针作为参数，而不是文件名。
 unsigned int get_file_size(FILE *file_handle);
 
 //这个是以二进制方式存储，不会遇到像0自动截断的情况

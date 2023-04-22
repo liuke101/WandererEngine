@@ -12,6 +12,8 @@ public:
 
     virtual void Draw(float DeltaTime);
 
-    static CCustomMesh* CreateMesh();
+    static CCustomMesh* CreateMesh(string &InPath);
 
+    // 加载OBJ模型，建模导出时必须进行面三角化并展UV
+    static bool LoadObjFromBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData &InMeshData);
 };

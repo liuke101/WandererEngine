@@ -23,6 +23,8 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
     FVertex NorthPoleVertex(XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::Red));     // 北极点（顶面顶点/第一个顶点）
     FVertex SouthPoleVertex(XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::Red));    // 南极点（底面顶点/最后一个顶点）
 
+    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+    // 【构建顶点】
     // 北极点
     MeshData.VertexData.push_back(NorthPoleVertex);
 
@@ -32,8 +34,8 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
     // XMStoreFloat3(&MeshData.VertexData[NorthPoleIndex].Normal, XMVector3Normalize(NorthPolePos));   // 保存顶点法线数据
 
     // 每层环上的顶点（忽略极点所在层）
-    float thetaValue = XM_PI / (float)InHeightSubdivision;     // 原点到目标点的连线与正y轴之间的“极角”
-    float betaValue = XM_2PI / (float)InAxialSubdivision;      // 原点到目标点的连线在xz平面的投影线与正x轴之间的“方位角”
+    float thetaValue = XM_PI / static_cast<float>(InHeightSubdivision);     // 原点到目标点的连线与正y轴之间的“极角”
+    float betaValue = XM_2PI / static_cast<float>(InAxialSubdivision);      // 原点到目标点的连线在xz平面的投影线与正x轴之间的“方位角”
     for (uint32_t i = 1; i <= InHeightSubdivision - 1; ++i)     
     {
         float theta = i * thetaValue;
@@ -63,8 +65,8 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
     // XMStoreFloat3(&MeshData.VertexData[SouthPoleIndex].Normal, XMVector3Normalize(SouthPolePos));
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
-    // 绘制北极(围绕第一个顶点)
+    // 【构建索引】
+    // 北极(围绕第一个顶点)
     for (uint32_t i = 1; i <= InAxialSubdivision; ++i)
     {
         MeshData.IndexData.push_back(0);
@@ -72,9 +74,8 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
         MeshData.IndexData.push_back(i);
     }
 
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
-    // 绘制侧面
+    // 侧面
     // 将索引偏移到第一个环中第一个顶点的索引，跳过顶部极点顶点。
     uint32_t BaseIndex = 1;
     uint32_t VertexCircleCount = InAxialSubdivision + 1;    // 环一圈的顶点数量，+1是希望让每环的第一个顶点和最后一个顶点重合，这是因为他们的纹理坐标不同
@@ -94,10 +95,8 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
         }
     }
 
-    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-    
-    // 绘制南极（围绕最后一个顶点）
-    uint32_t southPoleIndex = (uint32_t)MeshData.VertexData.size() - 1;   // 南极点是最后一个顶点
+    // 南极（围绕最后一个顶点）
+    uint32_t southPoleIndex = static_cast<uint32_t>(MeshData.VertexData.size()) - 1;   // 南极点是最后一个顶点
     BaseIndex = southPoleIndex - VertexCircleCount;                       // 将索引偏移到最后一个环中第一个顶点的索引。
     for (uint32_t i = 0; i < InAxialSubdivision; ++i)
     {
@@ -106,8 +105,11 @@ CSphereMesh* CSphereMesh::CreateMesh(float InRadius, uint32_t InAxialSubdivision
         MeshData.IndexData.push_back(BaseIndex + i + 1);
     }
 
+    /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
+    // 【构建模型】
     CSphereMesh* SphereMesh = new CSphereMesh;
     SphereMesh->BuildMesh(&MeshData);
     SphereMesh->Init();
+
     return SphereMesh;
 }

@@ -500,7 +500,6 @@ unsigned int get_file_size_by_filename(const char *filename)
 	return file_size;
 }
 
-//asdoiajoi ajs aoisjd oaisjd oiasjdoi asodao ijaosijd oaisdja index
 unsigned int get_file_size(FILE *file_handle)
 {
 	unsigned int file_size = 0;

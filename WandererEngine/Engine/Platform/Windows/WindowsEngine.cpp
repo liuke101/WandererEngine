@@ -7,6 +7,7 @@
 #include "../../Mesh/CylinderMesh.h"
 #include "../../Mesh/ConeMesh.h"
 #include "../../Mesh/PlaneMesh.h"
+#include "../../Mesh/CustomMesh.h"
 #include "../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../Core/World.h"
 #if defined(_WIN32)
@@ -76,12 +77,14 @@ int CWindowsEngine::PostInit()
 		//CBoxMesh* Box = CBoxMesh::CreateMesh(2.0f,1.0f,3.0f);	
 		//CSphereMesh* Sphere = CSphereMesh::CreateMesh(2.0f, 20, 20);
 		//CCylinderMesh* Cylinder = CCylinderMesh::CreateMesh(1.0f, 1.0f, 5, 20, 20);
-		CConeMesh* Cone = CConeMesh::CreateMesh(1.0f, 5, 20, 20);
-		//CPlaneMesh* Plane = CPlaneMesh::CreateMesh(2.0f,2.0f,5.0f,5.0f);	
+		//CConeMesh* Cone = CConeMesh::CreateMesh(1.0f, 5, 20, 20);
+		//CPlaneMesh* Plane = CPlaneMesh::CreateMesh(2.0f,2.0f,5.0f,5.0f);
+		string ObjMeshPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+		CCustomMesh* Custom = CCustomMesh::CreateMesh(ObjMeshPath);
 		// 对象初始化
-		for(auto &Tmp : GObjects)
+		for(auto &Temp : GObjects)
 		{
-			Tmp->BeginInit();
+			Temp->BeginInit();
 		}
 	}
 
@@ -99,11 +102,11 @@ int CWindowsEngine::PostInit()
 void CWindowsEngine::Tick(float DeltaTime)
 {
 	// 对象Tick
-	for (auto& Tmp : GObjects)
+	for (auto& Temp : GObjects)
 	{
-		if (Tmp->IsTick())
+		if (Temp->IsTick())
 		{
-			Tmp->Tick(DeltaTime);
+			Temp->Tick(DeltaTime);
 		}
 	}
 
@@ -111,9 +114,9 @@ void CWindowsEngine::Tick(float DeltaTime)
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
 	// 预渲染
-	for (auto& Tmp : IRenderingInterface::RenderingInterface)
+	for (auto& Temp : IRenderingInterface::RenderingInterface)
 	{
-		Tmp->PreDraw(DeltaTime);
+		Temp->PreDraw(DeltaTime);
 	}
 
 	// 转换状态
@@ -153,10 +156,10 @@ void CWindowsEngine::Tick(float DeltaTime)
 	GraphicsCommandList->OMSetRenderTargets(1, &CurrentSwapBufferView,true,&CurrentDepthStencilView);	
 
 	// 渲染
-	for(auto &Tmp : IRenderingInterface::RenderingInterface)
+	for(auto &Temp : IRenderingInterface::RenderingInterface)
 	{
-		Tmp->Draw(DeltaTime);
-		Tmp->PostDraw(DeltaTime);
+		Temp->Draw(DeltaTime);
+		Temp->PostDraw(DeltaTime);
 	}
 
 	// 资源转换
