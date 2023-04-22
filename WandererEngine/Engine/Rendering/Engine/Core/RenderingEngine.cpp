@@ -1,6 +1,6 @@
 #include "RenderingEngine.h"
 
-void CRenderingEngine::SetMianWindowsHandle(HWND InNewMainWindowsHandle)
+void CRenderingEngine::SetMainWindowsHandle(HWND InNewMainWindowsHandle)
 {
 	MainWindowsHandle = InNewMainWindowsHandle;
 }

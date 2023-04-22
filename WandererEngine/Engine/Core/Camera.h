@@ -18,13 +18,20 @@ public:
     CVARIABLE()
     CInputComponent* InputComponent;
 
+    POINT LastMousePosition;
 public:
     CCamera();
 
     virtual void BeginInit();   
     virtual void Tick(float DeltaTime);
 
-    virtual void ExecuteKeyboard(const FInputKey&);
+    virtual void ExecuteKeyboard(const FInputKey& InputKey);
+
+    virtual void OnMouseButtonDown(int X, int Y);
+    virtual void OnMouseButtonUp(int X, int Y);
+    virtual void OnMouseMove(int X, int Y);
+    virtual void MoveForward(float InValue);
+    virtual void MoveRight(float InValue);
 public:
     FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
     FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }

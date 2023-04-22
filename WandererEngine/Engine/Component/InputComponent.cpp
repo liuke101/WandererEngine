@@ -1,14 +1,65 @@
 #include "InputComponent.h"
-
+#include "Input/Input.h"
 void CInputComponent::BeginInit()
 {
+    // °ó¶¨Î¯ÍÐ
+    MouseDownDelegates.AddFunction(this, &CInputComponent::OnMouseButtonDown);
+    MouseUpDelegates.AddFunction(this, &CInputComponent::OnMouseButtonUp);
+    MouseMoveDelegates.AddFunction(this, &CInputComponent::OnMouseMove);
 }
 
 void CInputComponent::Tick(float DeltaTime)
 {
-    if(CaptureKeyboardInfoDelegate.IsBound())
+    if(KeyboardDelegate.IsBound())
     {
         FInputKey InputKey;
-        CaptureKeyboardInfoDelegate.Execute(InputKey);
+        if(GetAsyncKeyState('W') & 0x8000)
+        {
+            InputKey.KeyName = "W";
+
+            
+        }
+        else if (GetAsyncKeyState('S') & 0x8000)
+        {
+            InputKey.KeyName = "S";
+        }
+        else if (GetAsyncKeyState('A') & 0x8000)
+        {
+            InputKey.KeyName = "A";
+        }
+        else if(GetAsyncKeyState('D') & 0x8000)
+        {
+            InputKey.KeyName = "D";
+        }
+        else
+        {
+            return;
+        }
+        KeyboardDelegate.Execute(InputKey);
+    }
+}
+
+void CInputComponent::OnMouseButtonDown(int X, int Y)
+{
+    if(OnMouseButtonDownDelegate.IsBound())
+    {
+        OnMouseButtonDownDelegate.Execute(X, Y);
+    }
+
+}
+
+void CInputComponent::OnMouseButtonUp(int X, int Y)
+{
+    if (OnMouseButtonUpDelegate.IsBound())
+    {
+        OnMouseButtonUpDelegate.Execute(X, Y);
+    }
+}
+
+void CInputComponent::OnMouseMove(int X, int Y)
+{
+    if (OnMouseMoveDelegate.IsBound())
+    {
+        OnMouseMoveDelegate.Execute(X, Y);
     }
 }

@@ -3,10 +3,14 @@
 #include "../../Shader/Core/Shader.h"
 #include "MeshType.h"
 #include "Mesh.h"
+#include "../../Interface/DirectXDeviceInterface.h"
+#include "../../Interface/DirectXDeviceInterface.h"
+#include "../../../Engine/Rendering/Core/Buffer/ConstructBuffer.h"
+#include "../../Core/ViewportInfo.h"
 
 class FRenderingResourcesUpdate;
 
-class CMeshManage :public CCoreMinimalObject, public IRenderingInterface
+class CMeshManage :public CCoreMinimalObject, public IRenderingInterface, public IDirectXDeviceInterface
 {
 public:
 	CMeshManage();
@@ -14,7 +18,7 @@ public:
 	virtual void Init();
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
-
+	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
@@ -29,7 +33,7 @@ public:
 		float InDepth);
 
 	CMesh* CreateConeMesh(
-		float InRadius,
+		float InBottomRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
@@ -59,6 +63,8 @@ protected:
 	T* CreateMesh(ParamTypes &&...Params);
 
 protected:
+    FConstructBuffer ConstructBuffer;				// 构建缓冲区
+
 	ComPtr<ID3DBlob> CPUVertexBufferPtr;            // CPU顶点缓冲区（存储在系统内存中）
 	ComPtr<ID3DBlob> CPUIndexBufferPtr;             // CPU索引缓冲区（存储在系统内存中）
 
@@ -78,14 +84,10 @@ protected:
 	UINT IndexSizeInBytes;                          // 索引缓冲区视图，视图的顶点缓冲区大小（字节)
 	DXGI_FORMAT IndexFormat;                        // 索引缓冲区视图，索引格式
 
-protected:
 	FShader VertexShader;                               // 顶点着色器 
 	FShader PixelShader;                                // 像素着色器
 	vector<D3D12_INPUT_ELEMENT_DESC> InputLayoutDESC;   // 输入布局描述符
 	ComPtr<ID3D12PipelineState> PSO;                    // PSO流水线状态对象
 
-protected:
 	XMFLOAT4X4 ModelMatrix;
-	XMFLOAT4X4 ViewMatrix;
-	XMFLOAT4X4 ProjectionMatrix;
 };

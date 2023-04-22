@@ -1,13 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "../Core/Engine.h"
 
-class FViewport
+struct FViewportInfo
 {
 public:
-    FViewport();
-
-    void ViewportInit();
-
     XMFLOAT4X4 ViewMatrix;
     XMFLOAT4X4 ProjectionMatrix;
 };

@@ -4,12 +4,13 @@
 #include "../../Core/Engine.h"
 #include "../../Rendering/Engine/Core/RenderingEngine.h"
 
+class CWorld;
 class CDirectXRenderingEngine;
 
 // Windows平台引擎类
 class CWindowsEngine :public CEngine
 {
-	friend class IRenderingInterface;
+	friend class IDirectXDeviceInterface;
 
 public:
 	CWindowsEngine();
@@ -18,7 +19,6 @@ public:
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
 
-	
 	virtual void Tick(float DeltaTime);
 
 	virtual int PreExit();
@@ -37,6 +37,7 @@ protected:
 
 protected:
 	CDirectXRenderingEngine* RenderingEngine;
+	CWorld* World;
 };
 
 #endif

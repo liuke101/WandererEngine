@@ -1,4 +1,4 @@
-#include "WindowsEngine.h"
+ #include "WindowsEngine.h"
 #include "../../Debug/EngineDebug.h"
 #include "../../Config/EngineRenderConfig.h"
 #include "../../Rendering/Core/Rendering.h"
@@ -11,7 +11,7 @@
 #include "../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../Core/World.h"
 #include "../../Rendering/Engine/DirectX/DirectX12RenderingEngine.h"
-
+#include "../../Core/Camera.h"
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
 
@@ -48,11 +48,11 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 	InitWindows(InParameters);
 
-	RenderingEngine->SetMianWindowsHandle(MainWindowsHandle);
+	RenderingEngine->SetMainWindowsHandle(MainWindowsHandle);
 
 	RenderingEngine->Init(InParameters);
 
-	CWorld *World= CreateObject<CWorld>(new CWorld());
+	World= CreateObject<CWorld>(new CWorld());
 
 	Engine_Log("Engine initialization complete.");
 	return 0;
@@ -82,8 +82,20 @@ void CWindowsEngine::Tick(float DeltaTime)
 			Temp->Tick(DeltaTime);
 		}
 	}
-	
-	RenderingEngine->Tick(DeltaTime);
+
+	if (World)
+	{
+		if(World->GetCamra())
+		{
+		    FViewportInfo ViewportInfo;
+		    ViewportInfo.ViewMatrix = World->GetCamra()->ViewMatrix;
+		    ViewportInfo.ProjectionMatrix = World->GetCamra()->ProjectionMatrix;
+
+		    RenderingEngine->UpdateCalculations(DeltaTime, ViewportInfo);
+
+		    RenderingEngine->Tick(DeltaTime);
+		}
+	}
 }
 
 int CWindowsEngine::PreExit()

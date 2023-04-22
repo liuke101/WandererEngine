@@ -4,7 +4,7 @@
 class CRenderingEngine : public CEngine
 {
 public:
-	void SetMianWindowsHandle(HWND InNewMainWindowsHandle);
+	void SetMainWindowsHandle(HWND InNewMainWindowsHandle);
 
 protected:
 	HWND MainWindowsHandle;

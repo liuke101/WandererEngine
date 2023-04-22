@@ -51,7 +51,7 @@ CDirectXRenderingEngine::~CDirectXRenderingEngine()
 
 int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters InParameters)
 {
-	Engine_Log("DirectXRenderingEngine pre initialization complete.");
+	Engine_Log("DirectXRenderingEngine pre-initialization complete.");
 	return 0;
 }
 
@@ -73,27 +73,31 @@ int CDirectXRenderingEngine::PostInit()
 	
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
+
 	{
 		//构建Mesh
-	    //CBoxMesh* Box = CBoxMesh::CreateMesh();
-		//MeshManage->CreateBoxMesh(4.f, 3.f, 1.5f);
+		//MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f);
+		MeshManage->CreateSphereMesh(2.f, 20, 20);
 		//MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
-		string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-		MeshManage->CreateMesh(MeshObjPath);
-		//	CSphereMesh* SphereMesh = CSphereMesh::CreateMesh(2.f, 20, 20);
-		//	CCylinderMesh* CylinderMesh = CCylinderMesh::CreateMesh(1.f,1.f,5.f,20,20);
-		//	CConeMesh* ConeMesh = CConeMesh::CreateMesh(1.f, 5.f, 20, 20);
+		//MeshManage->CreateConeMesh(1.f, 5.f, 20, 20);
+		//string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+		//MeshManage->CreateMesh(MeshObjPath);
+		
 	}
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
-
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
 	WaitGPUCommandQueueComplete();
 
-	Engine_Log("DirectXRenderingEngine post initialization complete.");
+	Engine_Log("DirectXRenderingEngine post-initialization complete.");
 	return 0;
+}
+
+void CDirectXRenderingEngine::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	MeshManage->UpdateCalculations(DeltaTime, ViewportInfo);
 }
 
 void CDirectXRenderingEngine::Tick(float DeltaTime)
@@ -183,7 +187,6 @@ int CDirectXRenderingEngine::Exit()
 
 int CDirectXRenderingEngine::PostExit()
 {
-	FEngineRenderConfig::Destroy();
 
 	Engine_Log("DirectXRenderingEngine post-exit complete.");
 	return 0;

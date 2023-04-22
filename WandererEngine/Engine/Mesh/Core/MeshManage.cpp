@@ -17,24 +17,13 @@ CMeshManage::CMeshManage()
     , IndexSizeInBytes(0)
     , IndexFormat(DXGI_FORMAT_R16_UINT)
     , ModelMatrix(FObjectTransformation::IdentityMatrix4x4())
-    , ViewMatrix(FObjectTransformation::IdentityMatrix4x4())
-    , ProjectionMatrix(FObjectTransformation::IdentityMatrix4x4())
 {
 
 }
 
 void CMeshManage::Init()
 {
-    float AspectRattio = static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenWidth) / static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenHeight);
-
-    // 透视投影矩阵
-    XMMATRIX Project = XMMatrixPerspectiveFovLH(
-        0.25f * XM_PI,   //FOV：用弧度制表示的垂直视场角
-        AspectRattio,    //纵横比=宽度/高度
-        1.0f,            //到近裁剪平面的距离
-        1000.0f);        //到远裁剪平面的距离
-
-    XMStoreFloat4x4(&ProjectionMatrix, Project);
+    
 }
 
 void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
@@ -126,8 +115,8 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     memcpy(CPUIndexBufferPtr->GetBufferPointer(), InRenderingData->IndexData.data(), IndexSizeInBytes);
 
     // 创建GPU顶点/索引缓冲区
-    GPUVertexBufferPtr = ConstructDefaultBuffer(VertexUploadBufferPtr, InRenderingData->VertexData.data(), VertexSizeInBytes);
-    GPUIndexBufferPtr = ConstructDefaultBuffer(IndexUploadBufferPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
+    GPUVertexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(VertexUploadBufferPtr, InRenderingData->VertexData.data(), VertexSizeInBytes);
+    GPUIndexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(IndexUploadBufferPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 
@@ -164,7 +153,6 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     //GPSDesc.RasterizerState.ForcedSampleCount = 0;                                          // UAV 渲染或栅格化时强制的样本计数
     //GPSDesc.RasterizerState.ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF; // 标识保守栅格化是打开还是关闭
 
-
     GPSDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);                    // 深度/模板测试的状态
     GPSDesc.InputLayout.pInputElementDescs = InputLayoutDESC.data();                          // 输入布局描述
     GPSDesc.InputLayout.NumElements = static_cast<UINT>(InputLayoutDESC.size());
@@ -177,6 +165,30 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     // GPSDesc.NodeMask //单GPU设置为0
 
     ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO)));
+}
+
+void CMeshManage::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+    XMUINT3 MeshPos = XMUINT3(5.0f, 5.0f, 5.0f);
+
+    XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
+
+    // 观察变换矩阵
+    XMVECTOR ViewTarget = XMVectorZero();
+    XMVECTOR ViewUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+    XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
+    XMStoreFloat4x4(const_cast<XMFLOAT4X4*>(&ViewportInfo.ViewMatrix), ViewLookAt);
+
+    // MVP
+    XMMATRIX M_Model = XMLoadFloat4x4(&ModelMatrix);
+    XMMATRIX M_View = ViewLookAt;
+    XMMATRIX M_Projection = XMLoadFloat4x4(&ViewportInfo.ProjectionMatrix);
+    XMMATRIX M_MVP = M_Model * M_View * M_Projection;
+
+    FObjectTransformation ObjectTransformation;
+    XMStoreFloat4x4(&ObjectTransformation.MVP, XMMatrixTranspose(M_MVP));
+
+    objectConstants->Update(0, &ObjectTransformation);  //更新hlsl中的数据
 }
 
 void CMeshManage::PreDraw(float DeltaTime)
@@ -221,26 +233,7 @@ void CMeshManage::Draw(float DeltaTime)
 
 void CMeshManage::PostDraw(float DeltaTime)
 {
-    XMUINT3 MeshPos = XMUINT3(5.0f, 5.0f, 5.0f);
-
-    XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
-
-    // 观察变换矩阵
-    XMVECTOR ViewTarget = XMVectorZero();
-    XMVECTOR ViewUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-    XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
-    XMStoreFloat4x4(&ViewMatrix, ViewLookAt);
-
-    // MVP
-    XMMATRIX M_Model = XMLoadFloat4x4(&ModelMatrix);
-    XMMATRIX M_View = ViewLookAt;
-    XMMATRIX M_Projection = XMLoadFloat4x4(&ProjectionMatrix);
-    XMMATRIX M_MVP = M_Model * M_View * M_Projection;
-
-    FObjectTransformation ObjectTransformation;
-    XMStoreFloat4x4(&ObjectTransformation.MVP, XMMatrixTranspose(M_MVP));
-
-    objectConstants->Update(0, &ObjectTransformation);  //更新hlsl中的数据
+    
 }
 
 D3D12_VERTEX_BUFFER_VIEW CMeshManage::GetVertexBufferView()
@@ -276,9 +269,9 @@ CMesh* CMeshManage::CreateBoxMesh(float InHeight, float InWidth, float InDepth)
     return CreateMesh<CBoxMesh>(InHeight, InWidth, InDepth);
 }
 
-CMesh* CMeshManage::CreateConeMesh(float InRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+CMesh* CMeshManage::CreateConeMesh(float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-    return CreateMesh<CConeMesh>(InRadius, InHeight, InAxialSubdivision, InHeightSubdivision);
+    return CreateMesh<CConeMesh>(InBottomRadius, InHeight, InAxialSubdivision, InHeightSubdivision);
 }
 
 CMesh* CMeshManage::CreateCylinderMesh(float InTopRadius, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
@@ -300,11 +293,8 @@ T* CMeshManage::CreateMesh(ParamTypes && ...Params)
     FMeshRenderingData MeshData;
     MyMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
-    MyMesh->BeginInit();
-
     //构建mesh
     BuildMesh(&MeshData);
-
     MyMesh->Init();
 
     return MyMesh;

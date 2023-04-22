@@ -1,5 +1,6 @@
 #include "WindowsMessageProcessing.h"
-
+#include "../../Component/Input/Input.h"
+#include <windowsx.h>
 LRESULT CALLBACK 
 EngineWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -7,7 +8,16 @@ EngineWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_CLOSE:
-		PostQuitMessage(0);
+	    PostQuitMessage(0);
+	    return 0;
+	case WM_RBUTTONDOWN:
+	    MouseDownDelegates.Broadcast(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
+		return 0;
+	case WM_RBUTTONUP:
+		MouseDownDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		return 0;
+	case WM_MOUSEMOVE:
+		MouseDownDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	}
 

@@ -1,10 +1,11 @@
 #pragma once
 #include "../../Core/RenderingEngine.h"
+#include "../../../../Core/ViewportInfo.h"
 
 class CMeshManage;
 class CDirectXRenderingEngine :public CRenderingEngine
 {
-	friend class IRenderingInterface;
+	friend class IDirectXDeviceInterface;
 public:
 	CDirectXRenderingEngine();
 	~CDirectXRenderingEngine();
@@ -13,6 +14,8 @@ public:
 
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
+
+	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	virtual void Tick(float DeltaTime);
 
@@ -52,8 +55,8 @@ protected:
 	CMeshManage* MeshManage;
 
 protected:
-	UINT64 CurrentFenceIndex = 0;       // 围栏值
-	int CurrentSwapBufferIndex = 0;		// 当前Buffer的索引
+	UINT64 CurrentFenceIndex;       // 围栏值
+	int CurrentSwapBufferIndex;		// 当前Buffer的索引
 protected:
 	ComPtr<IDXGIFactory4> DXGIFactory;	// 创建DirectX 图形基础结构(DXGI)对象
 	ComPtr<ID3D12Device> D3dDevice;     // 显示适配器; 它用于创建命令分配器、命令列表、命令队列、围栏Fence、资源、管道状态对象、堆、根签名、采样器和许多资源视图。
