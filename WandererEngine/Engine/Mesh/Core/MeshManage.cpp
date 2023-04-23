@@ -7,8 +7,10 @@
 #include "../SphereMesh.h"
 #include "../PlaneMesh.h"
 #include "ObjectTransformation.h"
+#include "../../Core/Viewport/ViewportTransformation.h"
 #include "../../Rendering/Core/RenderingResourcesUpdate.h"
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
+
 
 CMeshManage::CMeshManage()
     : VertexStrideInBytes(0)
@@ -16,7 +18,7 @@ CMeshManage::CMeshManage()
     , IndexCount(0)
     , IndexSizeInBytes(0)
     , IndexFormat(DXGI_FORMAT_R16_UINT)
-    , ModelMatrix(FObjectTransformation::IdentityMatrix4x4())
+    , ModelMatrix(EngineMath::IdentityMatrix4x4())
 {
 
 }
@@ -30,42 +32,72 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
     // 【常量缓冲区】
+    //—————————————————————————————————————————————————————————————————
     // 创建CBV描述符堆
     D3D12_DESCRIPTOR_HEAP_DESC CBVHeapDesc; // 描述符堆描述
-    CBVHeapDesc.NumDescriptors = 1;
+    CBVHeapDesc.NumDescriptors = 2;         // ⚠描述符数量
     CBVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
     CBVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
     CBVHeapDesc.NodeMask = 0;
     GetD3dDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(&CBVHeap));
 
+    //—————————————————————————————————————————————————————————————————
     // 创建CBV描述符
-    objectConstants = make_shared<FRenderingResourcesUpdate>();
-    objectConstants->Init(GetD3dDevice().Get(), sizeof(FObjectTransformation), 1);
-    D3D12_GPU_VIRTUAL_ADDRESS ObAddr = objectConstants.get()->GetBuffer()->GetGPUVirtualAddress();    // 缓冲区的起始地址(即索引为0的那个常量缓冲区的地址)
 
-    D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc;    // 描述要查看的常量缓冲区
-    CBVDesc.BufferLocation = ObAddr;
-    CBVDesc.SizeInBytes = objectConstants->GetConstantBufferByteSize();
+    UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);//获取指定类型描述符堆的句柄增量的大小
 
-    // BUG：ObAddr太大了
-    GetD3dDevice()->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart()); // 创建用于访问资源数据的常量缓冲区视图
+    // 创建ObjectCBV描述符
+    ObjectConstants = make_shared<FRenderingResourcesUpdate>();
+    ObjectConstants->Init(GetD3dDevice().Get(), sizeof(FObjectTransformation), 1);
+    D3D12_GPU_VIRTUAL_ADDRESS ObjectGVA = ObjectConstants.get()->GetBuffer()->GetGPUVirtualAddress();    // 缓冲区的起始地址(即索引为0的那个常量缓冲区的地址)
 
-    // 创建描述符表，只存有一个CBV
-    // 不同类型的资源会被绑定到特定的寄存器槽，以供着色器程序访问。register(x#)表示寄存器传递的资源类型
+    D3D12_CONSTANT_BUFFER_VIEW_DESC ObjectCBVDesc;  // 描述要查看的常量缓冲区
+    ObjectCBVDesc.BufferLocation = ObjectGVA;
+    ObjectCBVDesc.SizeInBytes = ObjectConstants->GetConstantBufferByteSize();
+
+    CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(CBVHeap->GetCPUDescriptorHandleForHeapStart());
+    DescriptorHandle.Offset(0, DescriptorOffset);   //⚠从0开始偏移
+    GetD3dDevice()->CreateConstantBufferView(&ObjectCBVDesc, DescriptorHandle); // 创建用于访问资源数据的常量缓冲区视图
+
+    // 创建ViewportCBV描述符
+    ViewportConstants = make_shared<FRenderingResourcesUpdate>();
+    ViewportConstants->Init(GetD3dDevice().Get(), sizeof(FViewportTransformation), 1);
+    D3D12_GPU_VIRTUAL_ADDRESS ViewportGVA = ViewportConstants.get()->GetBuffer()->GetGPUVirtualAddress();    
+
+    D3D12_CONSTANT_BUFFER_VIEW_DESC ViewportCBVDesc;    
+    ViewportCBVDesc.BufferLocation = ViewportGVA;
+    ViewportCBVDesc.SizeInBytes = ViewportConstants->GetConstantBufferByteSize();
+
+    DescriptorHandle.Offset(1, DescriptorOffset); 
+    GetD3dDevice()->CreateConstantBufferView(&ViewportCBVDesc, DescriptorHandle);
+    //—————————————————————————————————————————————————————————————————
+    // 创建描述符表
+    // 创建ObjectCBV描述符表
+    CD3DX12_DESCRIPTOR_RANGE ObjectCBVTable;
+    ObjectCBVTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0); //（描述符表的类型，表中的描述符数量，⚠寄存器编号）
+
+    // 创建ViewportCBV描述符表
+    CD3DX12_DESCRIPTOR_RANGE ViewportCBVTable;
+    ViewportCBVTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1); 
+
+    //—————————————————————————————————————————————————————————————————
+    // 根参数绑定
+    // 根参数可以是根常量、根描述符、描述符表
+    // 根参数将描述符表绑定到常量缓冲区寄存器register(x#)，以供着色器程序访问。register(x#)表示寄存器传递的资源类型
     // t:着色器资源视图  s:采样器  b：常量缓冲区视图  #：寄存器编号
-    // 这段代码创建了一个根参数，目的是将含有一个CBV的描述符表绑定到常量缓冲区寄存器0，即register(b0)
-    CD3DX12_ROOT_PARAMETER RootParam[1];    // 根参数可以是根常量、根描述符、描述符表
-    CD3DX12_DESCRIPTOR_RANGE CBVTable;
-    CBVTable.Init(
-        D3D12_DESCRIPTOR_RANGE_TYPE_CBV,    // 描述符表的类型，指定CBV的范围
-        1,                                  // 表中的描述符数量
-        0);                                 // 将这段描述符区域绑定至此基址着色器寄存器
-    RootParam[0].InitAsDescriptorTable(
-        1,                                  // 描述符区域的数量
-        &CBVTable);                         // 指向描述符区域数组的指针
+    CD3DX12_ROOT_PARAMETER RootParam[2];                    // ⚠描述符表大小=使用的寄存器槽数量
+    RootParam[0].InitAsDescriptorTable(1, &ObjectCBVTable); //（描述符区域的数量，指向描述符区域数组的指针）
+    RootParam[1].InitAsDescriptorTable(1, &ViewportCBVTable);
 
-    // 创建根签名，仅含一个槽位(指向上述只存有一个CBV的描述符表)
-    CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(1, RootParam, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+    //—————————————————————————————————————————————————————————————————
+    // 创建根签名
+    CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
+        2,  // ⚠大小=使用的寄存器槽数量
+        RootParam,
+        0, 
+        nullptr, 
+        D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
     ComPtr<ID3D10Blob> SerializeRootSignature;
     ComPtr<ID3D10Blob> ErrorBlob;
     D3D12SerializeRootSignature(    // 必须先将根签名的描述进行序列化处理，才可传入CreateRootSignature方法，正是创建根签名
@@ -86,8 +118,8 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
         IID_PPV_ARGS(&RootSignature));
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
     // 【着色器Shader】
+    //—————————————————————————————————————————————————————————————————
     // 编译shader
     VertexShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "VertexShaderMain", "vs_5_0");
     PixelShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "PixelShaderMain", "ps_5_0");
@@ -100,8 +132,8 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     };
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
     // 【顶点/索引缓冲区】
+    //—————————————————————————————————————————————————————————————————
     // 获取模型数据的大小
     VertexStrideInBytes = sizeof(FVertex);
     VertexSizeInBytes = InRenderingData->VertexData.size() * VertexStrideInBytes;
@@ -119,8 +151,8 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     GPUIndexBufferPtr = ConstructBuffer.ConstructDefaultBuffer(IndexUploadBufferPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
     // 【PSO流水线状态对象】
+    //—————————————————————————————————————————————————————————————————
     // 流水线绑定
     D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;
     memset(&GPSDesc, 0, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
@@ -169,26 +201,20 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 
 void CMeshManage::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-    XMUINT3 MeshPos = XMUINT3(5.0f, 5.0f, 5.0f);
+    XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
+    XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectionMatrix);
+    XMMATRIX M_M = XMLoadFloat4x4(&ModelMatrix);
+    XMMATRIX M_VP = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
 
-    XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
-
-    // 观察变换矩阵
-    XMVECTOR ViewTarget = XMVectorZero();
-    XMVECTOR ViewUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-    XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
-    XMStoreFloat4x4(const_cast<XMFLOAT4X4*>(&ViewportInfo.ViewMatrix), ViewLookAt);
-
-    // MVP
-    XMMATRIX M_Model = XMLoadFloat4x4(&ModelMatrix);
-    XMMATRIX M_View = ViewLookAt;
-    XMMATRIX M_Projection = XMLoadFloat4x4(&ViewportInfo.ProjectionMatrix);
-    XMMATRIX M_MVP = M_Model * M_View * M_Projection;
-
+    // 更新HLSL中的ObjectConstBuffer数据
     FObjectTransformation ObjectTransformation;
-    XMStoreFloat4x4(&ObjectTransformation.MVP, XMMatrixTranspose(M_MVP));
+    XMStoreFloat4x4(&ObjectTransformation.M, XMMatrixTranspose(M_M));
+    ObjectConstants->Update(0, &ObjectTransformation);  //更新hlsl中的数据
 
-    objectConstants->Update(0, &ObjectTransformation);  //更新hlsl中的数据
+    // 更新HLSL中的ViewportConstBuffer数据
+    FViewportTransformation ViewportTransformation;
+    XMStoreFloat4x4(&ViewportTransformation.VP, XMMatrixTranspose(M_VP));
+    ViewportConstants->Update(0, &ViewportTransformation);  
 }
 
 void CMeshManage::PreDraw(float DeltaTime)
@@ -219,8 +245,14 @@ void CMeshManage::Draw(float DeltaTime)
     // 指定图元（又称基元）拓扑，告知D3D如何用顶点数据表示几何图元
     GetGraphicsCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    // 令描述符表与渲染流水线绑定
-    GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, CBVHeap->GetGPUDescriptorHandleForHeapStart());
+    UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);//获取指定类型描述符堆的句柄增量的大小
+    CD3DX12_GPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(CBVHeap->GetGPUDescriptorHandleForHeapStart());
+
+    DescriptorHandle.Offset(0, DescriptorOffset); //⚠从0开始偏移
+    GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, DescriptorHandle); // 令描述符表与渲染流水线绑定（⚠寄存器编号，描述符首地址）
+
+    DescriptorHandle.Offset(1, DescriptorOffset); 
+    GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, DescriptorHandle);
 
     // 绘制索引，实例化图元
     GetGraphicsCommandList()->DrawIndexedInstanced(

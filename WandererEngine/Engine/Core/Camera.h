@@ -1,7 +1,7 @@
 #pragma once
 /* 摄像机 */
 
-#include "Viewport.h"
+#include "Viewport/Viewport.h"
 #include "CoreObject/CoreMinimalObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 
@@ -27,11 +27,15 @@ public:
 
     virtual void ExecuteKeyboard(const FInputKey& InputKey);
 
+    // 构建观察变换矩阵
+    virtual void BuildViewMatrix(float DeltaTime);
+
     virtual void OnMouseButtonDown(int X, int Y);
     virtual void OnMouseButtonUp(int X, int Y);
     virtual void OnMouseMove(int X, int Y);
     virtual void MoveForward(float InValue);
     virtual void MoveRight(float InValue);
+
 public:
     FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
     FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }

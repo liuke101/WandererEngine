@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../../EngineMinimal.h"
 
+// 用于创建常量缓冲区
 class FRenderingResourcesUpdate : public enable_shared_from_this<FRenderingResourcesUpdate>
 {
 public:

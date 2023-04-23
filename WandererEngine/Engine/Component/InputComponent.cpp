@@ -16,8 +16,6 @@ void CInputComponent::Tick(float DeltaTime)
         if(GetAsyncKeyState('W') & 0x8000)
         {
             InputKey.KeyName = "W";
-
-            
         }
         else if (GetAsyncKeyState('S') & 0x8000)
         {

@@ -1,6 +1,11 @@
-cbuffer ConstBuffer : register(b0) //b0-b14
+cbuffer ObjectConstBuffer : register(b0) //b0-b14
 {
-    float4x4 MVP;
+    float4x4 M;
+}
+
+cbuffer ViewportConstBuffer : register(b1) 
+{
+    float4x4 VP;
 }
 
 struct a2v
@@ -18,7 +23,11 @@ struct v2f
 v2f VertexShaderMain(a2v v)
 {
     v2f o;
+
+    float4x4 MVP = mul(M, VP);
+
     o.pos = mul(float4(v.vertex, 1.0f), MVP);
+
     o.color = v.color;
 
     return o;

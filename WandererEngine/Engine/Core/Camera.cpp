@@ -22,7 +22,7 @@ void CCamera::BeginInit()
 
 void CCamera::Tick(float DeltaTime)
 {
-
+    BuildViewMatrix(DeltaTime);
 }
 
 void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
@@ -46,6 +46,25 @@ void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
     
 }
 
+void CCamera::BuildViewMatrix(float DeltaTime)
+{
+
+    TransformationComponent->CalcLRUVector();
+
+    fvector_3d V3;
+    TransformationComponent->CalcNegativePosVecotr(V3);
+
+    XMFLOAT3 LookatVector = TransformationComponent->GetLookatVector();
+    XMFLOAT3 RightVector = TransformationComponent->GetRightVector();
+    XMFLOAT3 UpVector = TransformationComponent->GetUpVector();
+
+    ViewMatrix = {
+        RightVector.x, UpVector.x, LookatVector.x, 0.0f,
+        RightVector.y, UpVector.y, LookatVector.y, 0.0f,
+        RightVector.z, UpVector.z, LookatVector.z, 0.0f,
+        V3.x,          V3.y,       V3.z,            1.f };
+}
+
 void CCamera::OnMouseButtonDown(int X, int Y)
 {
     LastMousePosition.x = X;
@@ -65,12 +84,21 @@ void CCamera::OnMouseMove(int X, int Y)
 // +1向前，-1向后
 void CCamera::MoveForward(float InValue)
 {
+    XMFLOAT3 fPosition = TransformationComponent->GetPosition();
+    XMFLOAT3 fLookat = TransformationComponent->GetLookatVector();
 
+    XMVECTOR AmountMovement = XMVectorReplicate(InValue * 1.0f);
+    XMVECTOR Lookat = XMLoadFloat3(&fLookat);
+    XMVECTOR Position = XMLoadFloat3(&fPosition);
+
+    XMStoreFloat3(&fPosition,XMVectorMultiplyAdd(AmountMovement, Lookat, Position));
+
+    TransformationComponent->SetPosition(fPosition);
 }
-
 // +1向左，-1向右
 void CCamera::MoveRight(float InValue)
 {
 
 }
+
 

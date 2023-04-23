@@ -6,7 +6,7 @@
 #include "../../Interface/DirectXDeviceInterface.h"
 #include "../../Interface/DirectXDeviceInterface.h"
 #include "../../../Engine/Rendering/Core/Buffer/ConstructBuffer.h"
-#include "../../Core/ViewportInfo.h"
+#include "../../Core/Viewport/ViewportInfo.h"
 
 class FRenderingResourcesUpdate;
 
@@ -75,7 +75,8 @@ protected:
 	ComPtr<ID3D12Resource> IndexUploadBufferPtr;    // 索引上传缓冲区
 
 	ComPtr<ID3D12DescriptorHeap> CBVHeap;           // CBV描述符堆：常量缓冲区视图（Constant Buffer View）
-	shared_ptr<FRenderingResourcesUpdate> objectConstants;   // 对象常量
+	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	   // 对象常量
+	shared_ptr<FRenderingResourcesUpdate> ViewportConstants;   //  视口常量
 	ComPtr<ID3D12RootSignature>  RootSignature;     // 根签名
 
 	UINT VertexStrideInBytes;                       // 顶点缓冲区视图，单个顶点的大小(字节)

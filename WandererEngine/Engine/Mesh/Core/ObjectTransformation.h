@@ -6,7 +6,5 @@ struct FObjectTransformation
 {
 	FObjectTransformation();
 
-	XMFLOAT4X4 MVP;
-
-	static XMFLOAT4X4 IdentityMatrix4x4();
+	XMFLOAT4X4 M;
 };
