@@ -11,7 +11,6 @@ class CDirectXRenderingEngine;
 class CWindowsEngine :public CEngine
 {
 	friend class IDirectXDeviceInterface;
-
 public:
 	CWindowsEngine();
 	~CWindowsEngine();

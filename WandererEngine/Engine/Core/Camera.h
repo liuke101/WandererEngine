@@ -4,21 +4,21 @@
 #include "Viewport/Viewport.h"
 #include "CoreObject/CoreMinimalObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
+#include "../Interface/DirectXDeviceInterface.h"
 
 struct FInputKey;
 class CInputComponent;
 class CTransformationComponent;
 
-class CCamera : public CCoreMinimalObject, public FViewport
+class CCamera : public CCoreMinimalObject, public FViewport,public IDirectXDeviceInterface
 {
-public:
+
     CVARIABLE()
     CTransformationComponent* TransformationComponent;
 
     CVARIABLE()
     CInputComponent* InputComponent;
 
-    POINT LastMousePosition;
 public:
     CCamera();
 
@@ -36,7 +36,19 @@ public:
     virtual void MoveForward(float InValue);
     virtual void MoveRight(float InValue);
 
+protected:
+    // ÈÆYÖáÐý×ª
+    virtual void RotateAroundYAxis(float InRotateDegrees);
+    // ÈÆZÖáÐý×ª
+    virtual void RotateAroundZAxis(float InRotateDegrees);
 public:
     FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
     FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
+
+protected:
+    POINT LastMousePosition;  
+    bool bLeftMouseDown;      // ×ó¼üÊÇ·ñ°´ÏÂ
+
+    // Êó±êÅäÖÃ
+    float MouseSensitivity;  // ÁéÃô¶È
 };

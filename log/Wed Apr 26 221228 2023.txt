@@ -1,0 +1,19 @@
+[LOG] [Wed Apr 26 22:12:28 2023] Log Init. 
+[LOG] [Wed Apr 26 22:12:28 2023] Engine pre-initialization complete. 
+[LOG] [Wed Apr 26 22:12:28 2023] DirectXRenderingEngine pre-initialization complete. 
+[LOG] [Wed Apr 26 22:12:43 2023] InitWindows complete. 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:12:45 2023] Success ! 
+[LOG] [Wed Apr 26 22:12:45 2023] DirectXRenderingEngine initialization complete. 
+[LOG] [Wed Apr 26 22:12:46 2023] Engine initialization complete. 

@@ -80,8 +80,8 @@ HWND IDirectXDeviceInterface::GetMainWindowsHandle()
     {
         if (InEngine->GetRenderingEngine())
         {
-            return InEngine->GetRenderingEngine()->MainWindowsHandle;
-            //return InEngine->MainWindowsHandle; //有什么区别？
+            //return InEngine->GetRenderingEngine()->MainWindowsHandle;
+            return InEngine->MainWindowsHandle; //有什么区别？
         }
     }
     return HWND();

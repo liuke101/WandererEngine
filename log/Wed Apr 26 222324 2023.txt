@@ -1,0 +1,38 @@
+[LOG] [Wed Apr 26 22:23:24 2023] Log Init. 
+[LOG] [Wed Apr 26 22:23:24 2023] Engine pre-initialization complete. 
+[LOG] [Wed Apr 26 22:23:24 2023] DirectXRenderingEngine pre-initialization complete. 
+[LOG] [Wed Apr 26 22:23:24 2023] InitWindows complete. 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[LOG] [Wed Apr 26 22:23:24 2023] DirectXRenderingEngine initialization complete. 
+[LOG] [Wed Apr 26 22:23:24 2023] Engine initialization complete. 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[SUCCESS] [Wed Apr 26 22:23:24 2023] Success ! 
+[LOG] [Wed Apr 26 22:23:24 2023] DirectXRenderingEngine post-initialization complete. 
+[LOG] [Wed Apr 26 22:23:24 2023] Engine post-initialization complete. 

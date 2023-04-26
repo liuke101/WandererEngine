@@ -8,22 +8,22 @@ CTransformationComponent::CTransformationComponent()
 {
 }
 
-void CTransformationComponent::SetPosition(const XMFLOAT3 InNewPosition)
+void CTransformationComponent::SetPosition(const XMFLOAT3& InNewPosition)
 {
     Position = InNewPosition;
 }
 
-void CTransformationComponent::SetRightVector(const XMFLOAT3 InRightVector)
+void CTransformationComponent::SetRightVector(const XMFLOAT3& InRightVector)
 {
     RightVector = InRightVector;
 }
 
-void CTransformationComponent::SetUpVector(const XMFLOAT3 InUpVector)
+void CTransformationComponent::SetUpVector(const XMFLOAT3& InUpVector)
 {
     UpVector = InUpVector;
 }
 
-void CTransformationComponent::SetLookatVector(const XMFLOAT3 InNewLookatVector)
+void CTransformationComponent::SetLookatVector(const XMFLOAT3& InNewLookatVector)
 {
     LookatVector = InNewLookatVector;
 }
@@ -43,14 +43,14 @@ void CTransformationComponent::CalcLRUVector()
     XMStoreFloat3(&LookatVector, Lookat);
 }
 
-fvector_3d CTransformationComponent::CalcNegativePosVecotr()
+fvector_3d CTransformationComponent::CalcNegativePosVector()
 {
     fvector_3d FVector3;
-    CalcNegativePosVecotr();
+    CalcNegativePosVector(FVector3);
     return FVector3;
 }
 
-void CTransformationComponent::CalcNegativePosVecotr(fvector_3d& InPos3)
+void CTransformationComponent::CalcNegativePosVector(fvector_3d& InPos3)
 {
     XMVECTOR Right = XMLoadFloat3(&RightVector);
     XMVECTOR Up = XMLoadFloat3(&UpVector);
@@ -60,6 +60,6 @@ void CTransformationComponent::CalcNegativePosVecotr(fvector_3d& InPos3)
 
     // 观察变换矩阵第四行的分量就是向量点积的结果，平移矩阵第四行为负值
     InPos3.x = XMVectorGetX(XMVector3Dot(-NewPosition, Right));
-    InPos3.y = -XMVectorGetX(XMVector3Dot(-NewPosition, Up));
-    InPos3.z = -XMVectorGetX(XMVector3Dot(-NewPosition, Lookat));
+    InPos3.y = XMVectorGetX(XMVector3Dot(-NewPosition, Up));
+    InPos3.z = XMVectorGetX(XMVector3Dot(-NewPosition, Lookat));
 }
