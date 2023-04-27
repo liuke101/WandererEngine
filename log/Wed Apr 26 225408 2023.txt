@@ -1,3 +1,0 @@
-[LOG] [Wed Apr 26 22:54:08 2023] Log Init. 
-[LOG] [Wed Apr 26 22:54:08 2023] Engine pre-initialization complete. 
-[LOG] [Wed Apr 26 22:54:08 2023] DirectXRenderingEngine pre-initialization complete. 

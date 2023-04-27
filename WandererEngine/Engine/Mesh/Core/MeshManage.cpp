@@ -51,7 +51,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
     ObjectConstants->Init(GetD3dDevice().Get(), sizeof(FObjectTransformation), 1);
     D3D12_GPU_VIRTUAL_ADDRESS ObjectGVA = ObjectConstants.get()->GetBuffer()->GetGPUVirtualAddress();    // 缓冲区的起始地址(即索引为0的那个常量缓冲区的地址)
 
-    D3D12_CONSTANT_BUFFER_VIEW_DESC ObjectCBVDesc;  // 描述要查看的常量缓冲区
+    D3D12_CONSTANT_BUFFER_VIEW_DESC ObjectCBVDesc;  // 描述常量缓冲区视图
     ObjectCBVDesc.BufferLocation = ObjectGVA;
     ObjectCBVDesc.SizeInBytes = ObjectConstants->GetConstantBufferByteSize();
 
@@ -91,6 +91,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 
     //—————————————————————————————————————————————————————————————————
     // 创建根签名
+    // 根签名定义了drawcall之前，需要绑定到渲染流水线上的资源以及这些资源应该如何映射到着色器的输入寄存器中
     CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
         2,  // ⚠大小=使用的寄存器槽数量
         RootParam,
@@ -325,8 +326,11 @@ T* CMeshManage::CreateMesh(ParamTypes && ...Params)
     FMeshRenderingData MeshData;
     MyMesh->CreateMesh(MeshData, forward<ParamTypes>(Params)...);
 
+    MyMesh->BeginInit();
+
     //构建mesh
     BuildMesh(&MeshData);
+
     MyMesh->Init();
 
     return MyMesh;
