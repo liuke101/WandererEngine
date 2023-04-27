@@ -114,22 +114,18 @@ void CCamera::BuildViewMatrix(float DeltaTime)
 
 void CCamera::OnMouseButtonDown(int X, int Y)
 {
+    SetCapture(GetMainWindowsHandle()); // 鼠标捕获
     bLeftMouseDown = true;
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
-
-    SetCapture(GetMainWindowsHandle()); // 鼠标捕获
-    
 }
 
 void CCamera::OnMouseButtonUp(int X, int Y)
 {
-    bLeftMouseDown = false;
-
     ReleaseCapture();           // 释放鼠标捕获
+    bLeftMouseDown = false;
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
-    
 }
 
 void CCamera::OnMouseMove(int X, int Y)
@@ -160,7 +156,6 @@ void CCamera::OnMouseMove(int X, int Y)
         }
         LastMousePosition.x = X;
         LastMousePosition.y = Y;
-
     }
 }
 
