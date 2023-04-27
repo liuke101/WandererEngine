@@ -7,7 +7,6 @@ public:
     CTransformationComponent();
 
     void SetPosition(const XMFLOAT3& InNewPosition);
-    
     void SetRightVector(const XMFLOAT3& InRightVector);
     void SetUpVector(const XMFLOAT3& InUpVector);
     void SetLookatVector(const XMFLOAT3& InNewLookatVector);

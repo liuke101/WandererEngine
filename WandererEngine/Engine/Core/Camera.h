@@ -6,13 +6,13 @@
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 #include "../Interface/DirectXDeviceInterface.h"
 
+enum ECameraType;
 struct FInputKey;
 class CInputComponent;
 class CTransformationComponent;
 
 class CCamera : public CCoreMinimalObject, public FViewport,public IDirectXDeviceInterface
 {
-
     CVARIABLE()
     CTransformationComponent* TransformationComponent;
 
@@ -33,22 +33,29 @@ public:
     virtual void OnMouseButtonDown(int X, int Y);
     virtual void OnMouseButtonUp(int X, int Y);
     virtual void OnMouseMove(int X, int Y);
+    virtual void OnMouseWheel(int X, int Y,float InDelta);
+
     virtual void MoveForward(float InValue);
     virtual void MoveRight(float InValue);
 
 protected:
-    // 绕Y轴旋转
+    // 上下旋转：绕RightVector旋转
+    virtual void RotateAroundRAxis(float InRotateDegrees);
+    // 左右旋转：绕世界空间Y轴旋转
     virtual void RotateAroundYAxis(float InRotateDegrees);
-    // 绕Z轴旋转
-    virtual void RotateAroundZAxis(float InRotateDegrees);
 public:
     FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
     FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
 
 protected:
-    POINT LastMousePosition;  
-    bool bLeftMouseDown;      // 左键是否按下
-
     // 鼠标配置
+    POINT LastMousePosition;  // 上一帧鼠标位置
+    bool bLeftMouseDown;      // 检测左键是否按下
     float MouseSensitivity;  // 灵敏度
+    ECameraType CameraType;  // 摄像机状态
+
+    // 球面坐标转换笛卡尔坐标
+    float SphericalRadius;      // 球面半径
+    float theta;                // 上角
+    float beta;                 // 下角
 };

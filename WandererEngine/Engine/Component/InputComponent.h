@@ -6,6 +6,7 @@
 // µ¥²¥
 DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureKeyboardDelegate, void, const FInputKey &);
 DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureMouseDelegate, void, int, int);
+DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureMouseWheelDelegate, void, int, int, float);
 
 class CInputComponent : public CComponent
 {
@@ -21,6 +22,9 @@ public:
 
     CVARIABLE()
     FCaptureMouseDelegate OnMouseMoveDelegate;
+
+    CVARIABLE()
+    FCaptureMouseWheelDelegate OnMouseWheelDelegate;
 public:
 
     virtual void BeginInit();  
@@ -29,4 +33,5 @@ public:
     virtual void OnMouseButtonDown(int X, int Y);
     virtual void OnMouseButtonUp(int X, int Y);
     virtual void OnMouseMove(int X, int Y);
+    virtual void OnMouseWheel(int X, int Y,float InDelta);
 };

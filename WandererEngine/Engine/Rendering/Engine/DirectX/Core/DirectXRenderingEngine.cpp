@@ -77,11 +77,11 @@ int CDirectXRenderingEngine::PostInit()
 	{
 		//构建Mesh
 		//MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f);
-		MeshManage->CreateSphereMesh(2.f, 20, 20);
+		//MeshManage->CreateSphereMesh(2.f, 20, 20);
 		//MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
 		//MeshManage->CreateConeMesh(1.f, 5.f, 20, 20);
-		//string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-		//MeshManage->CreateMesh(MeshObjPath);
+		string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+		MeshManage->CreateMesh(MeshObjPath);
 		
 	}
 

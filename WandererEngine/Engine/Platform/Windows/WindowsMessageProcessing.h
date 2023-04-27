@@ -8,5 +8,4 @@
 // msg	消息
 // wParam	其他的消息特定信息
 // lParam	其他的消息特定信息
-LRESULT CALLBACK
-EngineWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK EngineWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

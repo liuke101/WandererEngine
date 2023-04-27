@@ -6,6 +6,7 @@ void CInputComponent::BeginInit()
     MouseDownDelegates.AddFunction(this, &CInputComponent::OnMouseButtonDown);
     MouseUpDelegates.AddFunction(this, &CInputComponent::OnMouseButtonUp);
     MouseMoveDelegates.AddFunction(this, &CInputComponent::OnMouseMove);
+    MouseWheelDelegates.AddFunction(this, &CInputComponent::OnMouseWheel);
 }
 
 void CInputComponent::Tick(float DeltaTime)
@@ -28,6 +29,14 @@ void CInputComponent::Tick(float DeltaTime)
         else if(GetAsyncKeyState('D') & 0x8000)
         {
             InputKey.KeyName = "D";
+        }
+        else if (GetAsyncKeyState('Q') & 0x8000)
+        {
+            InputKey.KeyName = "Q";
+        }
+        else if (GetAsyncKeyState('E') & 0x8000)
+        {
+            InputKey.KeyName = "E";
         }
         else
         {
@@ -59,5 +68,13 @@ void CInputComponent::OnMouseMove(int X, int Y)
     if (OnMouseMoveDelegate.IsBound())
     {
         OnMouseMoveDelegate.Execute(X, Y);
+    }
+}
+
+void CInputComponent::OnMouseWheel(int X, int Y, float InDelta)
+{
+    if (OnMouseWheelDelegate.IsBound())
+    {
+        OnMouseWheelDelegate.Execute(X, Y, InDelta);
     }
 }
