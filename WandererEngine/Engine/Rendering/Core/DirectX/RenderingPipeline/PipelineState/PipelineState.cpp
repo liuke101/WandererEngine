@@ -1,6 +1,22 @@
 ﻿#include "PipelineState.h"
 #include "../../../../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
+#include "../../../../../Platform/Windows/WindowsEngine.h"
+
 FPipelineState::FPipelineState()
+{
+}
+
+void FPipelineState::PreDraw(float DeltaTime)
+{
+    // 重置命令列表
+    ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get()));
+}
+
+void FPipelineState::Draw(float DeltaTime)
+{
+}
+
+void FPipelineState::PostDraw(float DeltaTime)
 {
 }
 

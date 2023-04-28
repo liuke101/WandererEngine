@@ -543,13 +543,12 @@
     <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp" />
     <ClCompile Include="Engine\Core\ECameraType.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\GeometryMap.cpp" />
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PipelineState\PipelineState.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DescriptorHeap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
@@ -868,5 +867,6 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DescriptorHeap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.h" />
   </ItemGroup>
 </Project>

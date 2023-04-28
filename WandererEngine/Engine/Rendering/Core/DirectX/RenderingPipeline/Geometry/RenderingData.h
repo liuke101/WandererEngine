@@ -3,14 +3,12 @@
 #include "../../../RenderingResourcesUpdate.h"
 
 class CMesh;
-
 /* 渲染数据 */
 struct FRenderingData : public IDirectXDeviceInterface_Struct
 {
 public:
 	FRenderingData();
 public:
-	// VBV顶点缓冲区视图
 	UINT VertexCount;								// 顶点缓冲区视图，顶点数量
 	UINT VertexTypeSize;							// 顶点缓冲区视图，单个顶点的大小(字节)  原UINT VertexStrideInBytes;
 	UINT VertexOffsetPosition;
@@ -28,6 +26,4 @@ public:
 
 	XMFLOAT4X4 ModelMatrix;							// 模型变换矩阵
 	CMesh* Mesh;
-
-	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;
 };

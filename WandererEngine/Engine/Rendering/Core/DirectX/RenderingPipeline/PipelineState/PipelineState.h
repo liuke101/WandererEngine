@@ -11,6 +11,12 @@ struct FPipelineState : public IDirectXDeviceInterface_Struct
 public:
     FPipelineState();
 
+    void PreDraw(float DeltaTime);
+
+    void Draw(float DeltaTime);
+
+    void PostDraw(float DeltaTime);
+
     // 重置管线状态描述
     void ResetGPSDesc();
 
@@ -29,4 +35,4 @@ public:
 private:
     ComPtr<ID3D12PipelineState> PSO;                    // PSO管线状态对象
     D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;         // 管线状态描述
-}
+};

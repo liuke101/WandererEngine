@@ -3,7 +3,7 @@
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
 class CMeshManage;
-class CDirectXRenderingEngine :public CRenderingEngine
+class CDirectXRenderingEngine : public CRenderingEngine
 {
 	friend class IDirectXDeviceInterface;
 public:

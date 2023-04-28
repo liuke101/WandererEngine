@@ -1,8 +1,12 @@
 #include "RenderingPipeline.h"
-//#include "PipelineState/PipelineState.h"
 
 FRenderingPipeline::FRenderingPipeline()
 {
+}
+
+void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+    GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
 }
 
 void FRenderingPipeline::BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData)
@@ -20,7 +24,7 @@ void FRenderingPipeline::BuildPipeline()
     RootSignature.BuildRootSignature();
     PipelineState.BindRootSignature(RootSignature.GetRootSignature());
 
-    // 构建+绑定着色器
+    // 构建+绑定着色器（Shader）
     VertexShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "VertexShaderMain", "vs_5_0");
     PixelShader.BuildShaders(L"../WandererEngine/Shader/Hello.hlsl", "PixelShaderMain", "ps_5_0");
     PipelineState.BindShader(VertexShader, PixelShader);
@@ -36,6 +40,32 @@ void FRenderingPipeline::BuildPipeline()
     // 构建模型
     GeometryMap.Build();
 
+    // 构建CBV堆（常量缓冲区描述符堆）
+    GeometryMap.BuildCBVHeap();
+
+    // 构建CBV
+    GeometryMap.BuildObjectCBV();
+    GeometryMap.BuildViewportCBV();
+
     // end: 构建管线状态对象
     PipelineState.BuildPSO();
 }
+
+void FRenderingPipeline::PreDraw(float DeltaTime)
+{
+    PipelineState.PreDraw(DeltaTime);
+    RootSignature.PreDraw(DeltaTime);
+    GeometryMap.PreDraw(DeltaTime);
+}
+
+void FRenderingPipeline::Draw(float DeltaTime)
+{
+    GeometryMap.Draw(DeltaTime);
+}
+
+void FRenderingPipeline::PostDraw(float DeltaTime)
+{
+    GeometryMap.PostDraw(DeltaTime);
+}
+
+

@@ -159,12 +159,11 @@
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DescriptorHeap.cpp" />
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\GeometryMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PipelineState\PipelineState.cpp" />
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\RootSignature.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
@@ -258,6 +257,7 @@
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
     <ClInclude Include="Engine\Rendering\Core\Buffer\ConstructBuffer.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DescriptorHeap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\GeometryMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
