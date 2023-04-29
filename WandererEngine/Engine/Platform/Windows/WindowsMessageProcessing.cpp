@@ -8,25 +8,23 @@ LRESULT CALLBACK EngineWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	{
 	    case WM_CLOSE:
 	        PostQuitMessage(0);
-			break;
+			return 0;
 	
 	    case WM_RBUTTONDOWN:
 	        MouseDownDelegates.Broadcast(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
-			break;
+			return 0;
 	
 	    case WM_RBUTTONUP:
-		    MouseDownDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			break;
+		    MouseUpDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			return 0;
 	
 	    case WM_MOUSEMOVE:
-		    MouseDownDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-			break;
+		    MouseMoveDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			return 0;
 	
 	    case WM_MOUSEWHEEL:
 		    MouseWheelDelegates.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<short>HIWORD(wParam));
-			break;
-		default:
-			break;
+			return 0;
 	}
 	
 	// 将上面没有处理的消息转发给默认的窗口过程
