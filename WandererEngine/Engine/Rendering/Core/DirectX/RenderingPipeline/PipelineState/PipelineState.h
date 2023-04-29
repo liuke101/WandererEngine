@@ -3,8 +3,6 @@
 #include "../../../RenderingResourcesUpdate.h"
 #include "../../../../../Shader/Core/Shader.h"
 
-class CMesh;
-
 /* 管线状态 */
 struct FPipelineState : public IDirectXDeviceInterface_Struct
 {
@@ -12,9 +10,7 @@ public:
     FPipelineState();
 
     void PreDraw(float DeltaTime);
-
     void Draw(float DeltaTime);
-
     void PostDraw(float DeltaTime);
 
     // 重置管线状态描述

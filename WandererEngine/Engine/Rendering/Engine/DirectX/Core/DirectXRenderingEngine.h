@@ -11,7 +11,6 @@ public:
 	~CDirectXRenderingEngine();
 
 	virtual int PreInit(FWinMainCommandParameters InParameters);
-
 	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
 

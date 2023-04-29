@@ -9,7 +9,7 @@ FPipelineState::FPipelineState()
 void FPipelineState::PreDraw(float DeltaTime)
 {
     // 重置命令列表
-    ANALYSIS_HRESULT(GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get()));
+    GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get());
 }
 
 void FPipelineState::Draw(float DeltaTime)

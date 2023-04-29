@@ -76,12 +76,10 @@ public:
 
 public:
 	// 渲染模型
-	void DrawObject(float DeltaTime);
+	void DrawMesh(float DeltaTime);
 
 	// 渲染视口
 	void DrawViewport(float DeltaTime);
-
-	
 
 public:
 	ID3D12DescriptorHeap* GetHeap() const { return DescriptorHeap.GetHeap(); }

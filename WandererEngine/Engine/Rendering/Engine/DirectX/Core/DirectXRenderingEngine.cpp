@@ -16,13 +16,6 @@
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
-//class FVector
-//{
-//	unsigned char r;//255 ->[0,1]
-//	unsigned char g;//255
-//	unsigned char b;//255
-//	unsigned char a;//255
-//};
 
 CDirectXRenderingEngine::CDirectXRenderingEngine()
 	: CurrentFenceIndex(0)
@@ -76,14 +69,16 @@ int CDirectXRenderingEngine::PostInit()
 
 	{
 		//构建Mesh
-		//MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f);
-		//MeshManage->CreateSphereMesh(2.f, 20, 20);
+		MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f);
+		MeshManage->CreateSphereMesh(2.f, 20, 20);
 		//MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
 		//MeshManage->CreateConeMesh(1.f, 5.f, 20, 20);
-		string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-		MeshManage->CreateMesh(MeshObjPath);
+		//string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+		//MeshManage->CreateMesh(MeshObjPath);
 		
 	}
+
+	MeshManage->BuildMesh();
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };

@@ -4,20 +4,6 @@ FRootSignature::FRootSignature()
 {
 }
 
-void FRootSignature::PreDraw(float DeltaTime)
-{
-    // 将根签名设置到命令列表
-    GetGraphicsCommandList()->SetGraphicsRootSignature(RootSignature.Get());
-}
-
-void FRootSignature::Draw(float DeltaTime)
-{
-}
-
-void FRootSignature::PostDraw(float DeltaTime)
-{
-}
-
 void FRootSignature::BuildRootSignature()
 {
     // 创建描述符表
@@ -65,4 +51,19 @@ void FRootSignature::BuildRootSignature()
         SerializeRootSignature->GetBufferPointer(),
         SerializeRootSignature->GetBufferSize(),
         IID_PPV_ARGS(&RootSignature));
+}
+
+
+void FRootSignature::PreDraw(float DeltaTime)
+{
+    // 将根签名设置到命令列表
+    GetGraphicsCommandList()->SetGraphicsRootSignature(RootSignature.Get());
+}
+
+void FRootSignature::Draw(float DeltaTime)
+{
+}
+
+void FRootSignature::PostDraw(float DeltaTime)
+{
 }

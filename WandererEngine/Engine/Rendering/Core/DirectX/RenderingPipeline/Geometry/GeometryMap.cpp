@@ -2,6 +2,7 @@
 #include "../../../Buffer/ConstructBuffer.h"
 #include "../../../../../Mesh/Core/ObjectTransformation.h"
 #include "../../../../../Core/Viewport/ViewportTransformation.h"
+
 bool FGeometry::bRenderingDataExistence(CMesh* InKey)
 {
     for(auto &Tmp : DescribeMeshRenderingData)
@@ -12,34 +13,6 @@ bool FGeometry::bRenderingDataExistence(CMesh* InKey)
         }
     }
     return false;
-}
-
-void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
-{
-    XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
-    XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectionMatrix);
-
-    // 更新HLSL中的ObjectConstBuffer数据
-    for (auto& temp : Geometrys)
-    {
-        for (size_t i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
-        {
-            FRenderingData& RenderingData = temp.second.DescribeMeshRenderingData[i];
-
-            XMMATRIX M_M = XMLoadFloat4x4(&RenderingData.ModelMatrix);
-
-            FObjectTransformation ObjectTransformation;
-            XMStoreFloat4x4(&ObjectTransformation.M, XMMatrixTranspose(M_M));
-            ObjectCBV.Update(i, &ObjectTransformation);  //更新hlsl中的数据
-        }
-    }
-
-
-    // 更新HLSL中的ViewportConstBuffer数据
-    XMMATRIX M_VP = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
-    FViewportTransformation ViewportTransformation;
-    XMStoreFloat4x4(&ViewportTransformation.VP, XMMatrixTranspose(M_VP));
-    ViewportCBV.Update(0, &ViewportTransformation);
 }
 
 void FGeometry::BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData)
@@ -113,13 +86,43 @@ void FGeometryMap::PreDraw(float DeltaTime)
 
 void FGeometryMap::Draw(float DeltaTime)
 {
-    DrawObject(DeltaTime);
+    DrawMesh(DeltaTime);
     DrawViewport(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)
 {
 }
+
+void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+    XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
+    XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectionMatrix);
+
+    // 更新HLSL中的ObjectConstBuffer数据
+    for (auto& temp : Geometrys)
+    {
+        for (size_t i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
+        {
+            //更新模型位置
+            FRenderingData& RenderingData = temp.second.DescribeMeshRenderingData[i];
+
+            XMMATRIX M_M = XMLoadFloat4x4(&RenderingData.ModelMatrix);
+
+            FObjectTransformation ObjectTransformation;
+            XMStoreFloat4x4(&ObjectTransformation.M, XMMatrixTranspose(M_M));
+            ObjectCBV.Update(i, &ObjectTransformation);  //更新hlsl中的数据
+        }
+    }
+
+
+    // 更新HLSL中的ViewportConstBuffer数据
+    XMMATRIX M_VP = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
+    FViewportTransformation ViewportTransformation;
+    XMStoreFloat4x4(&ViewportTransformation.VP, XMMatrixTranspose(M_VP));
+    ViewportCBV.Update(0, &ViewportTransformation);
+}
+
 
 void FGeometryMap::BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData)
 {
@@ -148,7 +151,7 @@ void FGeometryMap::BuildObjectCBV()
     ObjectCBV.CreateConstant(sizeof(FObjectTransformation), GetDrawObjectNumber());
 
     // 描述符句柄
-    CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+    CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
     // 构建ObjectCBV
     ObjectCBV.BuildCBV(DescriptorHandle,GetDrawObjectNumber());
@@ -173,7 +176,7 @@ void FGeometryMap::BuildViewportCBV()
 }
 
 
-void FGeometryMap::DrawObject(float DeltaTime)
+void FGeometryMap::DrawMesh(float DeltaTime)
 {
     UINT DescriptorOffset = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);//获取指定类型描述符堆的句柄增量的大小
 
@@ -183,10 +186,10 @@ void FGeometryMap::DrawObject(float DeltaTime)
         // 绑定后就能向管线中的【输入装配器阶段】传递顶点数据了。
         D3D12_VERTEX_BUFFER_VIEW VBV = temp.second.GetVertexBufferView();
         D3D12_INDEX_BUFFER_VIEW IBV = temp.second.GetIndexBufferView();
-        CD3DX12_GPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetHeap()->GetGPUDescriptorHandleForHeapStart());
-
+       
         for(int i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
         {
+            CD3DX12_GPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetHeap()->GetGPUDescriptorHandleForHeapStart());
             FRenderingData& RenderingData = temp.second.DescribeMeshRenderingData[i];
 
             GetGraphicsCommandList()->IASetVertexBuffers(

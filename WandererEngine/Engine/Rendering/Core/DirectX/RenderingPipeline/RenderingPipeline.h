@@ -14,10 +14,10 @@ class FRenderingPipeline : public IDirectXDeviceInterface
 public:
     FRenderingPipeline();
 
-    virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
-
     // 构建Mesh
     void BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData);
+
+    virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
     // 构建渲染管线
     void BuildPipeline();

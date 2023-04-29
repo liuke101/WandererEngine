@@ -4,15 +4,15 @@ FRenderingPipeline::FRenderingPipeline()
 {
 }
 
-void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
-{
-    GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
-}
-
 void FRenderingPipeline::BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData)
 {
 
     GeometryMap.BuildMesh(InMesh, MeshData);
+}
+
+void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+    GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
 }
 
 void FRenderingPipeline::BuildPipeline()
@@ -54,12 +54,12 @@ void FRenderingPipeline::BuildPipeline()
 void FRenderingPipeline::PreDraw(float DeltaTime)
 {
     PipelineState.PreDraw(DeltaTime);
-    RootSignature.PreDraw(DeltaTime);
-    GeometryMap.PreDraw(DeltaTime);
 }
 
 void FRenderingPipeline::Draw(float DeltaTime)
 {
+    GeometryMap.PreDraw(DeltaTime);
+    RootSignature.PreDraw(DeltaTime);
     GeometryMap.Draw(DeltaTime);
 }
 

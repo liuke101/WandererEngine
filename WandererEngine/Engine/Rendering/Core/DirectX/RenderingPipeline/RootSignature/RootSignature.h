@@ -7,13 +7,11 @@ struct FRootSignature  : public IDirectXDeviceInterface_Struct
 public:
     FRootSignature();
 
-    void PreDraw(float DeltaTime);
-
-    void Draw(float DeltaTime);
-
-    void PostDraw(float DeltaTime);
-
     void BuildRootSignature();
+
+    void PreDraw(float DeltaTime);
+    void Draw(float DeltaTime);
+    void PostDraw(float DeltaTime);
 
     ID3D12RootSignature* GetRootSignature() { return RootSignature.Get(); }
 private:

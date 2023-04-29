@@ -47,7 +47,7 @@ namespace ConstructBuffer
             DefaultBuffer.Get(),
             D3D12_RESOURCE_STATE_COPY_DEST,
             D3D12_RESOURCE_STATE_GENERIC_READ);
-        GetGraphicsCommandList()->ResourceBarrier(1, &ReadDestBarrier);
+        //GetGraphicsCommandList()->ResourceBarrier(1, &ReadDestBarrier);
 
         // 注意:在调用上述函数后，必须保证UploadBuffer依然存在，而不能对它立即进行销毁。这是因为
         // 命令列表中的复制操作可能尚未执行。待调用者得知复制完成的消息后，方可释放UploadBuffer
