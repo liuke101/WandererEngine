@@ -107,36 +107,38 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
         {
             
             FRenderingData& RenderingData = temp.second.DescribeMeshRenderingData[i];
-
+            
             // 构造模型变换矩阵
             XMFLOAT3& Position = RenderingData.Mesh->GetPosition();
             fvector_3d Scale = RenderingData.Mesh->GetScale();
-
+            
             XMFLOAT3 RightVector = RenderingData.Mesh->GetRightVector();
             XMFLOAT3 UpVector = RenderingData.Mesh->GetUpVector();
             XMFLOAT3 LookatVector = RenderingData.Mesh->GetLookatVector();
-
+            
             RenderingData.ModelMatrix = {
                     RightVector.x * Scale.x,	UpVector.x,				LookatVector.x ,			0.f,
-                    RightVector.y,				UpVector.y * Scale.x,	LookatVector.y,			    0.f,
-                    RightVector.z,				UpVector.z ,			LookatVector.z * Scale.x,	0.f,
+                    RightVector.y,				UpVector.y * Scale.y,	LookatVector.y,			    0.f,
+                    RightVector.z,				UpVector.z ,			LookatVector.z * Scale.z,	0.f,
                     Position.x,					Position.y,				Position.z,					1.f };
-
+            
             
             // 设置模型位置
             XMMATRIX M_M = XMLoadFloat4x4(&RenderingData.ModelMatrix);
-
+            
             FObjectTransformation ObjectTransformation;
             XMStoreFloat4x4(&ObjectTransformation.M, XMMatrixTranspose(M_M));
             ObjectCBV.Update(i, &ObjectTransformation);  //更新hlsl中的数据
         }
     }
 
-    // 更新HLSL中的ViewportConstBuffer数据
+    //更新HLSL中的ViewportConstBuffer数据
     XMMATRIX M_VP = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
     FViewportTransformation ViewportTransformation;
     XMStoreFloat4x4(&ViewportTransformation.VP, XMMatrixTranspose(M_VP));
     ViewportCBV.Update(0, &ViewportTransformation);
+
+
 }
 
 

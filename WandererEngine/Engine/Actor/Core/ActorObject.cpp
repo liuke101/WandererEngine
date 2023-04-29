@@ -9,7 +9,7 @@ GActorObject::GActorObject()
 
 void GActorObject::SetPosition(const XMFLOAT3& InNewPosition)
 {
-    return TransformationComponent->SetLookatVector(InNewPosition);
+    return TransformationComponent->SetPosition(InNewPosition);
 }
 
 void GActorObject::SetRotation(const fvector_3d& InRotation)

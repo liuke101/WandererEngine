@@ -1,0 +1,42 @@
+[LOG] [Sat Apr 29 21:27:06 2023] Log Init. 
+[LOG] [Sat Apr 29 21:27:06 2023] Engine pre-initialization complete. 
+[LOG] [Sat Apr 29 21:27:06 2023] DirectXRenderingEngine pre-initialization complete. 
+[LOG] [Sat Apr 29 21:27:06 2023] InitWindows complete. 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[LOG] [Sat Apr 29 21:27:06 2023] DirectXRenderingEngine initialization complete. 
+[LOG] [Sat Apr 29 21:27:06 2023] Engine initialization complete. 
+[SUCCESS] [Sat Apr 29 21:27:06 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:10 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:12 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:13 2023] Success ! 
+[LOG] [Sat Apr 29 21:28:13 2023] DirectXRenderingEngine post-initialization complete. 
+[LOG] [Sat Apr 29 21:28:21 2023] Engine post-initialization complete. 
+[SUCCESS] [Sat Apr 29 21:28:25 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:25 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:25 2023] Success ! 
+[SUCCESS] [Sat Apr 29 21:28:25 2023] Success ! 

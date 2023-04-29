@@ -71,7 +71,7 @@ void GCamera::BuildViewMatrix(float DeltaTime)
         case ECameraType::CameraRoaming:
         {
             // 构建观察变换矩阵
-            GetTransformationComponent()->CalcLRUVector();
+            GetTransformationComponent()->CalcRULVector();
 
             fvector_3d V3;
             GetTransformationComponent()->CalcNegativePosVector(V3);
@@ -115,18 +115,20 @@ void GCamera::BuildViewMatrix(float DeltaTime)
 
 void GCamera::OnMouseButtonDown(int X, int Y)
 {
-    SetCapture(GetMainWindowsHandle()); // 鼠标捕获
     bLeftMouseDown = true;
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
+    SetCapture(GetMainWindowsHandle()); // 鼠标捕获
+    Engine_Log_Success("鼠标按下");
 }
 
 void GCamera::OnMouseButtonUp(int X, int Y)
 {
-    ReleaseCapture();           // 释放鼠标捕获
     bLeftMouseDown = false;
+    ReleaseCapture();           // 释放鼠标捕获
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
+    Engine_Log_Success("鼠标松开");
 }
 
 void GCamera::OnMouseMove(int X, int Y)
@@ -157,6 +159,7 @@ void GCamera::OnMouseMove(int X, int Y)
         }
         LastMousePosition.x = X;
         LastMousePosition.y = Y;
+        Engine_Log_Success("鼠标按住移动");
     }
 }
 
@@ -168,6 +171,7 @@ void GCamera::OnMouseWheel(int X, int Y, float InDelta)
 
         // 限制滚轮缩放距离
         SphericalRadius = math_libray::Clamp(SphericalRadius, 0.0f, 300.0f);
+        Engine_Log_Success("滑轮缩放");
     }
 }
 
@@ -186,6 +190,7 @@ void GCamera::MoveForward(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Lookat, Position));
 
         GetTransformationComponent()->SetPosition(fPosition);
+        Engine_Log_Success("前后移动");
     }
 }
 // +1向右，-1向左
@@ -203,6 +208,7 @@ void GCamera::MoveRight(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Right, Position));
 
         GetTransformationComponent()->SetPosition(fPosition);
+        Engine_Log_Success("左右移动");
     }
 }
 

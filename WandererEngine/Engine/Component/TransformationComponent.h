@@ -12,7 +12,7 @@ public:
 
     void SetRightVector(const XMFLOAT3& InRightVector);
     void SetUpVector(const XMFLOAT3& InUpVector);
-    void SetLookatVector(const XMFLOAT3& InNewLookatVector);
+    void SetLookatVector(const XMFLOAT3& InLookatVector);
 
     XMFLOAT3& GetPosition()  { return Position; }
     fvector_3d GetRotation() const { return fvector_3d(Rotation.x, Rotation.y, Rotation.z); }
@@ -23,7 +23,7 @@ public:
     XMFLOAT3& GetLookatVector()  { return LookatVector; }
 
     // 计算Right Up Lookat 向量，作为旋转矩阵前三列
-    void CalcLRUVector();
+    void CalcRULVector();
 
     // 计算Pos位移向量，加负号作为平移矩阵第四行
     fvector_3d CalcNegativePosVector();
@@ -36,5 +36,4 @@ private:
     XMFLOAT3 RightVector;   // 左向量，即相机的x轴
     XMFLOAT3 UpVector;      // 上向量，即相机的y轴
     XMFLOAT3 LookatVector;  // 观察方向,摄像机指向object的方向，即相机的z轴
-
 };

@@ -1,5 +1,4 @@
 #pragma once
-/* Mesh»ùÀà */
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
 #include "../../Actor/Core/ActorObject.h"

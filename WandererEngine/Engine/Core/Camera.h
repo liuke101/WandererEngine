@@ -1,6 +1,4 @@
 #pragma once
-/* ÉãÏñ»ú */
-
 #include "Viewport/Viewport.h"
 #include "../Actor/Core/ActorObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
@@ -11,10 +9,12 @@ struct FInputKey;
 class CInputComponent;
 class CTransformationComponent;
 
-class GCamera : public GActorObject, public FViewport,public IDirectXDeviceInterface
+// Ïà»ú
+class GCamera
+    : public GActorObject
+    , public FViewport
+    , public IDirectXDeviceInterface
 {
-    
-
     CVARIABLE()
     CInputComponent* InputComponent;
 

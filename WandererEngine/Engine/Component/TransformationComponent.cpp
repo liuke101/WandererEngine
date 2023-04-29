@@ -49,12 +49,12 @@ void CTransformationComponent::SetUpVector(const XMFLOAT3& InUpVector)
     UpVector = InUpVector;
 }
 
-void CTransformationComponent::SetLookatVector(const XMFLOAT3& InNewLookatVector)
+void CTransformationComponent::SetLookatVector(const XMFLOAT3& InLookatVector)
 {
-    LookatVector = InNewLookatVector;
+    LookatVector = InLookatVector;
 }
 
-void CTransformationComponent::CalcLRUVector()
+void CTransformationComponent::CalcRULVector()
 {
     XMVECTOR Lookat = XMLoadFloat3(&LookatVector);
     XMVECTOR Right = XMLoadFloat3(&RightVector);
