@@ -2,7 +2,7 @@
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../RenderingResourcesUpdate.h"
 
-class CMesh;
+class GMesh;
 /* 渲染数据 */
 struct FRenderingData : public IDirectXDeviceInterface_Struct
 {
@@ -25,5 +25,5 @@ public:
 	UINT GetIndexSizeInBytes() const { return IndexCount * IndexTypeSize; };
 
 	XMFLOAT4X4 ModelMatrix;							// 模型变换矩阵
-	CMesh* Mesh;
+	GMesh* Mesh;
 };

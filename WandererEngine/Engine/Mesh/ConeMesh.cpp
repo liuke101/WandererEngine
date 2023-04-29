@@ -1,22 +1,22 @@
 ﻿#include "ConeMesh.h"
 #include "Core/MeshType.h"
 
-void CConeMesh::Init()
+void GConeMesh::Init()
 {
     Super::Init();
 }
 
-void CConeMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GConeMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     Super::BuildMesh(InRenderingData);
 }
 
-void CConeMesh::Draw(float DeltaTime)
+void GConeMesh::Draw(float DeltaTime)
 {
     Super::Draw(DeltaTime);
 }
 
-void CConeMesh::CreateMesh(FMeshRenderingData& MeshData, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+void GConeMesh::CreateMesh(FMeshRenderingData& MeshData, float InBottomRadius, float InHeight, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
     float RadiusInterval = (0 - InBottomRadius) / static_cast<float>(InHeightSubdivision); // 相邻环的半径间隔(类比柱体算法，顶部半径视为0)
     float HeightInterval = InHeight / static_cast<float>(InHeightSubdivision);             // 相邻环的高度间隔

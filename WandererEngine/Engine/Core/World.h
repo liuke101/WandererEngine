@@ -2,7 +2,7 @@
 #include "CoreObject/CoreMinimalObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 
-class CCamera;
+class GCamera;
 struct FInputKey;
 class CInputComponent;
 class CTransformationComponent;
@@ -12,11 +12,11 @@ class CWorld : public CCoreMinimalObject
 public:
     CWorld();
 
-    CCamera* GetCamra() { return Camera; }
+    GCamera* GetCamra() { return Camera; }
 
 protected:
     CVARIABLE()
-    CCamera* Camera;
+    GCamera* Camera;
 };
 
 

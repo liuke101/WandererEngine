@@ -1,22 +1,22 @@
 ﻿#include "CylinderMesh.h"
 #include "Core/MeshType.h"
 
-void CCylinderMesh::Init()
+void GCylinderMesh::Init()
 {
     Super::Init();
 }
 
-void CCylinderMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GCylinderMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     Super::BuildMesh(InRenderingData);
 }
 
-void CCylinderMesh::Draw(float DeltaTime)
+void GCylinderMesh::Draw(float DeltaTime)
 {
     Super::Draw(DeltaTime);
 }
 
-void CCylinderMesh::CreateMesh(FMeshRenderingData& MeshData, float InTopRadius, float InBottomRadius, float InHeight,
+void GCylinderMesh::CreateMesh(FMeshRenderingData& MeshData, float InTopRadius, float InBottomRadius, float InHeight,
     uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
     float RadiusInterval = (InTopRadius - InBottomRadius) / static_cast<float>(InHeightSubdivision); // 相邻环的半径间隔

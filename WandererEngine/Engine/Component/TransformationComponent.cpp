@@ -2,8 +2,10 @@
 
 CTransformationComponent::CTransformationComponent()
     : Position(0.0f, 0.0f, 0.0f)
-    , RightVector(1.0f,0.0f,0.0f)
-    , UpVector(0.0f,1.0f,0.0f)
+    , Rotation(0.0f, 0.0f, 0.0f)
+    , Scale(1.0f, 1.0f, 1.0f)
+    , RightVector(1.0f, 0.0f, 0.0f)
+    , UpVector(0.0f, 1.0f, 0.0f)
     , LookatVector(0.0f, 0.0f, 1.0f)
 {
 }
@@ -11,6 +13,30 @@ CTransformationComponent::CTransformationComponent()
 void CTransformationComponent::SetPosition(const XMFLOAT3& InNewPosition)
 {
     Position = InNewPosition;
+}
+
+void CTransformationComponent::SetRotation(const fvector_3d& InNewRotation)
+{
+    // 欧拉角
+    // DirectXMath 库采用的是 ZXY 顺规(roll,pitch,yaw)
+    float RollRadians = XMConvertToRadians(InNewRotation.z);
+    float PitchRadians = XMConvertToRadians(InNewRotation.x);
+    float YawRadians = XMConvertToRadians(InNewRotation.y);
+
+    // 欧拉角转换成旋转矩阵
+    XMMATRIX M_RollPitchYaw = XMMatrixRotationRollPitchYaw(PitchRadians,YawRadians,RollRadians);
+
+    // 堆RUL向量进行旋转
+    XMStoreFloat3(&RightVector, XMVector3TransformNormal(XMLoadFloat3(&RightVector), M_RollPitchYaw));
+    XMStoreFloat3(&UpVector, XMVector3TransformNormal(XMLoadFloat3(&UpVector), M_RollPitchYaw));
+    XMStoreFloat3(&LookatVector, XMVector3TransformNormal(XMLoadFloat3(&LookatVector), M_RollPitchYaw));
+}
+
+void CTransformationComponent::SetScale(const fvector_3d& InNewScale)
+{
+    Scale.x = InNewScale.x;
+    Scale.y = InNewScale.y;
+    Scale.z = InNewScale.z;
 }
 
 void CTransformationComponent::SetRightVector(const XMFLOAT3& InRightVector)

@@ -2,9 +2,9 @@
 #include "Core/Mesh.h"
 
 // 平面
-class CPlaneMesh : public CMesh
+class GPlaneMesh : public GMesh
 {
-    typedef CMesh Super;
+    typedef GMesh Super;
 public:
     virtual void Init();
 

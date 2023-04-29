@@ -1,23 +1,23 @@
 ﻿#include "SphereMesh.h"
 #include "Core/MeshType.h"
 
-void CSphereMesh::Init()
+void GSphereMesh::Init()
 {
     Super::Init();
 }
 
-void CSphereMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GSphereMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     Super::BuildMesh(InRenderingData);
 }
 
-void CSphereMesh::Draw(float DeltaTime)
+void GSphereMesh::Draw(float DeltaTime)
 {
     Super::Draw(DeltaTime);
 }
 
 
-void CSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
+void GSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
     FVertex NorthPoleVertex(XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::White));     // 北极点（顶面顶点/第一个顶点）
     FVertex SouthPoleVertex(XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::White));    // 南极点（底面顶点/最后一个顶点）

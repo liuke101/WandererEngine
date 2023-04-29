@@ -2,22 +2,22 @@
 #include "CustomMesh.h"
 #include "Core/MeshType.h"
 
-void CCustomMesh::Init()
+void GCustomMesh::Init()
 {
     Super::Init();
 }
 
-void CCustomMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GCustomMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     Super::BuildMesh(InRenderingData);
 }
 
-void CCustomMesh::Draw(float DeltaTime)
+void GCustomMesh::Draw(float DeltaTime)
 {
     Super::Draw(DeltaTime);
 }
 
-void CCustomMesh::CreateMesh(FMeshRenderingData& MeshData, string& InPath)
+void GCustomMesh::CreateMesh(FMeshRenderingData& MeshData, string& InPath)
 {
     // 获取文件大小
     unsigned int FileSize = get_file_size_by_filename(InPath.c_str());
@@ -36,7 +36,7 @@ void CCustomMesh::CreateMesh(FMeshRenderingData& MeshData, string& InPath)
     delete Buffer;
 }
 
-bool CCustomMesh::LoadObjFromBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InMeshData)
+bool GCustomMesh::LoadObjFromBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InMeshData)
 {
     if (InBufferSize > 0)
     {

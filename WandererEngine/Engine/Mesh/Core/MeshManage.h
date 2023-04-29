@@ -11,7 +11,10 @@
 
 class FRenderingResourcesUpdate;
 
-class CMeshManage :public CCoreMinimalObject, public IRenderingInterface, public IDirectXDeviceInterface
+class CMeshManage
+    : public CCoreMinimalObject
+    , public IRenderingInterface
+    , public IDirectXDeviceInterface
 {
 public:
 	CMeshManage();
@@ -19,43 +22,45 @@ public:
 	virtual void Init();
 
 	virtual void BuildMesh();
+
 	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
+
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 
 
 public:
-	CMesh* CreateBoxMesh(
+	GMesh* CreateBoxMesh(
 		float InHeight,
 		float InWidth,
 		float InDepth);
 
-	CMesh* CreateConeMesh(
+	GMesh* CreateConeMesh(
 		float InBottomRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	CMesh* CreateCylinderMesh(
+	GMesh* CreateCylinderMesh(
 		float InTopRadius,
 		float InBottomRadius,
 		float InHeight,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	CMesh* CreatePlaneMesh(
+	GMesh* CreatePlaneMesh(
 		float InHeight,
 		float InWidth,
 		uint32_t InHeightSubdivide,
 		uint32_t InWidthSubdivide);
 
-	CMesh* CreateSphereMesh(
+	GMesh* CreateSphereMesh(
 		float InRadius,
 		uint32_t InAxialSubdivision,
 		uint32_t InHeightSubdivision);
 
-	CMesh* CreateMesh(string& InPath);
+	GMesh* CreateMesh(string& InPath);
 
 protected:
 	template<class T, typename ...ParamTypes>

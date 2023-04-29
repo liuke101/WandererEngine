@@ -2,7 +2,7 @@
 /* …„œÒª˙ */
 
 #include "Viewport/Viewport.h"
-#include "CoreObject/CoreMinimalObject.h"
+#include "../Actor/Core/ActorObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 #include "../Interface/DirectXDeviceInterface.h"
 
@@ -11,16 +11,15 @@ struct FInputKey;
 class CInputComponent;
 class CTransformationComponent;
 
-class CCamera : public CCoreMinimalObject, public FViewport,public IDirectXDeviceInterface
+class GCamera : public GActorObject, public FViewport,public IDirectXDeviceInterface
 {
-    CVARIABLE()
-    CTransformationComponent* TransformationComponent;
+    
 
     CVARIABLE()
     CInputComponent* InputComponent;
 
 public:
-    CCamera();
+    GCamera();
 
     virtual void BeginInit();   
     virtual void Tick(float DeltaTime);
@@ -45,7 +44,6 @@ protected:
     virtual void RotateAroundYAxis(float InRotateDegrees);
 public:
     FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
-    FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
 
 protected:
     //  Û±Í≈‰÷√

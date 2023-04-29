@@ -69,8 +69,20 @@ int CDirectXRenderingEngine::PostInit()
 
 	{
 		//构建Mesh
-		MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f);
-		MeshManage->CreateSphereMesh(2.f, 20, 20);
+		if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
+		{
+			Box->SetPosition(XMFLOAT3(1.0f, 1.0f, 5.0f));		// 设置位置
+			Box->SetRotation(fvector_3d(10.0f, 1.0f, 10.f));	// 设置旋转
+			Box->SetScale(fvector_3d(2.0f, 1.0f, 10.f));		// 设置缩放
+		}
+
+		 if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.f, 20, 20))
+		 {
+		 	Sphere->SetPosition(XMFLOAT3(1, 1, 10));			// 设置位置
+		 	Sphere->SetRotation(fvector_3d(10.0f, 1.0f, 10.f));	// 设置旋转
+		 	Sphere->SetScale(fvector_3d(2.0f, 1.0f, 10.0f));		// 设置缩放
+		 }
+		
 		//MeshManage->CreatePlaneMesh(4.f, 3.f, 20, 20);
 		//MeshManage->CreateConeMesh(1.f, 5.f, 20, 20);
 		//string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置

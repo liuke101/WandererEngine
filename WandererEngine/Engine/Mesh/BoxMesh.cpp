@@ -1,22 +1,22 @@
 #include "BoxMesh.h"
 #include "Core/MeshType.h"
 
-void CBoxMesh::Init()
+void GBoxMesh::Init()
 {
     Super::Init();
 }
 
-void CBoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GBoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     Super::BuildMesh(InRenderingData);
 }
 
-void CBoxMesh::Draw(float DeltaTime)
+void GBoxMesh::Draw(float DeltaTime)
 {
     Super::Draw(DeltaTime);
 }
 
-void CBoxMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, float InDepth)
+void GBoxMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, float InDepth)
 {
     // 除以2便于将模型设置为以世界坐标原点为中心
     float Height = 0.5f * InHeight;

@@ -2,12 +2,18 @@
 /* Mesh基类 */
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
+#include "../../Actor/Core/ActorObject.h"
+
+class CTransformationComponent;
 
 // Mesh基类
-class CMesh : public CCoreMinimalObject, public IRenderingInterface
+class GMesh : public GActorObject, public IRenderingInterface
 {
+    CVARIABLE()
+    CTransformationComponent* TransformationComponent;
+
 public:
-    CMesh();
+    GMesh();
 
     virtual void Init();
 

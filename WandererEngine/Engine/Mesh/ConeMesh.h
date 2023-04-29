@@ -2,9 +2,9 @@
 #include "Core/Mesh.h"
 
 // 锥体
-class CConeMesh : public CMesh
+class GConeMesh : public GMesh
 {
-    typedef CMesh Super;
+    typedef GMesh Super;
 public:
     virtual void Init();
 

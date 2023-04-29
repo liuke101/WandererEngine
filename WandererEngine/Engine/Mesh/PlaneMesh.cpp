@@ -1,22 +1,22 @@
 ﻿#include "PlaneMesh.h"
 #include "Core/MeshType.h"
 
-void CPlaneMesh::Init()
+void GPlaneMesh::Init()
 {
     Super::Init();
 }
 
-void CPlaneMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void GPlaneMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
     Super::BuildMesh(InRenderingData);
 }
 
-void CPlaneMesh::Draw(float DeltaTime)
+void GPlaneMesh::Draw(float DeltaTime)
 {
     Super::Draw(DeltaTime);
 }
 
-void CPlaneMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide)
+void GPlaneMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float InWidth, uint32_t InHeightSubdivide, uint32_t InWidthSubdivide)
 {
     // 获取细分后每段的属性值
     auto SubdivideValue = [&](float InValue, uint32_t InSubdivideValue)->float

@@ -2,8 +2,9 @@
 #include "../../../Buffer/ConstructBuffer.h"
 #include "../../../../../Mesh/Core/ObjectTransformation.h"
 #include "../../../../../Core/Viewport/ViewportTransformation.h"
+#include "../../../../../Mesh/Core/Mesh.h"
 
-bool FGeometry::bRenderingDataExistence(CMesh* InKey)
+bool FGeometry::bRenderingDataExistence(GMesh* InKey)
 {
     for(auto &Tmp : DescribeMeshRenderingData)
     {
@@ -15,7 +16,7 @@ bool FGeometry::bRenderingDataExistence(CMesh* InKey)
     return false;
 }
 
-void FGeometry::BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData)
+void FGeometry::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
 {
     if(!bRenderingDataExistence(InMesh))
     {
@@ -104,9 +105,25 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
     {
         for (size_t i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
         {
-            //更新模型位置
+            
             FRenderingData& RenderingData = temp.second.DescribeMeshRenderingData[i];
 
+            // 构造模型变换矩阵
+            XMFLOAT3& Position = RenderingData.Mesh->GetPosition();
+            fvector_3d Scale = RenderingData.Mesh->GetScale();
+
+            XMFLOAT3 RightVector = RenderingData.Mesh->GetRightVector();
+            XMFLOAT3 UpVector = RenderingData.Mesh->GetUpVector();
+            XMFLOAT3 LookatVector = RenderingData.Mesh->GetLookatVector();
+
+            RenderingData.ModelMatrix = {
+                    RightVector.x * Scale.x,	UpVector.x,				LookatVector.x ,			0.f,
+                    RightVector.y,				UpVector.y * Scale.x,	LookatVector.y,			    0.f,
+                    RightVector.z,				UpVector.z ,			LookatVector.z * Scale.x,	0.f,
+                    Position.x,					Position.y,				Position.z,					1.f };
+
+            
+            // 设置模型位置
             XMMATRIX M_M = XMLoadFloat4x4(&RenderingData.ModelMatrix);
 
             FObjectTransformation ObjectTransformation;
@@ -114,7 +131,6 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
             ObjectCBV.Update(i, &ObjectTransformation);  //更新hlsl中的数据
         }
     }
-
 
     // 更新HLSL中的ViewportConstBuffer数据
     XMMATRIX M_VP = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
@@ -124,7 +140,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 }
 
 
-void FGeometryMap::BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData)
+void FGeometryMap::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
 {
     FGeometry& Geometry = Geometrys[0];
     Geometry.BuildMesh(InMesh, MeshData);
@@ -154,7 +170,7 @@ void FGeometryMap::BuildObjectCBV()
     CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
     // 构建ObjectCBV
-    ObjectCBV.BuildCBV(DescriptorHandle,GetDrawObjectNumber());
+    ObjectCBV.BuildCBV(DescriptorHandle,GetDrawObjectNumber(), 0);
 }
 
 
@@ -169,7 +185,7 @@ void FGeometryMap::BuildViewportCBV()
     ViewportCBV.CreateConstant(sizeof(FViewportTransformation), 1);
 
     // 描述符句柄
-    CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+    CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetHeap()->GetCPUDescriptorHandleForHeapStart());
 
     // 构建ViewportCBV
     ViewportCBV.BuildCBV(DescriptorHandle, 1, GetDrawObjectNumber());

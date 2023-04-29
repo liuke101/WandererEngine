@@ -8,7 +8,7 @@ void FDescriptorHeap::Build(UINT InNumDescriptor)
     CBVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
     CBVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
     CBVHeapDesc.NodeMask = 0;
-    GetD3dDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(&CBVHeap));
+    ANALYSIS_HRESULT(GetD3dDevice()->CreateDescriptorHeap(&CBVHeapDesc, IID_PPV_ARGS(&CBVHeap)));
 }
 
 void FDescriptorHeap::PreDraw(float DeltaTime)

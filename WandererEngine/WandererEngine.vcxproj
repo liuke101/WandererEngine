@@ -106,7 +106,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <StackReserveSize>1000000</StackReserveSize>
+      <StackReserveSize>100000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Actor\Core\ActorObject.cpp" />
     <ClCompile Include="Engine\Component\Core\Component.cpp" />
     <ClCompile Include="Engine\Component\Input\Input.cpp" />
     <ClCompile Include="Engine\Component\Input\InputType.cpp" />
@@ -133,7 +134,7 @@
     <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="Engine\Core\Camera.cpp" />
-    <ClCompile Include="Engine\Core\ECameraType.cpp" />
+    <ClCompile Include="Engine\Core\CameraType.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Actor\Core\ActorObject.h" />
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Engine\Component\Core\Component.h" />
     <ClInclude Include="Engine\Component\Input\Input.h" />
@@ -228,7 +230,7 @@
     <ClInclude Include="Engine\Component\TransformationComponent.h" />
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
     <ClInclude Include="Engine\Core\Camera.h" />
-    <ClInclude Include="Engine\Core\ECameraType.h" />
+    <ClInclude Include="Engine\Core\CameraType.h" />
     <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="Engine\Core\Engine.h" />

@@ -2,9 +2,9 @@
 
 #include "Core/Mesh.h"
 // ·½Με
-class CBoxMesh : public CMesh
+class GBoxMesh : public GMesh
 {
-    typedef CMesh Super;
+    typedef GMesh Super;
 public:
     virtual void Init();
 

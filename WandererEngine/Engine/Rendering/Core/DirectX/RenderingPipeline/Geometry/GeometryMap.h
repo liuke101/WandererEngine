@@ -6,7 +6,6 @@
 #include "../ConstantBufferView/ConstantBufferView.h"
 #include "../../../../../Core/Viewport/ViewportInfo.h"
 
-struct FViewportInfo;
 
 /* 几何体 */
 struct FGeometry : public IDirectXDeviceInterface_Struct
@@ -14,10 +13,10 @@ struct FGeometry : public IDirectXDeviceInterface_Struct
 	friend struct FGeometryMap;
 public:
 	// 判断模型数据是否存在
-	bool bRenderingDataExistence(CMesh* InKey);
+	bool bRenderingDataExistence(GMesh* InKey);
 
 	// 构建单个模型的Mesh
-	void BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData);
+	void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
 
 	// 构建单个模型
 	void Build();
@@ -57,7 +56,7 @@ public:
 	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	// 构建全部模型的Mesh
-	void BuildMesh(CMesh* InMesh, const FMeshRenderingData& MeshData);
+	void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
 
 	// 构建全部模型
 	void Build();
