@@ -209,13 +209,14 @@ void FGeometryMap::DrawMesh(float DeltaTime)
         {
             CD3DX12_GPU_DESCRIPTOR_HANDLE DescriptorHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetHeap()->GetGPUDescriptorHandleForHeapStart());
             FRenderingData& RenderingData = temp.second.DescribeMeshRenderingData[i];
-
+            
             GetGraphicsCommandList()->IASetVertexBuffers(
                 0,                          // 在绑定多个顶点缓冲区时，所用的起始输入槽（若仅有一个顶点缓冲区，则将其绑定至此槽)。输入槽共有16个，索引为0~15。
                 1,                          // 与输入槽绑定的顶点缓冲区数量（即视图数组中视图的数量)，如果起始输入槽的索引值为k, 且我们要绑定n个顶点缓冲区，那么这些缓冲区将                                      依次与输入槽k, k+1...k+n-1相绑定。
                 &VBV);                      // 指向顶点缓冲区视图数组中第一个元素的指针
 
             GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
+            
 
             // 指定图元（又称基元）拓扑，告知D3D如何用顶点数据表示几何图元
             GetGraphicsCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

@@ -53,13 +53,13 @@ void GCamera::ExecuteKeyboard(const FInputKey& InputKey)
     // 按Q切换观察对象模式
     else if (InputKey.KeyName == "Q")
     {
-        CameraType == ObservationObject;
+        CameraType = ObservationObject;  
         Engine_Log("Q切换观察对象模式")
     }
     // 按W切换相机漫游模式
     else if (InputKey.KeyName == "E")
     {
-        CameraType == CameraRoaming;
+        CameraType = CameraRoaming;
         Engine_Log("W切换相机漫游模式")
     }
 }
