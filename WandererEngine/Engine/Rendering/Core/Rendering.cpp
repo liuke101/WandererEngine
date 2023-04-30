@@ -154,7 +154,7 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElementSize,
     assert(InDevice);
     ElementSize = InElementSize;
     CD3DX12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);    // 常量缓冲区创建在上传堆，能通过CPU更新常量
-    CD3DX12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElementSize * InElementCount);
+    CD3DX12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(ElementSize * InElementCount);
     ANALYSIS_HRESULT(InDevice->CreateCommittedResource(     // 创建一个资源和一个堆，并把该资源提交到堆中
         &HeapProperties,
         D3D12_HEAP_FLAG_NONE,
