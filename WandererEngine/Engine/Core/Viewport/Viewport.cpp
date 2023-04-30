@@ -1,6 +1,7 @@
 #include "Viewport.h"
 #include "../../Mesh/Core/ObjectTransformation.h"
 #include "../../Config/EngineRenderConfig.h"
+#include "../../Math/EngineMath.h"
 
 FViewport::FViewport()
     : ViewMatrix(EngineMath::IdentityMatrix4x4())

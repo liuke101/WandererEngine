@@ -2,10 +2,10 @@
 #include "CoreObject/CoreMinimalObject.h"
 #include "../CodeReflection/CodeReflectionMacroTag.h"
 
-class GCamera;
 struct FInputKey;
-class CInputComponent;
 class CTransformationComponent;
+class CInputComponent;
+class GCamera;
 
 class CWorld : public CCoreMinimalObject
 {

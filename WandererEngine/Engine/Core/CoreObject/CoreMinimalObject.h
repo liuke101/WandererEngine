@@ -2,7 +2,6 @@
 /* 核心Object，相当于UE的UObject，统一管理素有Object */
 #include "../../Platform/Windows/WindowsPlatform.h"
 #include "../../CodeReflection/CodeReflectionMacroTag.h"
-#include "../../EngineMinimal.h"
 #include "GuidInterface.h"
 
 class CCoreMinimalObject : public IGuidInterface
@@ -16,7 +15,7 @@ public:
 
     // 创建指定对象
     template<class T>
-    T* CreateObject(CCoreMinimalObject *NewObject)
+    T* CreateObject(CCoreMinimalObject* NewObject)
     {
         return dynamic_cast<T*>(NewObject); //核心Object转换成子类Object
     }

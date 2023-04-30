@@ -1,5 +1,4 @@
 #include "ActorObject.h"
-#include "../../EngineMinimal.h"
 #include "../../Component/TransformationComponent.h"
 
 GActorObject::GActorObject()
@@ -9,17 +8,17 @@ GActorObject::GActorObject()
 
 void GActorObject::SetPosition(const XMFLOAT3& InNewPosition)
 {
-    return TransformationComponent->SetPosition(InNewPosition);
+    TransformationComponent->SetPosition(InNewPosition);
 }
 
-void GActorObject::SetRotation(const fvector_3d& InRotation)
+void GActorObject::SetRotation(const fvector_3d& InNewRotation)
 {
-    TransformationComponent->SetRotation(InRotation);
+    TransformationComponent->SetRotation(InNewRotation);
 }
 
-void GActorObject::SetScale(const fvector_3d& InScale)
+void GActorObject::SetScale(const fvector_3d& InNewScale)
 {
-    TransformationComponent->SetScale(InScale);
+    TransformationComponent->SetScale(InNewScale);
 }
 
 XMFLOAT3& GActorObject::GetPosition()

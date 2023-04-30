@@ -30,7 +30,7 @@ public:
 };
 
 // 为结构体提供渲染内容的接口
-class IDirectXDeviceInterface_Struct
+struct IDirectXDeviceInterface_Struct
 {
 public:
     ComPtr<ID3D12Fence> GetFence();

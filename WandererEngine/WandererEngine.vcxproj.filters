@@ -541,7 +541,6 @@
       <Filter>simple_library\third_party_library\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp" />
-    <ClCompile Include="Engine\Core\ECameraType.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PipelineState\PipelineState.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\RootSignature.cpp" />
@@ -549,6 +548,7 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.cpp" />
+    <ClCompile Include="Engine\Actor\Core\ActorObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
@@ -858,7 +858,6 @@
       <Filter>simple_library\third_party_library\tinyxml</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Viewport\ViewportTransformation.h" />
-    <ClInclude Include="Engine\Core\ECameraType.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\GeometryMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingData.h" />
@@ -868,5 +867,7 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.h" />
+    <ClInclude Include="Engine\Actor\Core\ActorObject.h" />
+    <ClInclude Include="Engine\Core\CameraType.h" />
   </ItemGroup>
 </Project>

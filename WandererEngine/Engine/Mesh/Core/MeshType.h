@@ -23,7 +23,7 @@ public:
     // VertexData大小（字节）
     UINT GetVertexSizeInBytes()
     {
-        return VertexData.size()*sizeof(FVertex);
+        return VertexData.size() * sizeof(FVertex);
     }
 
     // IndexData大小（字节）

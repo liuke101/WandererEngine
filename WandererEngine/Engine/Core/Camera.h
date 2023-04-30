@@ -6,8 +6,9 @@
 
 enum ECameraType;
 struct FInputKey;
-class CInputComponent;
 class CTransformationComponent;
+class CInputComponent;
+
 
 // Па»ъ
 class GCamera
@@ -32,7 +33,7 @@ public:
     virtual void OnMouseButtonDown(int X, int Y);
     virtual void OnMouseButtonUp(int X, int Y);
     virtual void OnMouseMove(int X, int Y);
-    virtual void OnMouseWheel(int X, int Y,float InDelta);
+    virtual void OnMouseWheel(int X, int Y, float InDelta);
 
     virtual void MoveForward(float InValue);
     virtual void MoveRight(float InValue);

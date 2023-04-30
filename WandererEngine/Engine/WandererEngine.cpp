@@ -7,7 +7,7 @@
 int Init(CEngine* InEngine, HINSTANCE hInstance, HINSTANCE preInstance, PSTR cmdLine, int showCmd)
 {
 #if defined(_WIN32)
-	FWinMainCommandParameters WinMainParameters(hInstance, hInstance, cmdLine, showCmd);
+	FWinMainCommandParameters WinMainParameters(hInstance, preInstance, cmdLine, showCmd);
 #endif
 
 	int ReturnValue = InEngine->PreInit(

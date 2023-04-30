@@ -134,7 +134,6 @@
     <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="Engine\Core\Camera.cpp" />
-    <ClCompile Include="Engine\Core\CameraType.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />

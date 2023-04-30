@@ -53,13 +53,13 @@ void GCamera::ExecuteKeyboard(const FInputKey& InputKey)
     // 按Q切换观察对象模式
     else if (InputKey.KeyName == "Q")
     {
-        CameraType == ECameraType::ObservationObject;
+        CameraType == ObservationObject;
         Engine_Log("Q切换观察对象模式")
     }
     // 按W切换相机漫游模式
     else if (InputKey.KeyName == "E")
     {
-        CameraType == ECameraType::CameraRoaming;
+        CameraType == CameraRoaming;
         Engine_Log("W切换相机漫游模式")
     }
 }
@@ -68,7 +68,7 @@ void GCamera::BuildViewMatrix(float DeltaTime)
 {
     switch (CameraType)
     {
-        case ECameraType::CameraRoaming:
+        case CameraRoaming:
         {
             // 构建观察变换矩阵
             // 这是看向整个世界的，lookat只会朝向摄像机的前方
@@ -85,12 +85,12 @@ void GCamera::BuildViewMatrix(float DeltaTime)
                 RightVector.x, UpVector.x, LookatVector.x, 0.0f,
                 RightVector.y, UpVector.y, LookatVector.y, 0.0f,
                 RightVector.z, UpVector.z, LookatVector.z, 0.0f,
-                V3.x,          V3.y,       V3.z,            1.f };
+                V3.x,          V3.y,       V3.z,           1.f };
 
             break;
         }
 
-        case ECameraType::ObservationObject:
+        case ObservationObject:
         {
             // 球面坐标转换笛卡尔坐标
             // 这是看向物体的，lookat只会看向物体，所以使用球面坐标，可以围绕物体观察。
@@ -163,7 +163,7 @@ void GCamera::OnMouseMove(int X, int Y)
 
 void GCamera::OnMouseWheel(int X, int Y, float InDelta)
 {
-    if(CameraType==ECameraType::ObservationObject)
+    if(CameraType==ObservationObject)
     {
         SphericalRadius += (InDelta / 100.f);
 
@@ -177,7 +177,7 @@ void GCamera::OnMouseWheel(int X, int Y, float InDelta)
 // +1向前，-1向后
 void GCamera::MoveForward(float InValue)
 {
-    if (CameraType == ECameraType::CameraRoaming)
+    if (CameraType == CameraRoaming)
     {
         XMFLOAT3 fPosition = GetTransformationComponent()->GetPosition();
         XMFLOAT3 fLookat = GetTransformationComponent()->GetLookatVector();
@@ -195,7 +195,7 @@ void GCamera::MoveForward(float InValue)
 // +1向右，-1向左
 void GCamera::MoveRight(float InValue)
 {
-    if (CameraType == ECameraType::CameraRoaming)
+    if (CameraType == CameraRoaming)
     {
         XMFLOAT3 fPosition = GetTransformationComponent()->GetPosition();
         XMFLOAT3 fRight = GetTransformationComponent()->GetRightVector();

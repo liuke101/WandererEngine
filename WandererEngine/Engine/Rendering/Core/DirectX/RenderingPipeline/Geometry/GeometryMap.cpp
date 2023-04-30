@@ -86,8 +86,9 @@ void FGeometryMap::PreDraw(float DeltaTime)
 
 void FGeometryMap::Draw(float DeltaTime)
 {
-    DrawMesh(DeltaTime);
+    // 这里必须线DrawViewport，为什么？
     DrawViewport(DeltaTime);
+    DrawMesh(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)
@@ -150,9 +151,9 @@ void FGeometryMap::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
 
 void FGeometryMap::Build()
 {
-    for(auto &Tmp : Geometrys)
+    for(auto &temp : Geometrys)
     {
-        Tmp.second.Build();
+        temp.second.Build();
     }
 }
 

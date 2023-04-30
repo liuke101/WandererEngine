@@ -4,8 +4,8 @@
 #include "../../Core/Engine.h"
 #include "../../Rendering/Engine/Core/RenderingEngine.h"
 
-class CWorld;
 class CDirectXRenderingEngine;
+class CWorld;
 
 // Windows平台引擎类
 class CWindowsEngine :public CEngine
@@ -27,7 +27,7 @@ public:
 
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
 
-private:
+public:
 	// 初始化Windows窗口 
 	bool InitWindows(FWinMainCommandParameters InParameters);
 	

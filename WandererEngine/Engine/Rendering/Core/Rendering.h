@@ -13,7 +13,7 @@
 // 需要渲染的地方继承该接口即可
 class IRenderingInterface //: public IGuidInterface
 {
-    friend class CWindowsEngine;
+    friend class CDirectXRenderingEngine;
 public:
     IRenderingInterface();
     virtual ~IRenderingInterface();

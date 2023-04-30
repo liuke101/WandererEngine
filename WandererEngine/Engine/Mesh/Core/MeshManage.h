@@ -4,8 +4,6 @@
 #include "MeshType.h"
 #include "Mesh.h"
 #include "../../Interface/DirectXDeviceInterface.h"
-#include "../../Interface/DirectXDeviceInterface.h"
-#include "../../../Engine/Rendering/Core/Buffer/ConstructBuffer.h"
 #include "../../Core/Viewport/ViewportInfo.h"
 #include "../../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
 

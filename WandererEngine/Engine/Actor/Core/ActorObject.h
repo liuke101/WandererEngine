@@ -13,11 +13,11 @@ class GActorObject :public CCoreMinimalObject
 public:
     GActorObject();
 public:
-    FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
+    FORCEINLINE CTransformationComponent* GetTransformationComponent() const { return TransformationComponent; }
 public:
     void SetPosition(const XMFLOAT3& InNewPosition);
-    void SetRotation(const fvector_3d& InRotation);
-    void SetScale(const fvector_3d& InScale);
+    void SetRotation(const fvector_3d& InNewRotation);
+    void SetScale(const fvector_3d& InNewScale);
 
     XMFLOAT3& GetPosition();
     fvector_3d GetRotation() const;

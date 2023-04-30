@@ -74,17 +74,17 @@ int CDirectXRenderingEngine::PostInit()
 		Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	}
 
-	//  if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
-	//  {
-	//  	Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
-	//  	Sphere->SetRotation(fvector_3d(10.0f, 1.0f, 10.f));	// 设置旋转
-	//  	Sphere->SetScale(fvector_3d(2.0f, 1.0f, 10.0f));		// 设置缩放
-	//  }
-	//
-	// MeshManage->CreatePlaneMesh(4.f, 3.f, 20.0f, 20.0f);
-	// MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f);
-	// string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-	// MeshManage->CreateMesh(MeshObjPath);
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
+		Sphere->SetRotation(fvector_3d(5.0f, 5.0f, 5.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(5.0f, 5.0f, 5.0f));		// 设置缩放
+	}
+	
+	MeshManage->CreatePlaneMesh(4.f, 3.f, 20.0f, 20.0f);
+	MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f);
+	string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+	MeshManage->CreateMesh(MeshObjPath);
 
 	MeshManage->BuildMesh();
 

@@ -31,7 +31,7 @@ public:
 	virtual int PostInit() = 0;		
 
 	// Tick 
-	virtual void Tick(float DeltaTime) = 0;
+	virtual void Tick(float DeltaTime) {};
 
 	// ÍË³ö
 	virtual int PreExit() = 0;
