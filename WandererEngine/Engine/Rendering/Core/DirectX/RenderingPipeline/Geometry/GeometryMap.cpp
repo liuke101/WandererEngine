@@ -10,7 +10,7 @@ bool FGeometry::bRenderingDataExistence(GMesh* InKey)
     {
         if(Tmp.Mesh == InKey)
         {
-            return  true;
+            return true;
         }
     }
     return false;
@@ -31,7 +31,6 @@ void FGeometry::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
 
         RenderingData.VertexOffsetPosition = MeshRenderingData.VertexData.size();
         RenderingData.IndexOffsetPosition = MeshRenderingData.IndexData.size();
-
 
         // 顶点/索引合并
         MeshRenderingData.VertexData.insert(MeshRenderingData.VertexData.end(), MeshData.VertexData.begin(), MeshData.VertexData.end());

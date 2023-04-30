@@ -26,7 +26,7 @@ void CTransformationComponent::SetRotation(const fvector_3d& InNewRotation)
     // 欧拉角转换成旋转矩阵
     XMMATRIX M_RollPitchYaw = XMMatrixRotationRollPitchYaw(PitchRadians,YawRadians,RollRadians);
 
-    // 堆RUL向量进行旋转
+    // 对RUL向量进行旋转
     XMStoreFloat3(&RightVector, XMVector3TransformNormal(XMLoadFloat3(&RightVector), M_RollPitchYaw));
     XMStoreFloat3(&UpVector, XMVector3TransformNormal(XMLoadFloat3(&UpVector), M_RollPitchYaw));
     XMStoreFloat3(&LookatVector, XMVector3TransformNormal(XMLoadFloat3(&LookatVector), M_RollPitchYaw));

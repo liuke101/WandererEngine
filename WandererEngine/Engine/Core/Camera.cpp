@@ -7,12 +7,10 @@ GCamera::GCamera()
     :GActorObject()
 {
     InputComponent = CreateObject<CInputComponent>(new CInputComponent());
-
-    MouseSensitivity = 1.0f;
+    MouseSensitivity = 0.5f;
     CameraType = ECameraType::CameraRoaming;
-
     SphericalRadius = 10.0f;
-    theta = XM_PI;
+    alpha = XM_PI;
     beta = XM_PI;
 }
 
@@ -56,11 +54,13 @@ void GCamera::ExecuteKeyboard(const FInputKey& InputKey)
     else if (InputKey.KeyName == "Q")
     {
         CameraType == ECameraType::ObservationObject;
+        Engine_Log("Q切换观察对象模式")
     }
     // 按W切换相机漫游模式
     else if (InputKey.KeyName == "E")
     {
         CameraType == ECameraType::CameraRoaming;
+        Engine_Log("W切换相机漫游模式")
     }
 }
 
@@ -71,6 +71,7 @@ void GCamera::BuildViewMatrix(float DeltaTime)
         case ECameraType::CameraRoaming:
         {
             // 构建观察变换矩阵
+            // 这是看向整个世界的，lookat只会朝向摄像机的前方
             GetTransformationComponent()->CalcRULVector();
 
             fvector_3d V3;
@@ -92,10 +93,12 @@ void GCamera::BuildViewMatrix(float DeltaTime)
         case ECameraType::ObservationObject:
         {
             // 球面坐标转换笛卡尔坐标
+            // 这是看向物体的，lookat只会看向物体，所以使用球面坐标，可以围绕物体观察。
             XMFLOAT3 &CameraPos = GetTransformationComponent()->GetPosition();
-            CameraPos.x = SphericalRadius * sinf(theta) * cos(beta);
-            CameraPos.y = SphericalRadius * sinf(theta) * sin(beta);
-            CameraPos.z = SphericalRadius * cos(theta);
+
+            CameraPos.x = SphericalRadius * cosf(alpha) * cosf(beta);
+            CameraPos.y = SphericalRadius * sinf(alpha);
+            CameraPos.z = SphericalRadius * cosf(alpha) * sinf(beta);
 
             XMVECTOR Pos = XMVectorSet(CameraPos.x, CameraPos.y, CameraPos.z, 1.0f);
             XMVECTOR ViewTarget = XMVectorZero();
@@ -106,11 +109,7 @@ void GCamera::BuildViewMatrix(float DeltaTime)
 
             break;
         }
-
-        default:
-            break;
     }
-
 }
 
 void GCamera::OnMouseButtonDown(int X, int Y)
@@ -119,7 +118,7 @@ void GCamera::OnMouseButtonDown(int X, int Y)
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
     SetCapture(GetMainWindowsHandle()); // 鼠标捕获
-    Engine_Log_Success("鼠标按下");
+    Engine_Log("右键按下")
 }
 
 void GCamera::OnMouseButtonUp(int X, int Y)
@@ -128,7 +127,7 @@ void GCamera::OnMouseButtonUp(int X, int Y)
     ReleaseCapture();           // 释放鼠标捕获
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
-    Engine_Log_Success("鼠标松开");
+    Engine_Log("右键抬起")
 }
 
 void GCamera::OnMouseMove(int X, int Y)
@@ -137,30 +136,29 @@ void GCamera::OnMouseMove(int X, int Y)
     {
         // 根据鼠标的移动距离计算旋转角度
         float XRadians = XMConvertToRadians(static_cast<float>(X - LastMousePosition.x) * MouseSensitivity);
-        float YRadians = XMConvertToRadians(static_cast<float>(Y - LastMousePosition.x) * MouseSensitivity);
+        float YRadians = XMConvertToRadians(static_cast<float>(Y - LastMousePosition.y) * MouseSensitivity);
 
         switch (CameraType)
         {
             case CameraRoaming:
             {
-                RotateAroundRAxis(XRadians);
-                RotateAroundYAxis(YRadians);
+                RotateAroundYAxis(XRadians);
+                RotateAroundRAxis(YRadians);
+
                 break;
             }
             case ObservationObject:
             {
-                theta += YRadians;
+                alpha += YRadians;
                 beta += XRadians;
-                theta = math_libray::Clamp(theta, 0.0f, XM_2PI);    // 限制上下视角偏移量
+                //alpha = math_libray::Clamp(alpha, 0.0f, XM_2PI);    // 限制上下视角偏移量
                 break;
             }
-            default:
-                break;
         }
-        LastMousePosition.x = X;
-        LastMousePosition.y = Y;
-        Engine_Log_Success("鼠标按住移动");
+        Engine_Log("按住旋转")
     }
+    LastMousePosition.x = X;
+    LastMousePosition.y = Y;
 }
 
 void GCamera::OnMouseWheel(int X, int Y, float InDelta)
@@ -170,8 +168,9 @@ void GCamera::OnMouseWheel(int X, int Y, float InDelta)
         SphericalRadius += (InDelta / 100.f);
 
         // 限制滚轮缩放距离
-        SphericalRadius = math_libray::Clamp(SphericalRadius, 0.0f, 300.0f);
-        Engine_Log_Success("滑轮缩放");
+        SphericalRadius = math_libray::Clamp(SphericalRadius, 1.0f, 300.0f);
+
+        Engine_Log("滚轮缩放")
     }
 }
 
@@ -190,7 +189,7 @@ void GCamera::MoveForward(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Lookat, Position));
 
         GetTransformationComponent()->SetPosition(fPosition);
-        Engine_Log_Success("前后移动");
+        Engine_Log("前后")
     }
 }
 // +1向右，-1向左
@@ -208,8 +207,9 @@ void GCamera::MoveRight(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Right, Position));
 
         GetTransformationComponent()->SetPosition(fPosition);
-        Engine_Log_Success("左右移动");
+        Engine_Log("左右")
     }
+
 }
 
 void GCamera::RotateAroundRAxis(float InRotateDegrees)
@@ -218,8 +218,9 @@ void GCamera::RotateAroundRAxis(float InRotateDegrees)
     XMFLOAT3 UpVector = GetTransformationComponent()->GetUpVector();
     XMFLOAT3 LookatVector = GetTransformationComponent()->GetLookatVector();
 
-    // 以相机的x轴为轴旋转
+    // 以相机的RightVector为轴旋转asd
     XMMATRIX RotationR = XMMatrixRotationAxis(XMLoadFloat3(&GetTransformationComponent()->GetRightVector()), InRotateDegrees);
+
 
     // 相机的yz轴绕x轴旋转
     XMStoreFloat3(&GetTransformationComponent()->GetUpVector(), XMVector3TransformNormal(XMLoadFloat3(&UpVector), RotationR));

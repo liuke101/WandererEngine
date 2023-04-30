@@ -66,28 +66,25 @@ int CDirectXRenderingEngine::PostInit()
 
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
+	//构建Mesh
+	if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
 	{
-		//构建Mesh
-		if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
-		{
-			Box->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
-			Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-			Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		}
-
-		//  if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
-		//  {
-		//  	Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
-		//  	Sphere->SetRotation(fvector_3d(10.0f, 1.0f, 10.f));	// 设置旋转
-		//  	Sphere->SetScale(fvector_3d(2.0f, 1.0f, 10.0f));		// 设置缩放
-		//  }
-		//
-		// MeshManage->CreatePlaneMesh(4.f, 3.f, 20.0f, 20.0f);
-		// MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f);
-		// string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-		// MeshManage->CreateMesh(MeshObjPath);
-		
+		Box->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
+		Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	}
+
+	//  if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	//  {
+	//  	Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
+	//  	Sphere->SetRotation(fvector_3d(10.0f, 1.0f, 10.f));	// 设置旋转
+	//  	Sphere->SetScale(fvector_3d(2.0f, 1.0f, 10.0f));		// 设置缩放
+	//  }
+	//
+	// MeshManage->CreatePlaneMesh(4.f, 3.f, 20.0f, 20.0f);
+	// MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f);
+	// string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+	// MeshManage->CreateMesh(MeshObjPath);
 
 	MeshManage->BuildMesh();
 
@@ -371,8 +368,6 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&DSVDescriptorHeapDesc, IID_PPV_ARGS(DSVHeap.GetAddressOf())));
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-
-
 	return false;
 }
 

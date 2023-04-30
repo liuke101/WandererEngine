@@ -54,6 +54,6 @@ protected:
 
     // 球面坐标转换笛卡尔坐标
     float SphericalRadius;      // 球面半径
-    float theta;                // 上角
+    float alpha;                // 上角
     float beta;                 // 下角
 };
