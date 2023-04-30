@@ -5,14 +5,15 @@
 #include "../Component/TransformationComponent.h"
 
 CCamera::CCamera()
-    : MouseSensitivity(1.0f)
-    , CameraType(ECameraType::CameraRoaming)
-    , SphericalRadius(10.0f)
-    , theta(XM_PI)
-    , beta(XM_PI)
 {
     InputComponent = CreateObject<CInputComponent>(new CInputComponent());
     TransformationComponent = CreateObject<CTransformationComponent>(new CTransformationComponent());
+
+    MouseSensitivity = 0.001f;
+    CameraType = ECameraType::CameraRoaming;
+    SphericalRadius = 10.0f;
+    theta = XM_PI;
+    beta = XM_PI;
 }
 
 void CCamera::BeginInit()
@@ -55,11 +56,13 @@ void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
     else if (InputKey.KeyName == "Q")
     {
         CameraType == ECameraType::ObservationObject;
+        Engine_Log("Q切换观察对象模式");
     }
     // 按W切换相机漫游模式
     else if (InputKey.KeyName == "E")
     {
         CameraType == ECameraType::CameraRoaming;
+        Engine_Log("W切换相机漫游模式");
     }
 }
 
@@ -119,6 +122,8 @@ void CCamera::OnMouseButtonDown(int X, int Y)
     LastMousePosition.y = Y;
 
     SetCapture(GetMainWindowsHandle()); // 鼠标捕获
+
+    Engine_Log("右键按下");
     
 }
 
@@ -129,7 +134,8 @@ void CCamera::OnMouseButtonUp(int X, int Y)
     ReleaseCapture();           // 释放鼠标捕获
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
-    
+
+    Engine_Log("右键抬起");
 }
 
 void CCamera::OnMouseMove(int X, int Y)
@@ -150,17 +156,16 @@ void CCamera::OnMouseMove(int X, int Y)
             }
             case ObservationObject:
             {
-                theta += YRadians;
+                theta += ( - YRadians);
                 beta += XRadians;
                 theta = math_libray::Clamp(theta, 0.0f, XM_2PI);    // 限制上下视角偏移量
                 break;
             }
-            default:
-                break;
         }
         LastMousePosition.x = X;
         LastMousePosition.y = Y;
 
+        Engine_Log("右键按住移动");
     }
 }
 
@@ -171,7 +176,8 @@ void CCamera::OnMouseWheel(int X, int Y, float InDelta)
         SphericalRadius += (InDelta / 100.f);
 
         // 限制滚轮缩放距离
-        SphericalRadius = math_libray::Clamp(SphericalRadius, 0.0f, 300.0f);
+        SphericalRadius = math_libray::Clamp(SphericalRadius, 7.0f, 40.0f);
+        Engine_Log("滚轮缩放");
     }
 }
 
@@ -190,6 +196,7 @@ void CCamera::MoveForward(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Lookat, Position));
 
         TransformationComponent->SetPosition(fPosition);
+        Engine_Log("前进后退");
     }
 }
 // +1向右，-1向左
@@ -207,6 +214,7 @@ void CCamera::MoveRight(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Right, Position));
 
         TransformationComponent->SetPosition(fPosition);
+        Engine_Log("左右");
     }
 }
 
