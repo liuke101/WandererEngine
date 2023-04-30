@@ -9,10 +9,10 @@ CCamera::CCamera()
     InputComponent = CreateObject<CInputComponent>(new CInputComponent());
     TransformationComponent = CreateObject<CTransformationComponent>(new CTransformationComponent());
 
-    MouseSensitivity = 0.001f;
+    MouseSensitivity = 0.5f;
     CameraType = ECameraType::CameraRoaming;
     SphericalRadius = 10.0f;
-    theta = XM_PI;
+    alpha = XM_PI;
     beta = XM_PI;
 }
 
@@ -23,6 +23,7 @@ void CCamera::BeginInit()
 
     // 绑定按键
     InputComponent->KeyboardDelegate.Bind(this, &CCamera::ExecuteKeyboard);
+
     InputComponent->OnMouseButtonDownDelegate.Bind(this, &CCamera::OnMouseButtonDown);
     InputComponent->OnMouseButtonUpDelegate.Bind(this, &CCamera::OnMouseButtonUp);
     InputComponent->OnMouseMoveDelegate.Bind(this, &CCamera::OnMouseMove);
@@ -55,14 +56,12 @@ void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
     // 按Q切换观察对象模式
     else if (InputKey.KeyName == "Q")
     {
-        CameraType == ECameraType::ObservationObject;
-        Engine_Log("Q切换观察对象模式");
+        CameraType = ECameraType::ObservationObject;
     }
     // 按W切换相机漫游模式
     else if (InputKey.KeyName == "E")
     {
-        CameraType == ECameraType::CameraRoaming;
-        Engine_Log("W切换相机漫游模式");
+        CameraType = ECameraType::CameraRoaming;
     }
 }
 
@@ -73,6 +72,7 @@ void CCamera::BuildViewMatrix(float DeltaTime)
         case ECameraType::CameraRoaming:
         {
             // 构建观察变换矩阵
+            // 这是看向整个世界的，lookat只会朝向摄像机的前方
             TransformationComponent->CalcLRUVector();
 
             fvector_3d V3;
@@ -94,10 +94,12 @@ void CCamera::BuildViewMatrix(float DeltaTime)
         case ECameraType::ObservationObject:
         {
             // 球面坐标转换笛卡尔坐标
+            // 这是看向物体的，lookat只会看向物体，所以使用球面坐标，可以围绕物体观察。
             XMFLOAT3 &CameraPos = TransformationComponent->GetPosition();
-            CameraPos.x = SphericalRadius * sinf(theta) * cos(beta);
-            CameraPos.y = SphericalRadius * sinf(theta) * sin(beta);
-            CameraPos.z = SphericalRadius * cos(theta);
+
+            CameraPos.x = SphericalRadius * cosf(alpha) * cosf(beta);
+            CameraPos.y = SphericalRadius * sinf(alpha);
+            CameraPos.z = SphericalRadius * cosf(alpha) * sinf(beta);
 
             XMVECTOR Pos = XMVectorSet(CameraPos.x, CameraPos.y, CameraPos.z, 1.0f);
             XMVECTOR ViewTarget = XMVectorZero();
@@ -108,11 +110,7 @@ void CCamera::BuildViewMatrix(float DeltaTime)
 
             break;
         }
-
-        default:
-            break;
     }
-
 }
 
 void CCamera::OnMouseButtonDown(int X, int Y)
@@ -122,9 +120,6 @@ void CCamera::OnMouseButtonDown(int X, int Y)
     LastMousePosition.y = Y;
 
     SetCapture(GetMainWindowsHandle()); // 鼠标捕获
-
-    Engine_Log("右键按下");
-    
 }
 
 void CCamera::OnMouseButtonUp(int X, int Y)
@@ -134,8 +129,6 @@ void CCamera::OnMouseButtonUp(int X, int Y)
     ReleaseCapture();           // 释放鼠标捕获
     LastMousePosition.x = X;
     LastMousePosition.y = Y;
-
-    Engine_Log("右键抬起");
 }
 
 void CCamera::OnMouseMove(int X, int Y)
@@ -144,29 +137,28 @@ void CCamera::OnMouseMove(int X, int Y)
     {
         // 根据鼠标的移动距离计算旋转角度
         float XRadians = XMConvertToRadians(static_cast<float>(X - LastMousePosition.x) * MouseSensitivity);
-        float YRadians = XMConvertToRadians(static_cast<float>(Y - LastMousePosition.x) * MouseSensitivity);
+        float YRadians = XMConvertToRadians(static_cast<float>(Y - LastMousePosition.y) * MouseSensitivity);
 
         switch (CameraType)
         {
             case CameraRoaming:
             {
-                RotateAroundRAxis(XRadians);
-                RotateAroundYAxis(YRadians);
+                RotateAroundYAxis(XRadians);
+                RotateAroundRAxis(YRadians);
+
                 break;
             }
             case ObservationObject:
             {
-                theta += ( - YRadians);
                 beta += XRadians;
-                theta = math_libray::Clamp(theta, 0.0f, XM_2PI);    // 限制上下视角偏移量
+                alpha += YRadians;
+                //alpha = math_libray::Clamp(alpha, 0.0f, XM_2PI*2);    // 限制视角偏移量
                 break;
             }
         }
-        LastMousePosition.x = X;
-        LastMousePosition.y = Y;
-
-        Engine_Log("右键按住移动");
     }
+    LastMousePosition.x = X;
+    LastMousePosition.y = Y;
 }
 
 void CCamera::OnMouseWheel(int X, int Y, float InDelta)
@@ -176,8 +168,7 @@ void CCamera::OnMouseWheel(int X, int Y, float InDelta)
         SphericalRadius += (InDelta / 100.f);
 
         // 限制滚轮缩放距离
-        SphericalRadius = math_libray::Clamp(SphericalRadius, 7.0f, 40.0f);
-        Engine_Log("滚轮缩放");
+        SphericalRadius = math_libray::Clamp(SphericalRadius, 1.0f, 300.0f);
     }
 }
 
@@ -196,7 +187,6 @@ void CCamera::MoveForward(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Lookat, Position));
 
         TransformationComponent->SetPosition(fPosition);
-        Engine_Log("前进后退");
     }
 }
 // +1向右，-1向左
@@ -214,7 +204,6 @@ void CCamera::MoveRight(float InValue)
         XMStoreFloat3(&fPosition, XMVectorMultiplyAdd(AmountMovement, Right, Position));
 
         TransformationComponent->SetPosition(fPosition);
-        Engine_Log("左右");
     }
 }
 
@@ -224,8 +213,9 @@ void CCamera::RotateAroundRAxis(float InRotateDegrees)
     XMFLOAT3 UpVector = TransformationComponent->GetUpVector();
     XMFLOAT3 LookatVector = TransformationComponent->GetLookatVector();
 
-    // 以相机的x轴为轴旋转
+    // 以相机的RightVector为轴旋转asd
     XMMATRIX RotationR = XMMatrixRotationAxis(XMLoadFloat3(&TransformationComponent->GetRightVector()), InRotateDegrees);
+
 
     // 相机的yz轴绕x轴旋转
     XMStoreFloat3(&TransformationComponent->GetUpVector(), XMVector3TransformNormal(XMLoadFloat3(&UpVector), RotationR));
@@ -247,5 +237,3 @@ void CCamera::RotateAroundYAxis(float InRotateDegrees)
     XMStoreFloat3(&TransformationComponent->GetUpVector(), XMVector3TransformNormal(XMLoadFloat3(&UpVector), RotationY));
     XMStoreFloat3(&TransformationComponent->GetLookatVector(), XMVector3TransformNormal(XMLoadFloat3(&LookatVector), RotationY));
 }
-
-

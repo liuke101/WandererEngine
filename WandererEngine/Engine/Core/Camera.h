@@ -43,6 +43,7 @@ protected:
     virtual void RotateAroundRAxis(float InRotateDegrees);
     // 左右旋转：绕世界空间Y轴旋转
     virtual void RotateAroundYAxis(float InRotateDegrees);
+
 public:
     FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
     FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
@@ -55,7 +56,7 @@ protected:
     ECameraType CameraType;  // 摄像机状态
 
     // 球面坐标转换笛卡尔坐标
-    float SphericalRadius;      // 球面半径
-    float theta;                // 上角
-    float beta;                 // 下角
+    float SphericalRadius;  // 球面半径
+    float alpha;            // 球面坐标上角
+    float beta;             // 球面坐标下角
 };
