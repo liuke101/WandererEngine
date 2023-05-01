@@ -150,7 +150,7 @@ void GCamera::OnMouseMove(int X, int Y)
             case ObservationObject:
             {
                 alpha += YRadians;
-                beta += XRadians;
+                beta += (-XRadians);
                 //alpha = math_libray::Clamp(alpha, 0.0f, XM_2PI);    // 限制上下视角偏移量
                 break;
             }

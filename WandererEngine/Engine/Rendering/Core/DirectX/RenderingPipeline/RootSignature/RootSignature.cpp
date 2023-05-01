@@ -6,18 +6,18 @@ FRootSignature::FRootSignature()
 
 void FRootSignature::BuildRootSignature()
 {
+    // 根签名由一系列根参数定义而成，根参数可以是根常量、根描述符、描述符表
     // 创建描述符表
-    CD3DX12_ROOT_PARAMETER RootParam[2];                        // ⚠描述符表大小=使用的寄存器槽数量
+    CD3DX12_ROOT_PARAMETER RootParam[2];                        // P264 ⚠描述符表大小=使用的寄存器槽数量
     // 创建ObjectCBV描述符表
     CD3DX12_DESCRIPTOR_RANGE ObjectCBVTable;
-    ObjectCBVTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0); //（描述符表的类型，表中的描述符数量，⚠寄存器编号）
+    ObjectCBVTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0); //P265（描述符表的类型，表中的描述符数量，⚠基准寄存器编号）
     // 创建ViewportCBV描述符表
     CD3DX12_DESCRIPTOR_RANGE ViewportCBVTable;
     ViewportCBVTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
 
     //—————————————————————————————————————————————————————————————————
     // 根参数绑定
-    // 根参数可以是根常量、根描述符、描述符表
     // 根参数将描述符表绑定到常量缓冲区寄存器register(x#)，以供着色器程序访问。register(x#)表示寄存器传递的资源类型
     // t:着色器资源视图  s:采样器  b：常量缓冲区视图  #：寄存器编号
     RootParam[0].InitAsDescriptorTable(1, &ObjectCBVTable); //（描述符区域的数量，指向描述符区域数组的指针）

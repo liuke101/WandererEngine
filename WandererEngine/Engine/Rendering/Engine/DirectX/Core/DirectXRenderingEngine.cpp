@@ -63,31 +63,58 @@ int CDirectXRenderingEngine::Init(FWinMainCommandParameters InParameters)
 
 int CDirectXRenderingEngine::PostInit()
 {
-
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	//构建Mesh
-	if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
+	// if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
+	// {
+	// 	Box->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
+	// 	Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+	// 	Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+	// }
+
+	// if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	// {
+	// 	Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
+	// 	Sphere->SetRotation(fvector_3d(5.0f, 5.0f, 5.0f));	// 设置旋转
+	// 	Sphere->SetScale(fvector_3d(5.0f, 5.0f, 5.0f));		// 设置缩放
+	// }
+
+	if (GMesh* Plane = MeshManage->CreatePlaneMesh(100.f,100.f, 100.0f, 100.0f))
 	{
-		Box->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
-		Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		Plane->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
+		Plane->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Plane->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	// if (GMesh* Cone = MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f))
+	// {
+	// 	Cone->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
+	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+	// }
+
+	string MeshObj1Path = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+	if (GMesh* Cone = MeshManage->CreateMesh(MeshObj1Path))
 	{
-		Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
-		Sphere->SetRotation(fvector_3d(5.0f, 5.0f, 5.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(5.0f, 5.0f, 5.0f));		// 设置缩放
+		Cone->SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));		// 设置位置
+		Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	}
-	
-	MeshManage->CreatePlaneMesh(4.f, 3.f, 20.0f, 20.0f);
-	MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f);
-	string MeshObjPath = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-	MeshManage->CreateMesh(MeshObjPath);
 
-	MeshManage->BuildMesh();
+	string MeshObj2Path = "../WandererEngine/Teapot.obj";  // 路径为对应exe程序的相对位置
+	if (GMesh* Cone = MeshManage->CreateMesh(MeshObj2Path))
+	{
+		Cone->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
+		Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+	}
+	// —————————————————————————————————————————————————————————————————
 
+    MeshManage->BuildMesh();
+
+	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	ANALYSIS_HRESULT(GraphicsCommandList->Close());
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
