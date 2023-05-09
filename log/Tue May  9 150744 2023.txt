@@ -1,0 +1,24 @@
+[LOG] [Tue May  9 15:07:44 2023] Log Init. 
+[LOG] [Tue May  9 15:07:44 2023] Engine pre-initialization complete. 
+[LOG] [Tue May  9 15:07:44 2023] DirectXRenderingEngine pre-initialization complete. 
+[LOG] [Tue May  9 15:07:44 2023] InitWindows complete. 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[LOG] [Tue May  9 15:07:44 2023] DirectXRenderingEngine initialization complete. 
+[LOG] [Tue May  9 15:07:44 2023] Engine initialization complete. 
+[SUCCESS] [Tue May  9 15:07:44 2023] Success ! 
+[ERROR] [Tue May  9 15:07:44 2023] Light.hlsl(1,9-12): warning X3568: 'once' : unknown pragma ignored
+C:\Users\22625\Desktop\WandererEngine\WandererEngine\Shader\Hello.hlsl(54,17): error X3000: syntax error: unexpected token '{'
+ 
+[ERROR] [Tue May  9 15:07:44 2023] Error = -2147467259 

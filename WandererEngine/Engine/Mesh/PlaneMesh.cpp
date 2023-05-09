@@ -49,9 +49,10 @@ void GPlaneMesh::CreateMesh(FMeshRenderingData& MeshData, float InHeight, float 
             MeshData.VertexData.push_back(FVertex(
                 XMFLOAT3(
                     x,   // x
-                    0,   // y
+                    0.0f,   // y
                     z),  // z
-                XMFLOAT4(Colors::White)));
+                XMFLOAT4(Colors::White),
+                XMFLOAT3(0.0f,1.0f,0.0f)));
         }
     }
 

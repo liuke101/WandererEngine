@@ -549,6 +549,13 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.cpp" />
     <ClCompile Include="Engine\Actor\Core\ActorObject.cpp" />
+    <ClCompile Include="Engine\Component\Light\Core\LightComponent.cpp" />
+    <ClCompile Include="Engine\Actor\Light\ParallelLight.cpp" />
+    <ClCompile Include="Engine\Mesh\Core\Material\Material.cpp" />
+    <ClCompile Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.cpp" />
+    <ClCompile Include="Engine\Component\Light\Core\LightConstantBuffer.cpp" />
+    <ClCompile Include="Engine\Component\Light\ParallelLightComponent.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
@@ -676,9 +683,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Shader\Core\Shader.h">
       <Filter>Engine\Shader\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader\Hello.hlsl">
-      <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h">
       <Filter>simple_library\private\simple_channel\simple_net_connetion</Filter>
@@ -869,5 +873,13 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBufferView\ConstantBufferView.h" />
     <ClInclude Include="Engine\Actor\Core\ActorObject.h" />
     <ClInclude Include="Engine\Core\CameraType.h" />
+    <ClInclude Include="Engine\Component\Light\Core\LightComponent.h" />
+    <ClInclude Include="Engine\Actor\Light\ParallelLight.h" />
+    <ClInclude Include="Engine\Mesh\Core\Material\Material.h" />
+    <ClInclude Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.h" />
+    <ClInclude Include="Engine\Component\Light\Core\LightConstantBuffer.h" />
+    <ClInclude Include="Engine\Component\Light\ParallelLightComponent.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h" />
+    <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h" />
   </ItemGroup>
 </Project>

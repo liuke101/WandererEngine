@@ -34,4 +34,5 @@ protected:
     vector<D3D12_INPUT_ELEMENT_DESC> InputLayoutDESC;   // 输入布局描述符
 
     FGeometryMap GeometryMap;
+
 };

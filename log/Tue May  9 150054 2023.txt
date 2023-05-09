@@ -1,0 +1,24 @@
+[LOG] [Tue May  9 15:00:54 2023] Log Init. 
+[LOG] [Tue May  9 15:00:54 2023] Engine pre-initialization complete. 
+[LOG] [Tue May  9 15:00:54 2023] DirectXRenderingEngine pre-initialization complete. 
+[LOG] [Tue May  9 15:00:54 2023] InitWindows complete. 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[LOG] [Tue May  9 15:00:54 2023] DirectXRenderingEngine initialization complete. 
+[LOG] [Tue May  9 15:00:54 2023] Engine initialization complete. 
+[SUCCESS] [Tue May  9 15:00:54 2023] Success ! 
+[ERROR] [Tue May  9 15:00:54 2023] C:\Users\22625\Desktop\WandererEngine\WandererEngine\Shader\Hello.hlsl(49,5-13): error X3000: unrecognized identifier 'FMaterial'
+C:\Users\22625\Desktop\WandererEngine\WandererEngine\Shader\Hello.hlsl(49,15-22): error X3000: unrecognized identifier 'Material'
+ 
+[ERROR] [Tue May  9 15:00:54 2023] Error = -2147467259 

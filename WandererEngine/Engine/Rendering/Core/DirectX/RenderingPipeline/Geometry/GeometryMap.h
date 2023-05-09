@@ -64,20 +64,24 @@ public:
 	// 构建CBV堆（常量缓冲区描述符堆）
 	void BuildCBVHeap();
 
-	// 构建ObjectCBV（常量缓冲区视图）
-	void BuildObjectCBV();
-
-	// 获得绘制Object的数量
-	UINT GetDrawObjectNumber();
-
-	// 构建ViewportCBV（常量缓冲区视图）
+	// 构建CBV（常量缓冲区视图）
+	void BuildMeshObjectCBV();
+	void BuildMaterialObjectCBV();
+	void BuildLightObjectCBV();
 	void BuildViewportCBV();
 
-public:
-	// 渲染模型
-	void DrawMesh(float DeltaTime);
+	// 获得绘制Object的数量
+	UINT GetDrawMeshObjectNumber();
+	UINT GetDrawMaterialObjectNumber();
+	UINT GetDrawLightObjectNumber();
+	
 
-	// 渲染视口
+public:
+	// 渲染Mesh
+	void DrawMesh(float DeltaTime);
+	// 渲染Light
+	void DrawLight(float DeltaTime);
+	// 渲染Viewport
 	void DrawViewport(float DeltaTime);
 
 public:
@@ -85,6 +89,8 @@ public:
 protected:
 	map<int, FGeometry> Geometrys;
 	FDescriptorHeap DescriptorHeap;	  // CBV堆
-	FConstantBufferView ObjectCBV;    // ObjectCBV
-	FConstantBufferView ViewportCBV;  // ViewportCBV
+	FConstantBufferView MeshCBV;    
+	FConstantBufferView ViewportCBV;
+	FConstantBufferView MaterialCBV;
+	FConstantBufferView LightCBV;
 };

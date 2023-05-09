@@ -3,17 +3,21 @@
 #include "../../../../../Platform/Windows/WindowsEngine.h"
 
 FPipelineState::FPipelineState()
+    : PipelineState(Solid)
 {
+    PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(4, ComPtr<ID3D12PipelineState>())); // 4:固体
+    PSO.insert(pair<int, ComPtr<ID3D12PipelineState>>(5, ComPtr<ID3D12PipelineState>())); // 5:线框
 }
 
 void FPipelineState::PreDraw(float DeltaTime)
 {
     // 重置命令列表
-    GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get());
+    GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO[static_cast<int>(PipelineState)].Get());
 }
 
 void FPipelineState::Draw(float DeltaTime)
 {
+    CaptureKeyboard();
 }
 
 void FPipelineState::PostDraw(float DeltaTime)
@@ -57,7 +61,7 @@ void FPipelineState::BuildPSO()
 
     // 光栅器的光栅化状态
     GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;                             // 填充模式(固体/线框)
+    //GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;                           // 填充模式(固体/线框,默认为固体)
     //GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;                                // 裁剪模式
     //GPSDesc.RasterizerState.FrontCounterClockwise = FALSE;                                  // 三角形顶点顺序逆时针为正面
     //GPSDesc.RasterizerState.DepthBias = D3D12_DEFAULT_DEPTH_BIAS;                           // 深度偏差
@@ -78,5 +82,22 @@ void FPipelineState::BuildPSO()
     GPSDesc.SampleDesc.Quality = GetEngine()->GetRenderingEngine()->GetMSAASampleQuality();   // 多重采样质量级别
     // GPSDesc.NodeMask //单GPU设置为0
 
-    ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO)));
+    // 填充模式：固体
+    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;                            
+    ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[Solid])));
+    // 填充模式：线框
+    GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;                             
+    ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[Wirefram])));
+}
+
+void FPipelineState::CaptureKeyboard()
+{
+    if (GetAsyncKeyState('4') & 0x8000)
+    {
+        PipelineState = Solid;
+    }
+    else if (GetAsyncKeyState('5') & 0x8000)
+    {
+        PipelineState = Wirefram;
+    }
 }

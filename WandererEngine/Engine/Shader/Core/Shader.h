@@ -11,3 +11,5 @@ public:
 private:
     ComPtr<ID3DBlob> ShaderCode;
 };
+
+

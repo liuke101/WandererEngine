@@ -28,9 +28,9 @@ void GSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint3
     MeshData.VertexData.push_back(NorthPoleVertex);
 
     // 保存法线数据
-    // int NorthPoleIndex = MeshData.VertexData.size() - 1;        //获取最后一个顶点数据（刚添加的）的索引
-    // XMVECTOR NorthPolePos = XMLoadFloat3(&MeshData.VertexData[NorthPoleIndex].Position);
-    // XMStoreFloat3(&MeshData.VertexData[NorthPoleIndex].Normal, XMVector3Normalize(NorthPolePos));   // 保存顶点法线数据
+    int NorthPoleIndex = MeshData.VertexData.size() - 1;        //获取最后一个顶点数据（刚添加的）的索引
+    XMVECTOR NorthPolePos = XMLoadFloat3(&MeshData.VertexData[NorthPoleIndex].Position);
+    XMStoreFloat3(&MeshData.VertexData[NorthPoleIndex].Normal, XMVector3Normalize(NorthPolePos));   // 保存顶点法线数据
 
     // 每层环上的顶点（忽略极点所在层）
     float thetaValue = XM_PI / static_cast<float>(InHeightSubdivision);     // 原点到目标点的连线与正y轴之间的“极角”
@@ -51,17 +51,17 @@ void GSphereMesh::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint3
                     InRadius * sinf(theta) * sinf(beta)),  // z
                 XMFLOAT4(Colors::White))); 
 
-            // int VertexIndex = MeshData.VertexData.size() - 1;   
-            // XMVECTOR VertexPos = XMLoadFloat3(&MeshData.VertexData[VertexIndex].Position);
-            // XMStoreFloat3(&MeshData.VertexData[VertexIndex].Normal, XMVector3Normalize(VertexPos));
+            int VertexIndex = MeshData.VertexData.size() - 1;   
+            XMVECTOR VertexPos = XMLoadFloat3(&MeshData.VertexData[VertexIndex].Position);
+            XMStoreFloat3(&MeshData.VertexData[VertexIndex].Normal, XMVector3Normalize(VertexPos));
         }
     }
 
     // 南极点
     MeshData.VertexData.push_back(SouthPoleVertex);
-    // int SouthPoleIndex = MeshData.VertexData.size() - 1;
-    // XMVECTOR SouthPolePos = XMLoadFloat3(&MeshData.VertexData[SouthPoleIndex].Position);
-    // XMStoreFloat3(&MeshData.VertexData[SouthPoleIndex].Normal, XMVector3Normalize(SouthPolePos));
+    int SouthPoleIndex = MeshData.VertexData.size() - 1;
+    XMVECTOR SouthPolePos = XMLoadFloat3(&MeshData.VertexData[SouthPoleIndex].Position);
+    XMStoreFloat3(&MeshData.VertexData[SouthPoleIndex].Normal, XMVector3Normalize(SouthPolePos));
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
     // 【构建索引】

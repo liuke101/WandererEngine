@@ -33,7 +33,8 @@ void FRenderingPipeline::BuildPipeline()
     InputLayoutDESC =  // 输入布局描述符，要求hlsl中的输入签名与之匹配
     {
         {"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
-        {"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}
+        {"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0},
+        {"NORMAL",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,28,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0}
     };
     PipelineState.BindInputLayout(InputLayoutDESC.data(), InputLayoutDESC.size());
 
@@ -43,8 +44,10 @@ void FRenderingPipeline::BuildPipeline()
     // 构建CBV堆（常量缓冲区描述符堆）
     GeometryMap.BuildCBVHeap();
 
-    // 构建CBV
-    GeometryMap.BuildObjectCBV();
+    // 构建常量缓冲区和CBV
+    GeometryMap.BuildMeshObjectCBV();
+    GeometryMap.BuildMaterialObjectCBV();
+    GeometryMap.BuildLightObjectCBV();
     GeometryMap.BuildViewportCBV();
 
     // end: 构建管线状态对象
@@ -61,11 +64,13 @@ void FRenderingPipeline::Draw(float DeltaTime)
     GeometryMap.PreDraw(DeltaTime);
     RootSignature.PreDraw(DeltaTime);
     GeometryMap.Draw(DeltaTime);
+    PipelineState.Draw(DeltaTime);
 }
 
 void FRenderingPipeline::PostDraw(float DeltaTime)
 {
     GeometryMap.PostDraw(DeltaTime);
+    PipelineState.PostDraw(DeltaTime);
 }
 
 

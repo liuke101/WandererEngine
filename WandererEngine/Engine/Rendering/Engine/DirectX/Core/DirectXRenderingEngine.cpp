@@ -12,7 +12,7 @@
 #include "../../../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManage.h"
-
+#include "../../../../Mesh/Core/Material/Material.h"
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
@@ -70,22 +70,44 @@ int CDirectXRenderingEngine::PostInit()
 	// if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
 	// {
 	// 	Box->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
-	// 	Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+	// 	Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));		// 设置旋转
 	// 	Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	// }
 
-	// if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
-	// {
-	// 	Sphere->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));			// 设置位置
-	// 	Sphere->SetRotation(fvector_3d(5.0f, 5.0f, 5.0f));	// 设置旋转
-	// 	Sphere->SetScale(fvector_3d(5.0f, 5.0f, 5.0f));		// 设置缩放
-	// }
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(0.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if(CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetBaseColor(fvector_4d(0.0f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetMaterialType(Lambert);
+		}
+	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(0.0f, 7.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.0f, 1.0f));
+			InMaterial->SetMaterialType(HalfLambert);
+		}
+	}
 
 	if (GMesh* Plane = MeshManage->CreatePlaneMesh(100.f,100.f, 100.0f, 100.0f))
 	{
 		Plane->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
 		Plane->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
 		Plane->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Plane->GetMaterials())[0])
+		{
+			InMaterial->SetBaseColor(fvector_4d(1.0f, 1.0f, 1.0f, 1.0f));
+			InMaterial->SetMaterialType(HalfLambert);
+		}
 	}
 
 	// if (GMesh* Cone = MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f))
@@ -95,21 +117,21 @@ int CDirectXRenderingEngine::PostInit()
 	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	// }
 
-	string MeshObj1Path = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-	if (GMesh* Cone = MeshManage->CreateMesh(MeshObj1Path))
-	{
-		Cone->SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));		// 设置位置
-		Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-	}
-
-	string MeshObj2Path = "../WandererEngine/Teapot.obj";  // 路径为对应exe程序的相对位置
-	if (GMesh* Cone = MeshManage->CreateMesh(MeshObj2Path))
-	{
-		Cone->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
-		Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-	}
+	// string MeshObj1Path = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
+	// if (GMesh* Cone = MeshManage->CreateMesh(MeshObj1Path))
+	// {
+	// 	Cone->SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));		// 设置位置
+	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+	// }
+	//
+	// string MeshObj2Path = "../WandererEngine/Teapot.obj";  // 路径为对应exe程序的相对位置
+	// if (GMesh* Cone = MeshManage->CreateMesh(MeshObj2Path))
+	// {
+	// 	Cone->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
+	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+	// }
 	// —————————————————————————————————————————————————————————————————
 
     MeshManage->BuildMesh();
