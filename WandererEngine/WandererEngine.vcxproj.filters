@@ -324,9 +324,6 @@
     <ClCompile Include="Engine\Core\Viewport\Viewport.cpp">
       <Filter>Engine\Core\Viewport</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Viewport\ViewportInfo.cpp">
-      <Filter>Engine\Core\Viewport</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>

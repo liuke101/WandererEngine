@@ -1,6 +1,7 @@
 ﻿#include "ViewportTransformation.h"
 
 FViewportTransformation::FViewportTransformation()
-    :VP(EngineMath::IdentityMatrix4x4())
+    : ViewportPosition(0.0f, 0.0f, 0.0f, 1.0f)
+    , VP(EngineMath::IdentityMatrix4x4())
 {
 }

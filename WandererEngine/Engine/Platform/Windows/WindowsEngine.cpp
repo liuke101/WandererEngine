@@ -88,6 +88,9 @@ void CWindowsEngine::Tick(float DeltaTime)
 		if(World->GetCamra())
 		{
 		    FViewportInfo ViewportInfo;
+
+			XMFLOAT3 ViewportPositon = World->GetCamra()->GetPosition();
+			ViewportInfo.ViewportPosition = XMFLOAT4(ViewportPositon.x, ViewportPositon.y, ViewportPositon.z, 1.0f);
 		    ViewportInfo.ViewMatrix = World->GetCamra()->ViewMatrix;
 		    ViewportInfo.ProjectionMatrix = World->GetCamra()->ProjectionMatrix;
 

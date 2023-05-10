@@ -105,7 +105,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
     XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
     XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectionMatrix);
 
-    // 更新HLSL中的ObjectConstBuffer数据
+    // 更新HLSL中的ConstantBuffer数据
     for (auto& temp : Geometrys)
     {
         for (size_t i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
@@ -128,22 +128,23 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
                     Position.x,					Position.y,				Position.z,					1.f };
             
             
-            // 设置Mesh位置
+            // 更新Mesh位置
             XMMATRIX M_M = XMLoadFloat4x4(&InRenderingData.ModelMatrix);
-            
             FObjectTransformation ObjectTransformation;
-            XMStoreFloat4x4(&ObjectTransformation.M, XMMatrixTranspose(M_M));
+            {
+                XMStoreFloat4x4(&ObjectTransformation.M, XMMatrixTranspose(M_M));
+            }
             MeshCBV.Update(i, &ObjectTransformation);  //更新hlsl中的数据
 
-            // 设置材质
+            // 更新材质
             FMaterialConstantBuffer MaterialConstantBuffer;
             if(CMaterial* InMaterial = (*InRenderingData.Mesh->GetMaterials())[0])
             {
                 // 从材质中获取basecolor并传给常量缓冲区
                 fvector_4d InBaseColor = InMaterial->GetBaseColor();
-                MaterialConstantBuffer.BaseColor = XMFLOAT4(InBaseColor.x, InBaseColor.y,InBaseColor.z, InBaseColor.w);
-
-                MaterialConstantBuffer.MateiralType = InMaterial->GetMaterialType();
+                MaterialConstantBuffer.BaseColor = XMFLOAT4(InBaseColor.x, InBaseColor.y,InBaseColor.z, InBaseColor.w); // BaseColor
+                MaterialConstantBuffer.Roughness = InMaterial->GetRoughness();          // 粗糙度
+                MaterialConstantBuffer.MateiralType = InMaterial->GetMaterialType();    // 材质类型
             }
            
             MaterialCBV.Update(i, &MaterialConstantBuffer);
@@ -152,13 +153,18 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 
     // 更新灯光
     FLightConstantBuffer LightConstantBuffer;
-    LightConstantBuffer.LightDirection = { 500.0f,100.0f,100.0f };
+    {
+        LightConstantBuffer.LightDirection = { 500.0f,100.0f,100.0f };
+    }
     LightCBV.Update(0, &LightConstantBuffer);
 
     // 更新视口
     XMMATRIX M_VP = XMMatrixMultiply(ViewMatrix, ProjectMatrix);
     FViewportTransformation ViewportTransformation;
-    XMStoreFloat4x4(&ViewportTransformation.VP, XMMatrixTranspose(M_VP));
+    {
+        XMStoreFloat4x4(&ViewportTransformation.VP, XMMatrixTranspose(M_VP));       // M_VP矩阵
+        ViewportTransformation.ViewportPosition = ViewportInfo.ViewportPosition;    // 视口位置
+    }
     ViewportCBV.Update(0, &ViewportTransformation);
 
 

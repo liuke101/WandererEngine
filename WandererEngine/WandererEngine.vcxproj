@@ -142,7 +142,6 @@
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
     <ClCompile Include="Engine\Core\Viewport\Viewport.cpp" />
-    <ClCompile Include="Engine\Core\Viewport\ViewportInfo.cpp" />
     <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp" />
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp" />
     <ClCompile Include="Engine\Core\World.cpp" />

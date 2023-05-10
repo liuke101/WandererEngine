@@ -73,30 +73,45 @@ int CDirectXRenderingEngine::PostInit()
 	// 	Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));		// 设置旋转
 	// 	Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 	// }
-
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
 	{
 		Sphere->SetPosition(XMFLOAT3(0.0f, 2.0f, 0.0f));	// 设置位置
 		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
 		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if(CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
 		{
-			InMaterial->SetBaseColor(fvector_4d(0.0f, 0.5f, 0.5f, 1.0f));
-			InMaterial->SetMaterialType(Lambert);
+			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
+			InMaterial->SetMaterialType(Phong);
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 20.0f, 20.0f))
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
 	{
-		Sphere->SetPosition(XMFLOAT3(0.0f, 7.0f, 0.0f));	// 设置位置
+		Sphere->SetPosition(XMFLOAT3(5.0f, 2.0f, 0.0f));	// 设置位置
 		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
 		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
 		{
-			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.0f, 1.0f));
-			InMaterial->SetMaterialType(HalfLambert);
+			InMaterial->SetBaseColor(fvector_4d(1.0f, 0.8f, 0.8f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
+			InMaterial->SetMaterialType(BlinnPhong);
 		}
 	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(10.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
+			InMaterial->SetMaterialType(Fresnel);
+		}
+	}
+
 
 	if (GMesh* Plane = MeshManage->CreatePlaneMesh(100.f,100.f, 100.0f, 100.0f))
 	{
