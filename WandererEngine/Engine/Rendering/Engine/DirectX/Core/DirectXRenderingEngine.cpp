@@ -80,9 +80,9 @@ int CDirectXRenderingEngine::PostInit()
 		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
 		{
-			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetMaterialType(Lambert);
+			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
-			InMaterial->SetMaterialType(Phong);
 		}
 	}
 
@@ -93,9 +93,9 @@ int CDirectXRenderingEngine::PostInit()
 		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
 		{
-			InMaterial->SetBaseColor(fvector_4d(1.0f, 0.8f, 0.8f, 1.0f));
+			InMaterial->SetMaterialType(HalfLambert);
+			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
-			InMaterial->SetMaterialType(BlinnPhong);
 		}
 	}
 
@@ -106,24 +106,91 @@ int CDirectXRenderingEngine::PostInit()
 		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
 		{
-			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetMaterialType(Phong);
+			InMaterial->SetBaseColor(fvector_4d(0.1f, 0.1f, 0.1f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
+		}
+	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(15.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetMaterialType(BlinnPhong);
+			InMaterial->SetBaseColor(fvector_4d(0.1f, 0.1f, 0.1f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
+		}
+	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(20.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetMaterialType(WrapLight);
+			InMaterial->SetBaseColor(fvector_4d(0.8f, 0.6f, 0.7f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
+		}
+	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(25.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetMaterialType(Minnaert);
+			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetRoughness(1.0f);
+		}
+	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(30.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
+			InMaterial->SetMaterialType(Banded);
+			InMaterial->SetBaseColor(fvector_4d(1.0f, 1.0f, 1.0f, 1.0f));
+			InMaterial->SetRoughness(0.5f);
+		}
+	}
+
+	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	{
+		Sphere->SetPosition(XMFLOAT3(40.0f, 2.0f, 0.0f));	// 设置位置
+		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		{
 			InMaterial->SetMaterialType(Fresnel);
+			InMaterial->SetBaseColor(fvector_4d(1.0f, 1.0f, 1.0f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
 		}
 	}
 
 
-	if (GMesh* Plane = MeshManage->CreatePlaneMesh(100.f,100.f, 100.0f, 100.0f))
+	if (GMesh* Plane = MeshManage->CreatePlaneMesh(100.f, 100.f, 100.0f, 100.0f))
 	{
 		Plane->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
 		Plane->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
 		Plane->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*Plane->GetMaterials())[0])
 		{
-			InMaterial->SetBaseColor(fvector_4d(1.0f, 1.0f, 1.0f, 1.0f));
 			InMaterial->SetMaterialType(HalfLambert);
+			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
 		}
 	}
+
 
 	// if (GMesh* Cone = MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f))
 	// {

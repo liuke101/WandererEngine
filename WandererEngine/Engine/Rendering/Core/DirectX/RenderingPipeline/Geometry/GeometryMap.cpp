@@ -154,7 +154,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
     // 更新灯光
     FLightConstantBuffer LightConstantBuffer;
     {
-        LightConstantBuffer.LightDirection = { 500.0f,100.0f,100.0f };
+        LightConstantBuffer.LightDirection = { 0.f,100.0f,0.0f };
     }
     LightCBV.Update(0, &LightConstantBuffer);
 
