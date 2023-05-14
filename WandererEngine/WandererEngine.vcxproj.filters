@@ -553,6 +553,8 @@
     <ClCompile Include="Engine\Component\Light\Core\LightConstantBuffer.cpp" />
     <ClCompile Include="Engine\Component\Light\ParallelLightComponent.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\Core\MeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\ShellMeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
@@ -878,5 +880,7 @@
     <ClInclude Include="Engine\Component\Light\ParallelLightComponent.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipelineType.h" />
     <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h" />
+    <ClInclude Include="Engine\Component\Mesh\Core\MeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\ShellMeshComponent.h" />
   </ItemGroup>
 </Project>

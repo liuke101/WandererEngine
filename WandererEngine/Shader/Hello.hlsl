@@ -58,9 +58,21 @@ v2f VertexShaderMain(a2v v)
     v2f o;
     float4x4 MVP = mul(M, VP);
     o.pos = mul(float4(v.vertex, 1.0), MVP); // 顶点坐标变换到裁剪空间
-    o.normal = mul(v.normal, (float3x3) M); // 变换到世界空间
+
+    
+    if (MaterialType == 13) // LocalNormal
+    {
+        o.normal = v.normal;
+    }
+    else
+    {
+        o.normal = mul(v.normal, (float3x3) M); // 变换到世界空间
+    }
+
     o.worldpos = mul(float4(v.vertex, 1.0), M); // 变换到世界空间
     o.color = v.color;
+
+    
     return o;
 }
 
@@ -69,6 +81,18 @@ float4 PixelShaderMain(v2f o) : SV_TARGET
     // 主要是为了整合材质，直接用BaseColor也可以
     FMaterial Material;
     Material.BaseColor = BaseColor;
+
+    // BaseColor
+    if (MaterialType == 12)
+    {
+        return Material.BaseColor;
+    }
+    // LocalNormal或WorldNormal
+    else if (MaterialType == 13 || MaterialType == 14)
+    {
+        return float4(o.normal, 1.0);
+    }
+    
 
     float3 Ambient = { 0.1, 0.1, 0.1 }; // 环境光
     float3 N = normalize(o.normal); // 世界空间法线

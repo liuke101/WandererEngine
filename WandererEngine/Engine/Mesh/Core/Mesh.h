@@ -3,8 +3,10 @@
 #include "MeshType.h"
 #include "../../Actor/Core/ActorObject.h"
 
-class CTransformationComponent;
+
 class CMaterial;
+class CTransformationComponent;
+class CShellMeshComponent;
 
 // Mesh基类
 class GMesh : public GActorObject, public IRenderingInterface
@@ -13,7 +15,7 @@ class GMesh : public GActorObject, public IRenderingInterface
     CTransformationComponent* TransformationComponent;
 
     CVARIABLE()
-    vector<CMaterial*> Materials;
+    CShellMeshComponent* ShellMeshComponent;
 public:
     GMesh();
 
@@ -24,9 +26,7 @@ public:
     virtual void PreDraw(float DeltaTime);
     virtual void Draw(float DeltaTime);
     virtual void PostDraw(float DeltaTime);
-
 public:
     UINT GetMaterialNum() const;
-    vector<CMaterial*>* GetMaterials() { return &Materials; }  //  获取材质
-
+    vector<CMaterial*>* GetMaterials(); //  获取材质
 };

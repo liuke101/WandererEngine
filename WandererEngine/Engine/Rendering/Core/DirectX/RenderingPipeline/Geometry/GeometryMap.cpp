@@ -273,9 +273,10 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 
             GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
             
-
+            
             // 指定图元（又称基元）拓扑，告知D3D如何用顶点数据表示几何图元
-            GetGraphicsCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            EMaterialDisplayStatusType DisplayStatus = (*RenderingData.Mesh->GetMaterials())[0]->GetMaterialDisplayStatus();
+            GetGraphicsCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY(DisplayStatus)); //D3D_PRIMITIVE_TOPOLOGY
 
             // 起始地址偏移
             MeshDescriptorHandle.Offset(i, DescriptorOffset); //⚠从0开始偏移
