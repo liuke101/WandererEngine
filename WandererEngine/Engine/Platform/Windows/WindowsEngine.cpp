@@ -53,7 +53,7 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	RenderingEngine->Init(InParameters);
 
 	World= CreateObject<CWorld>(new CWorld());
-
+	RenderingEngine->World = World;
 	Engine_Log("Engine initialization complete.");
 	return 0;
 }
@@ -126,6 +126,11 @@ int CWindowsEngine::PostExit()
 	return 0;
 }
 
+
+CMeshManage* CWindowsEngine::GetMeshManage()
+{
+	return RenderingEngine->GetMeshManage();
+}
 
 bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {

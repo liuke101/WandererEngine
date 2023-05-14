@@ -26,6 +26,21 @@ ComPtr<ID3D12Device> IDirectXDeviceInterface::GetD3dDevice()
     return nullptr;
 }
 
+CMeshManage* IDirectXDeviceInterface::GetMeshManage()
+{
+    return GetEngine()->GetMeshManage();
+}
+
+CWorld* IDirectXDeviceInterface::GetWorld()
+{
+    if (CWindowsEngine* InEngine = GetEngine())
+    {
+        return InEngine->GetWorld();
+    }
+
+    return NULL;
+}
+
 ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface::GetGraphicsCommandList()
 {
     if (CWindowsEngine* InEngine = GetEngine())
@@ -107,6 +122,16 @@ ComPtr<ID3D12Fence> IDirectXDeviceInterface_Struct::GetFence()
 ComPtr<ID3D12Device> IDirectXDeviceInterface_Struct::GetD3dDevice()
 {
     return DirectXDeviceInterface.GetD3dDevice();
+}
+
+CMeshManage* IDirectXDeviceInterface_Struct::GetMeshManage()
+{
+    return DirectXDeviceInterface.GetMeshManage();
+}
+
+CWorld* IDirectXDeviceInterface_Struct::GetWorld()
+{
+    return DirectXDeviceInterface.GetWorld();
 }
 
 ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface_Struct::GetGraphicsCommandList()

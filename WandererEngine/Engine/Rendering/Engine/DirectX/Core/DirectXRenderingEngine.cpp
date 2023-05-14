@@ -67,18 +67,28 @@ int CDirectXRenderingEngine::PostInit()
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	//构建Mesh
-	// if(GMesh* Box =  MeshManage->CreateBoxMesh(2.0f, 2.0f, 2.0f))
-	// {
-	// 	Box->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
-	// 	Box->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));		// 设置旋转
-	// 	Box->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-	// }
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+
+	if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(0.0f, 2.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		PlaneMesh->CreateMesh(100.0f, 100.0f, 100, 100);
+		PlaneMesh->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
+		PlaneMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		PlaneMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*PlaneMesh->GetMaterials())[0])
+		{
+			InMaterial->SetMaterialType(HalfLambert);
+			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
+		}
+	}
+
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+	{
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(0.0f, 2.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(LocalNormal);
 			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
@@ -86,12 +96,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(5.0f, 2.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(5.0f, 2.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(HalfLambert);
 			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
@@ -101,12 +112,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(10.0f, 2.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(10.0f, 2.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(Phong);
 			InMaterial->SetBaseColor(fvector_4d(0.1f, 0.1f, 0.1f, 1.0f));
@@ -114,12 +126,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(0.0f, 7.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(0.0f, 7.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(BlinnPhong);
 			InMaterial->SetBaseColor(fvector_4d(0.1f, 0.1f, 0.1f, 1.0f));
@@ -127,12 +140,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(5.0f, 7.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(5.0f, 7.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(WrapLight);
 			InMaterial->SetBaseColor(fvector_4d(0.8f, 0.6f, 0.7f, 1.0f));
@@ -140,12 +154,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(10.0f, 7.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(10.0f, 7.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(Minnaert);
 			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
@@ -153,12 +168,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(15.0f, 2.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(15.0f, 2.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(Banded);
 			InMaterial->SetBaseColor(fvector_4d(1.0f, 1.0f, 1.0f, 1.0f));
@@ -166,12 +182,13 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-	if (GMesh* Sphere = MeshManage->CreateSphereMesh(2.0f, 100.0f, 100.0f))
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
 	{
-		Sphere->SetPosition(XMFLOAT3(15.0f, 7.0f, 0.0f));	// 设置位置
-		Sphere->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Sphere->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Sphere->GetMaterials())[0])
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(15.0f, 7.0f, 0.0f));	// 设置位置
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
 			InMaterial->SetMaterialType(Fresnel);
 			InMaterial->SetBaseColor(fvector_4d(1.0f, 1.0f, 1.0f, 1.0f));
@@ -180,21 +197,10 @@ int CDirectXRenderingEngine::PostInit()
 	}
 
 
-	if (GMesh* Plane = MeshManage->CreatePlaneMesh(100.f, 100.f, 100.0f, 100.0f))
-	{
-		Plane->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
-		Plane->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-		Plane->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-		if (CMaterial* InMaterial = (*Plane->GetMaterials())[0])
-		{
-			InMaterial->SetMaterialType(HalfLambert);
-			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
-			InMaterial->SetRoughness(0.8f);
-		}
-	}
+	
 
 
-	// if (GMesh* Cone = MeshManage->CreateConeMesh(1.f, 5.f, 20.0f, 20.0f))
+	// if (GMesh* Cone = MeshManage->CreateConeMeshComponent(1.f, 5.f, 20.0f, 20.0f))
 	// {
 	// 	Cone->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
 	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
@@ -202,7 +208,7 @@ int CDirectXRenderingEngine::PostInit()
 	// }
 
 	// string MeshObj1Path = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-	// if (GMesh* Cone = MeshManage->CreateMesh(MeshObj1Path))
+	// if (GMesh* Cone = MeshManage->CreateMeshComponent(MeshObj1Path))
 	// {
 	// 	Cone->SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));		// 设置位置
 	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
@@ -210,7 +216,7 @@ int CDirectXRenderingEngine::PostInit()
 	// }
 	//
 	// string MeshObj2Path = "../WandererEngine/Teapot.obj";  // 路径为对应exe程序的相对位置
-	// if (GMesh* Cone = MeshManage->CreateMesh(MeshObj2Path))
+	// if (GMesh* Cone = MeshManage->CreateMeshComponent(MeshObj2Path))
 	// {
 	// 	Cone->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
 	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转

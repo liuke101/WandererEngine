@@ -21,16 +21,10 @@ struct FMeshRenderingData
 
 public:
     // VertexData大小（字节）
-    UINT GetVertexSizeInBytes()
-    {
-        return VertexData.size() * sizeof(FVertex);
-    }
+    UINT GetVertexSizeInBytes() { return VertexData.size() * sizeof(FVertex); }
 
     // IndexData大小（字节）
-    UINT GetIndexSizeInBytes()
-    {
-        return IndexData.size() * sizeof(uint16_t);
-    }
+    UINT GetIndexSizeInBytes() { return IndexData.size() * sizeof(uint16_t); }
 
 };
 

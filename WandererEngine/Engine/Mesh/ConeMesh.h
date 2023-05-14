@@ -8,13 +8,10 @@ class GConeMesh : public GMesh
 public:
     virtual void Init();
 
-    virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
-
     virtual void Draw(float DeltaTime);
 
     // 创建锥体（底部半径，高度，轴向细分数，高度细分数）
     void CreateMesh(
-        FMeshRenderingData& MeshData, 
         float InBottomRadius, 
         float InHeight, 
         uint32_t InAxialSubdivision, 

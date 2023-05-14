@@ -6,8 +6,9 @@
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
 #include "../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../Component/Mesh/Core/MeshComponent.h"
 
-bool FGeometry::bRenderingDataExistence(GMesh* InKey)
+bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
     for(auto &Tmp : DescribeMeshRenderingData)
     {
@@ -19,7 +20,7 @@ bool FGeometry::bRenderingDataExistence(GMesh* InKey)
     return false;
 }
 
-void FGeometry::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
+void FGeometry::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
     if(!bRenderingDataExistence(InMesh))
     {
@@ -171,7 +172,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 }
 
 
-void FGeometryMap::BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData)
+void FGeometryMap::BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData)
 {
     FGeometry& Geometry = Geometrys[0];
     Geometry.BuildMesh(InMesh, MeshData);

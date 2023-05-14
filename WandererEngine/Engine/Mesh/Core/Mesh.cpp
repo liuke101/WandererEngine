@@ -7,25 +7,10 @@
 GMesh::GMesh()
     : GActorObject()
 {
-    ShellMeshComponent = CreateObject<CShellMeshComponent>(new CShellMeshComponent());
 }
 
 void GMesh::Init()
 {
-    if (ShellMeshComponent)
-    {
-        ShellMeshComponent->Init();
-    }
-}
-
-void GMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
-{
-    if(ShellMeshComponent)
-    {
-        ShellMeshComponent->BuildMesh(InRenderingData);
-    }
-    
-
 }
 
 void GMesh::PreDraw(float DeltaTime)
@@ -44,12 +29,42 @@ void GMesh::PostDraw(float DeltaTime)
 
 }
 
+void GMesh::SetPosition(const XMFLOAT3& InNewPosition)
+{
+    Super::SetPosition(InNewPosition);
+
+    //因为还未做根组件，暂时这么写
+    GetMeshComponent()->SetPosition(InNewPosition);
+}
+
+void GMesh::SetRotation(const fvector_3d& InRotation)
+{
+
+    Super::SetRotation(InRotation);
+
+    //因为还未做根组件，暂时这么写
+    GetMeshComponent()->SetRotation(InRotation);
+}
+
+void GMesh::SetScale(const fvector_3d& InNewScale)
+{
+    Super::SetScale(InNewScale);
+
+    //因为还未做根组件，暂时这么写
+    GetMeshComponent()->SetScale(InNewScale);
+}
+
+void GMesh::SetMeshComponent(CMeshComponent* InMeshComponent)
+{
+    MeshComponent = InMeshComponent;
+}
+
 UINT GMesh::GetMaterialNum() const
 {
-    return ShellMeshComponent->GetMaterialNum();
+    return MeshComponent->GetMaterialNum();
 }
 
 vector<CMaterial*>* GMesh::GetMaterials()
 {
-    return ShellMeshComponent->GetMaterials();
+    return MeshComponent->GetMaterials();
 }

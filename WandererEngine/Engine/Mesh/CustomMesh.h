@@ -8,12 +8,8 @@ class GCustomMesh : public GMesh
 public:
     virtual void Init();
 
-    virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
-
     virtual void Draw(float DeltaTime);
 
-    void CreateMesh(FMeshRenderingData& MeshData, string &InPath);
+    void CreateMesh(string &InPath);
 
-    // 加载OBJ模型，建模导出时必须进行面三角化并展UV
-    static bool LoadObjFromBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData &InMeshData);
 };

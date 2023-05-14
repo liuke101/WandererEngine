@@ -3,9 +3,11 @@
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
 class CMeshManage;
+class CWorld;
 class CDirectXRenderingEngine : public CRenderingEngine
 {
 	friend class IDirectXDeviceInterface;
+	friend class CWindowsEngine;
 public:
 	CDirectXRenderingEngine();
 	~CDirectXRenderingEngine();
@@ -42,6 +44,8 @@ public:
 	// 获取MSAA采样质量
 	UINT GetMSAASampleQuality() const;
 
+	// 获取MeshManage
+	CMeshManage* GetMeshManage() { return MeshManage; }
 protected:
 	// 使用围栏Fence来刷新命令队列
 	void WaitGPUCommandQueueComplete();
@@ -52,7 +56,7 @@ protected:
 
 protected:
 	CMeshManage* MeshManage;
-
+	CWorld* World;
 protected:
 	UINT64 CurrentFenceIndex;       // 围栏值
 	int CurrentSwapBufferIndex;		// 当前Buffer的索引

@@ -2,6 +2,8 @@
 #include "../Core/Engine.h"
 
 #if defined(_WIN32)
+class CMeshManage;
+class CWorld;
 class CWindowsEngine;
 #else
 class CEngine;
@@ -13,6 +15,8 @@ class IDirectXDeviceInterface
 public:
     ComPtr<ID3D12Fence> GetFence();
     ComPtr<ID3D12Device> GetD3dDevice();
+    CMeshManage* GetMeshManage();
+    CWorld* GetWorld();
 
     ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
     ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
@@ -35,6 +39,8 @@ struct IDirectXDeviceInterface_Struct
 public:
     ComPtr<ID3D12Fence> GetFence();
     ComPtr<ID3D12Device> GetD3dDevice();
+    CMeshManage* GetMeshManage();
+    CWorld* GetWorld();
 
     ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
     ComPtr<ID3D12CommandAllocator> GetCommandAllocator();

@@ -4,6 +4,7 @@
 #include "../../Core/Engine.h"
 #include "../../Rendering/Engine/Core/RenderingEngine.h"
 
+class CMeshManage;
 class CDirectXRenderingEngine;
 class CWorld;
 
@@ -26,7 +27,9 @@ public:
 
 
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
-
+public:
+	CMeshManage* GetMeshManage();
+	CWorld* GetWorld() { return World; }
 public:
 	// ³õÊ¼»¯Windows´°¿Ú 
 	bool InitWindows(FWinMainCommandParameters InParameters);

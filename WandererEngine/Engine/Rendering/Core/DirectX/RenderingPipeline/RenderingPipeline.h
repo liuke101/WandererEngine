@@ -6,7 +6,7 @@
 #include "RootSignature/RootSignature.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
-class GMesh;
+class CMeshComponent;
 
 /* 渲染管线 */
 class FRenderingPipeline : public IDirectXDeviceInterface
@@ -15,7 +15,7 @@ public:
     FRenderingPipeline();
 
     // 构建Mesh
-    void BuildMesh(GMesh* InMesh, const FMeshRenderingData& MeshData);
+    void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
 
     virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 
