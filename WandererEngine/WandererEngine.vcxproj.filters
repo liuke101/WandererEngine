@@ -561,6 +561,7 @@
     <ClCompile Include="Engine\Component\Mesh\CylinderMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp" />
+    <ClCompile Include="Engine\Manage\LightManage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
@@ -894,5 +895,6 @@
     <ClInclude Include="Engine\Component\Mesh\CylinderMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h" />
+    <ClInclude Include="Engine\Manage\LightManage.h" />
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
+class CLightManage;
 class CMeshManage;
 class CWorld;
 class CDirectXRenderingEngine : public CRenderingEngine
@@ -44,8 +45,10 @@ public:
 	// 获取MSAA采样质量
 	UINT GetMSAASampleQuality() const;
 
-	// 获取MeshManage
+	// 获取Manage
+	CLightManage* GetLightManage() { return LightManage; }
 	CMeshManage* GetMeshManage() { return MeshManage; }
+	
 protected:
 	// 使用围栏Fence来刷新命令队列
 	void WaitGPUCommandQueueComplete();
@@ -55,11 +58,14 @@ protected:
 	void PostInitDirect3D();
 
 protected:
+	CLightManage* LightManage;
 	CMeshManage* MeshManage;
 	CWorld* World;
+
 protected:
 	UINT64 CurrentFenceIndex;       // 围栏值
 	int CurrentSwapBufferIndex;		// 当前Buffer的索引
+
 protected:
 	ComPtr<IDXGIFactory4> DXGIFactory;	// 创建DirectX 图形基础结构(DXGI)对象
 	ComPtr<ID3D12Device> D3dDevice;     // 显示适配器; 它用于创建命令分配器、命令列表、命令队列、围栏Fence、资源、管道状态对象、堆、根签名、采样器和许多资源视图。

@@ -13,6 +13,8 @@
 #include "../../../../Core/World.h"
 #include "../../../../Mesh/Core/MeshManage.h"
 #include "../../../../Mesh/Core/Material/Material.h"
+#include "../../../../Manage/LightManage.h"
+#include "../../../../Actor/Light/ParallelLight.h"
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
@@ -34,11 +36,13 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	//关闭Tick
 	bTick = false;
 
-	MeshManage = new CMeshManage();
+	LightManage = CreateObject<CLightManage>(new CLightManage());
+	MeshManage = CreateObject<CMeshManage>(new CMeshManage());
 }
 
 CDirectXRenderingEngine::~CDirectXRenderingEngine()
 {
+	delete LightManage;
 	delete MeshManage;
 }
 
@@ -66,8 +70,13 @@ int CDirectXRenderingEngine::PostInit()
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
-	//构建Mesh
-
+	// 构建灯光
+	if(GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+	{
+		ParallelLight->SetPosition(XMFLOAT3(10.0f, 2.0f, 10.0f));
+		ParallelLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+	}
+    // 构建Mesh
 	if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
 	{
 		PlaneMesh->CreateMesh(100.0f, 100.0f, 100, 100);
@@ -108,7 +117,6 @@ int CDirectXRenderingEngine::PostInit()
 			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
 			InMaterial->SetMaterialDisplayStatus(WireframeDisplay);
-
 		}
 	}
 
@@ -208,7 +216,7 @@ int CDirectXRenderingEngine::PostInit()
 	// }
 
 	// string MeshObj1Path = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-	// if (GMesh* Cone = MeshManage->CreateMeshComponent(MeshObj1Path))
+	// if (GMesh* Cone = MeshManage->CreateCustomMeshComponent(MeshObj1Path))
 	// {
 	// 	Cone->SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));		// 设置位置
 	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
@@ -216,7 +224,7 @@ int CDirectXRenderingEngine::PostInit()
 	// }
 	//
 	// string MeshObj2Path = "../WandererEngine/Teapot.obj";  // 路径为对应exe程序的相对位置
-	// if (GMesh* Cone = MeshManage->CreateMeshComponent(MeshObj2Path))
+	// if (GMesh* Cone = MeshManage->CreateCustomMeshComponent(MeshObj2Path))
 	// {
 	// 	Cone->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
 	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转

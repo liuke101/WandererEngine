@@ -15,9 +15,9 @@ public:
 public:
     FORCEINLINE CTransformationComponent* GetTransformationComponent() const { return TransformationComponent; }
 public:
-    void SetPosition(const XMFLOAT3& InNewPosition);
-    void SetRotation(const fvector_3d& InNewRotation);
-    void SetScale(const fvector_3d& InNewScale);
+    virtual void SetPosition(const XMFLOAT3& InNewPosition);
+    virtual void SetRotation(const fvector_3d& InNewRotation);
+    virtual void SetScale(const fvector_3d& InNewScale);
 
     XMFLOAT3& GetPosition();
     fvector_3d GetRotation() const;
