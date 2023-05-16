@@ -10,6 +10,7 @@
 #include "../../../../../Manage/LightManage.h"
 #include "../../../../../Component/Light/Core/LightComponent.h"
 #include "../../../../../Component/Light/PointLightComponent.h"
+#include "../../../../../Component/Light/SpotLightComponent.h"
 bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
     for(auto &Tmp : DescribeMeshRenderingData)
@@ -161,10 +162,10 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
         if(CLightComponent* InLightComponent = GetLightManage()->Lights[i])
         {
             fvector_3d LightIntensity = InLightComponent->GetLightintensity();
-            LightConstantBuffer.SceneLight[i].LightIntensity = XMFLOAT3(LightIntensity.x, LightIntensity.y, LightIntensity.z);
-            LightConstantBuffer.SceneLight[i].LightDirection = InLightComponent->GetLookatVector();
-            LightConstantBuffer.SceneLight[i].Position = InLightComponent->GetPosition();
-            LightConstantBuffer.SceneLight[i].LightType = InLightComponent->GetLightType();
+            LightConstantBuffer.SceneLights[i].LightIntensity = XMFLOAT3(LightIntensity.x, LightIntensity.y, LightIntensity.z);
+            LightConstantBuffer.SceneLights[i].LightDirection = InLightComponent->GetLookatVector();
+            LightConstantBuffer.SceneLights[i].Position = InLightComponent->GetPosition();
+            LightConstantBuffer.SceneLights[i].LightType = InLightComponent->GetLightType();
 
             switch(InLightComponent->GetLightType())
             {
@@ -172,13 +173,21 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
                 {
                     if(CPointLightComponent* InPointLightComponent = dynamic_cast<CPointLightComponent*>(InLightComponent))
                     {
-                        LightConstantBuffer.SceneLight[i].FalloffStart = InPointLightComponent->GetFalloffStart();
-                        LightConstantBuffer.SceneLight[i].FalloffEnd = InPointLightComponent->GetFalloffEnd();
+                        LightConstantBuffer.SceneLights[i].FalloffStart = InPointLightComponent->GetFalloffStart();
+                        LightConstantBuffer.SceneLights[i].FalloffEnd = InPointLightComponent->GetFalloffEnd();
                     }
                 }
             case SpotLight:
                 {
-                    
+                    if (CSpotLightComponent* InSpotLightComponent = dynamic_cast<CSpotLightComponent*>(InLightComponent))
+                    {
+                        LightConstantBuffer.SceneLights[i].FalloffStart = InSpotLightComponent->GetFalloffStart();
+                        LightConstantBuffer.SceneLights[i].FalloffEnd = InSpotLightComponent->GetFalloffEnd();
+
+                        LightConstantBuffer.SceneLights[i].LightConeInnerRadians = XMConvertToRadians(InSpotLightComponent->GetLightConeInnerDegrees());
+                        LightConstantBuffer.SceneLights[i].LightConeOuterRadians = XMConvertToRadians(InSpotLightComponent->GetLightConeOuterDegrees());
+
+                    }
                 }
             }
         }

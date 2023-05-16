@@ -1,20 +1,20 @@
 ﻿#pragma once
 #include "Core/LightComponent.h"
+#include "Core/RangeLightComponent.h"
 
-class CMeshComponent;
-class CSpotLightComponent : public CLightComponent
+class CSpotLightComponent : public CRangeLightComponent
 {
-    typedef CLightComponent Super;
+    typedef CRangeLightComponent Super;
 public:
     CSpotLightComponent();
 
-public:
-    void SetFalloffStart(float InNewFalloffStart) { FalloffStart = InNewFalloffStart; }
-    void SetFalloffEnd(float InNewFalloffEnd) { FalloffEnd = InNewFalloffEnd; }
-public:
-    float GetFalloffStart() const { return FalloffStart; }
-    float GetFalloffEnd() const { return FalloffEnd; }
+
+    void SetLightConeInnerDegrees(float InLightConeInnerDegrees);
+    void SetLightConeOuterDegrees(float InLightConeOuterDegrees);
+    
+    float GetLightConeInnerDegrees() { return LightConeInnerDegrees; }
+    float GetLightConeOuterDegrees() { return LightConeOuterDegrees; }
 protected:
-    float FalloffStart;
-    float FalloffEnd;
+    float LightConeInnerDegrees; //spot，光锥内角(角度)
+    float LightConeOuterDegrees; //spot，光锥外角(角度)
 };

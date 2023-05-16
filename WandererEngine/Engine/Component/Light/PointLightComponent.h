@@ -1,20 +1,11 @@
 ﻿#pragma once
-#include "Core/LightComponent.h"
+#include "Core/RangeLightComponent.h"
 
-class CMeshComponent;
-class CPointLightComponent : public CLightComponent
+class CPointLightComponent : public CRangeLightComponent
 {
-    typedef CLightComponent Super;
+    typedef CRangeLightComponent Super;
 public:
     CPointLightComponent();
 
-public:
-    void SetFalloffStart(float InNewFalloffStart) { FalloffStart = InNewFalloffStart; }
-    void SetFalloffEnd(float InNewFalloffEnd) { FalloffEnd = InNewFalloffEnd; }
-public:
-    float GetFalloffStart() const { return FalloffStart; }
-    float GetFalloffEnd() const { return FalloffEnd; }
-protected:
-    float FalloffStart;
-    float FalloffEnd;
+
 };

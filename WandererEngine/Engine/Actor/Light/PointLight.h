@@ -1,22 +1,14 @@
 ﻿#pragma once
-#include "Core/Light.h"
-#include "../../Component/Light/PointLightComponent.h"
+#include "Core/RangeLight.h"
 
-class GPointLight : public GLight
+class GPointLight : public GRangeLight
 {
     typedef GActorObject Super;
 
-    CVARIABLE()
-        CPointLightComponent* PointlLightComponent;
 
 public:
     GPointLight();
 
     virtual void Tick(float DeltaTime);
-public:
-    void SetFalloffStart(float InNewFalloffStart);
-    void SetFalloffEnd(float InNewFalloffEnd);
-public:
-    float GetFalloffStart() const;
-    float GetFalloffEnd() const;
+
 };

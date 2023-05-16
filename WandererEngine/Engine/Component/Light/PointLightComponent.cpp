@@ -5,8 +5,6 @@
 
 CPointLightComponent::CPointLightComponent()
     : Super()
-    , FalloffStart(0.0f)
-    , FalloffEnd(10.0f)
 {
     // 读取模型资源
     string MeshPath = "../WandererEngine/Asset/PointLight.obj";

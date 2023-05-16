@@ -1,13 +1,18 @@
 struct Light
 {
     float3 LightIntensity;
-    float FalloffStart;
+    float FalloffStart; //point&&spot，开始衰减距离
 
     float3 LightDirection;
-    float FalloffEnd;
+    float FalloffEnd;   //point&&spot，最大衰减距离
     
     float3 Position;
     float LightType;
+    
+    float LightConeInnerRadians; //spot，光锥内角
+    float LightConeOuterRadians; //spot，光锥外角
+    float x1;
+    float x2;
 };
 
 // 获取LightDir
@@ -20,6 +25,11 @@ float3 GetLightDirection(Light L, float3 WorldVertexPos)
     }
     //点光源
     else if (L.LightType == 1)
+    {
+        return L.Position - WorldVertexPos;
+    }
+    //点光源
+    else if (L.LightType == 2)
     {
         return L.Position - WorldVertexPos;
     }
@@ -56,8 +66,19 @@ float CalucAttenuationFactor(Light L, float3 WorldNormal, float3 WorldVertexPos,
         if(Distance <= L.FalloffEnd)
         {
             //return LinearAttenuationFactor(L, Distance);
-            
             return CurveAttenuationFactor(L, Distance, 2.0f, 2.0f, 2.0f);
+        }
+    }
+    
+    // 聚光灯计算衰减
+    else if (L.LightType == 2)
+    {
+        float3 LightVector = L.Position - WorldVertexPos;
+        float Distance = length(LightVector);
+        if (Distance <= L.FalloffEnd)
+        {
+            float SpotFactor = pow(max(0, dot(WorldLightPos, L.LightDirection)), 1.0f);
+            return CurveAttenuationFactor(L, Distance, 2.0f, 2.0f, 2.0f) * SpotFactor;
         }
     }
     

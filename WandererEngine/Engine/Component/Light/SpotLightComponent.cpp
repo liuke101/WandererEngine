@@ -5,8 +5,6 @@
 
 CSpotLightComponent::CSpotLightComponent()
     : Super()
-    , FalloffStart(0.0f)
-    , FalloffEnd(10.0f)
 {
     // 读取模型资源
     string MeshPath = "../WandererEngine/Asset/SpotLight.obj";
@@ -23,4 +21,30 @@ CSpotLightComponent::CSpotLightComponent()
     }
 
     LightType = SpotLight;
+}
+
+void CSpotLightComponent::SetLightConeInnerDegrees(float InLightConeInnerDegrees)
+{
+    if(LightConeOuterDegrees < InLightConeInnerDegrees)
+    {
+        LightConeOuterDegrees = InLightConeInnerDegrees;
+        LightConeInnerDegrees = InLightConeInnerDegrees;
+    }
+    else if(LightConeOuterDegrees > InLightConeInnerDegrees)
+    {
+        LightConeInnerDegrees = InLightConeInnerDegrees;
+    }
+}
+
+void CSpotLightComponent::SetLightConeOuterDegrees(float InLightConeOuterDegrees)
+{
+    if (LightConeInnerDegrees > InLightConeOuterDegrees)
+    {
+        LightConeOuterDegrees = InLightConeOuterDegrees;
+        LightConeInnerDegrees = InLightConeOuterDegrees;
+    }
+    else if (LightConeInnerDegrees < InLightConeOuterDegrees)
+    {
+        LightConeOuterDegrees = InLightConeOuterDegrees;
+    }
 }

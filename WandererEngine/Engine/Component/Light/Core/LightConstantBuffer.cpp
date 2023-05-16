@@ -3,7 +3,7 @@
 
 FLightConstantBuffer::FLightConstantBuffer()
 {
-    memset(&SceneLight, 0, sizeof(SceneLight));
+    memset(&SceneLights, 0, sizeof(SceneLights));
 }
 
 FLight::FLight()

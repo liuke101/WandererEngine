@@ -16,6 +16,7 @@
 #include "../../../../Manage/LightManage.h"
 #include "../../../../Actor/Light/ParallelLight.h"
 #include "../../../../Actor/Light/PointLight.h"
+#include "../../../../Actor/Light/SpotLight.h"
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
@@ -73,21 +74,30 @@ int CDirectXRenderingEngine::PostInit()
 	/*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
 	//更秀菊高
 	//峠佩高
-	if(GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
-	{
-		ParallelLight->SetPosition(XMFLOAT3(10.0f, 2.0f, 10.0f));
-		ParallelLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
-	}
+	// if(GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+	// {
+	// 	ParallelLight->SetPosition(XMFLOAT3(10.0f, 2.0f, 10.0f));
+	// 	ParallelLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+	// }
 
 	// 泣高坿
-	if(GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+	// if(GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+	// {
+	// 	PointLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
+	// 	PointLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+	// 	PointLight->SetLightintensity(fvector_3d(30.0f, 30.0f, 30.0f));
+	// 	PointLight->SetFalloffEnd(30.0f);
+	// }
+
+	// 詔高菊
+	if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
 	{
-		PointLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
-		PointLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
-		PointLight->SetLightintensity(fvector_3d(30.0f, 30.0f, 30.0f));
-		PointLight->SetFalloffEnd(30.0f);
+		SpotLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
+		SpotLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+		SpotLight->SetLightintensity(fvector_3d(30.0f, 30.0f, 30.0f));
+		SpotLight->SetFalloffEnd(130.0f);
 	}
-	
+
     // 更秀Mesh
 	if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
 	{
