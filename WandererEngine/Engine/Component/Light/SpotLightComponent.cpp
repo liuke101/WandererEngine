@@ -1,16 +1,20 @@
-﻿#include "ParallelLightComponent.h"
+﻿#include "SpotLightComponent.h"
 #include "../../Mesh/Core/MeshManage.h"
 #include "../Mesh/Core/MeshComponent.h"
 #include "../../Mesh/Core/Material/Material.h"
-CParallelLightComponent::CParallelLightComponent()
+
+CSpotLightComponent::CSpotLightComponent()
+    : Super()
+    , FalloffStart(0.0f)
+    , FalloffEnd(10.0f)
 {
     // 读取模型资源
-    string MeshPath = "../WandererEngine/Asset/ParallelLight.obj";
+    string MeshPath = "../WandererEngine/Asset/SpotLight.obj";
     SetLightMesh(GetMeshManage()->CreateCustomMeshComponent(MeshPath));
 
-    if(GetLightMesh())
+    if (GetLightMesh())
     {
-        if(CMaterial* InMaterial = (*GetLightMesh()->GetMaterials())[0])
+        if (CMaterial* InMaterial = (*GetLightMesh()->GetMaterials())[0])
         {
             InMaterial->SetMaterialType(BaseColor);
             InMaterial->SetMaterialDisplayStatus(WireframeDisplay);
@@ -18,5 +22,5 @@ CParallelLightComponent::CParallelLightComponent()
         }
     }
 
-    LightType = ParallelLight;
+    LightType = SpotLight;
 }

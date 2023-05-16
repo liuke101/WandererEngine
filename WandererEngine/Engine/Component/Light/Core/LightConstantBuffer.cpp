@@ -1,8 +1,14 @@
 ﻿#include "LightConstantBuffer.h"
+#include "LightType.h"
 
 FLightConstantBuffer::FLightConstantBuffer()
-    : LightIntensity(1.0f, 1.0f, 1.0f)
-    , LightDirection(0.0f, 1.0f, 0.0f)
+{
+    memset(&SceneLight, 0, sizeof(SceneLight));
+}
 
+FLight::FLight()
+    : FalloffStart(0.0f)
+    , FalloffEnd(10.0f)
+    , LightType(ParallelLight)
 {
 }

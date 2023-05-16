@@ -1,13 +1,22 @@
 ﻿#pragma once
 #include "../../../EngineMinimal.h"
+
+struct FLight
+{
+    FLight();
+    XMFLOAT3 LightIntensity;
+    float FalloffStart;
+
+    XMFLOAT3 LightDirection;
+    float FalloffEnd;
+    
+    XMFLOAT3 Position;
+    float LightType;
+};
+
 struct FLightConstantBuffer
 {
     FLightConstantBuffer();
-
-    XMFLOAT3 LightIntensity;
-    float x1;
-
-    XMFLOAT3 LightDirection;
-    float xx1;
+    FLight SceneLight[16];
 };
 

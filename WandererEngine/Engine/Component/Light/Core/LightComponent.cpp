@@ -2,6 +2,7 @@
 #include "../../../Manage/LightManage.h"
 #include "../../Mesh/Core/MeshComponent.h"
 CLightComponent::CLightComponent()
+    : Lightintensity(1.0f, 1.0f, 1.0f)
 {
     GetLightManage()->AddLight(this);
 }
@@ -20,7 +21,7 @@ void CLightComponent::SetPosition(const XMFLOAT3& InNewPosition)
 void CLightComponent::SetRotation(const fvector_3d& InNewRotation)
 {
     Super::SetRotation(InNewRotation);
-    LightMesh->SetRotation(InNewRotation * (-1.f));
+    LightMesh->SetRotation(InNewRotation*(-1.0f));
 }
 
 void CLightComponent::SetScale(const fvector_3d& InNewScale)
@@ -47,7 +48,7 @@ void CLightComponent::SetLookatVector(const XMFLOAT3& InLookatVector)
     LightMesh->SetLookatVector(InLookatVector);
 }
 
-void CLightComponent::setLightMesh(CMeshComponent* InLightMesh)
+void CLightComponent::SetLightMesh(CMeshComponent* InLightMesh)
 {
     LightMesh = InLightMesh;
 }

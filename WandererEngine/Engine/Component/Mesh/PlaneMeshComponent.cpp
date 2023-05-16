@@ -59,14 +59,10 @@ void CPlaneMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InHeigh
             MeshData.IndexData.push_back(i * InWidthSubdivide + j + 1);
             MeshData.IndexData.push_back(i * InWidthSubdivide + j);
 
-
             // 三角形2
             MeshData.IndexData.push_back((i + 1) * InWidthSubdivide + j + 1);
             MeshData.IndexData.push_back(i * InWidthSubdivide + j + 1);
             MeshData.IndexData.push_back((i + 1) * InWidthSubdivide + j);
-
-
-
         }
     }
 }

@@ -562,6 +562,13 @@
     <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp" />
     <ClCompile Include="Engine\Manage\LightManage.cpp" />
+    <ClCompile Include="Engine\Actor\Light\PointLight.cpp" />
+    <ClCompile Include="Engine\Component\Light\PointLightComponent.cpp" />
+    <ClCompile Include="Engine\Actor\Light\Core\Light.cpp" />
+    <ClCompile Include="Engine\Actor\Light\SpotLight.cpp" />
+    <ClCompile Include="Engine\Component\Light\SpotLightComponent.cpp" />
+    <ClCompile Include="Engine\Actor\Light\Core\RangeLight.cpp" />
+    <ClCompile Include="Engine\Component\Light\Core\RangeLightComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h">
@@ -896,5 +903,13 @@
     <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h" />
     <ClInclude Include="Engine\Manage\LightManage.h" />
+    <ClInclude Include="Engine\Actor\Light\PointLight.h" />
+    <ClInclude Include="Engine\Component\Light\PointLightComponent.h" />
+    <ClInclude Include="Engine\Component\Light\Core\LightType.h" />
+    <ClInclude Include="Engine\Actor\Light\Core\Light.h" />
+    <ClInclude Include="Engine\Actor\Light\SpotLight.h" />
+    <ClInclude Include="Engine\Component\Light\SpotLightComponent.h" />
+    <ClInclude Include="Engine\Actor\Light\Core\RangeLight.h" />
+    <ClInclude Include="Engine\Component\Light\Core\RangeLightComponent.h" />
   </ItemGroup>
 </Project>

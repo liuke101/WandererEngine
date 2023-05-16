@@ -9,6 +9,7 @@
 #include "../../../../../Component/Mesh/Core/MeshComponent.h"
 #include "../../../../../Manage/LightManage.h"
 #include "../../../../../Component/Light/Core/LightComponent.h"
+#include "../../../../../Component/Light/PointLightComponent.h"
 bool FGeometry::bRenderingDataExistence(CMeshComponent* InKey)
 {
     for(auto &Tmp : DescribeMeshRenderingData)
@@ -154,18 +155,35 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
     }
 
     // 更新灯光
+    FLightConstantBuffer LightConstantBuffer;
     for (int i = 0; i < GetLightManage()->Lights.size(); i++)
     {
-        FLightConstantBuffer LightConstantBuffer;
-
-        if(CLightComponent* InLightComponent = GetLightManage()->Lights[0])
+        if(CLightComponent* InLightComponent = GetLightManage()->Lights[i])
         {
-            LightConstantBuffer.LightDirection = InLightComponent->GetLookatVector();
+            fvector_3d LightIntensity = InLightComponent->GetLightintensity();
+            LightConstantBuffer.SceneLight[i].LightIntensity = XMFLOAT3(LightIntensity.x, LightIntensity.y, LightIntensity.z);
+            LightConstantBuffer.SceneLight[i].LightDirection = InLightComponent->GetLookatVector();
+            LightConstantBuffer.SceneLight[i].Position = InLightComponent->GetPosition();
+            LightConstantBuffer.SceneLight[i].LightType = InLightComponent->GetLightType();
+
+            switch(InLightComponent->GetLightType())
+            {
+            case PointLight:
+                {
+                    if(CPointLightComponent* InPointLightComponent = dynamic_cast<CPointLightComponent*>(InLightComponent))
+                    {
+                        LightConstantBuffer.SceneLight[i].FalloffStart = InPointLightComponent->GetFalloffStart();
+                        LightConstantBuffer.SceneLight[i].FalloffEnd = InPointLightComponent->GetFalloffEnd();
+                    }
+                }
+            case SpotLight:
+                {
+                    
+                }
+            }
         }
-
-        LightCBV.Update(i, &LightConstantBuffer);
     }
-
+    LightCBV.Update(0, &LightConstantBuffer);
     
 
     // 更新视口
@@ -176,8 +194,6 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
         ViewportTransformation.ViewportPosition = ViewportInfo.ViewportPosition;    // 视口位置
     }
     ViewportCBV.Update(0, &ViewportTransformation);
-
-
 }
 
 
@@ -255,6 +271,7 @@ UINT FGeometryMap::GetDrawMaterialObjectNumber()
 
 UINT FGeometryMap::GetDrawLightObjectNumber()
 {
+    // 一个数组
     return 1;
 }
 

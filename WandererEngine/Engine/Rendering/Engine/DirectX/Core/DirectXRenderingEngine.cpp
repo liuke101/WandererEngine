@@ -15,6 +15,7 @@
 #include "../../../../Mesh/Core/Material/Material.h"
 #include "../../../../Manage/LightManage.h"
 #include "../../../../Actor/Light/ParallelLight.h"
+#include "../../../../Actor/Light/PointLight.h"
 #if defined(_WIN32)
 #include "../../../../Core/WinMainCommandParameters.h"
 
@@ -70,12 +71,23 @@ int CDirectXRenderingEngine::PostInit()
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), NULL));
 
 	/*！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！*/
-	// 更秀菊高
+	//更秀菊高
+	//峠佩高
 	if(GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
 	{
 		ParallelLight->SetPosition(XMFLOAT3(10.0f, 2.0f, 10.0f));
 		ParallelLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
 	}
+
+	// 泣高坿
+	if(GPointLight* PointLight = World->CreateActorObject<GPointLight>())
+	{
+		PointLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
+		PointLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+		PointLight->SetLightintensity(fvector_3d(30.0f, 30.0f, 30.0f));
+		PointLight->SetFalloffEnd(30.0f);
+	}
+	
     // 更秀Mesh
 	if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
 	{
@@ -116,7 +128,21 @@ int CDirectXRenderingEngine::PostInit()
 			InMaterial->SetMaterialType(HalfLambert);
 			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
-			InMaterial->SetMaterialDisplayStatus(WireframeDisplay);
+			InMaterial->SetMaterialDisplayStatus(WireframeDisplay);  // �濘鯱塋�
+		}
+	}
+
+	if (GSphereMesh* SphereMesh = World->CreateActorObject<GSphereMesh>())
+	{
+		SphereMesh->CreateMesh(2.0f, 100.0f, 100.0f);
+		SphereMesh->SetPosition(XMFLOAT3(-5.0f, 2.0f, 0.0f));	// 譜崔了崔
+		SphereMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 譜崔傴廬
+		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 譜崔抹慧
+		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
+		{
+			InMaterial->SetMaterialType(HalfLambert);
+			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
+			InMaterial->SetRoughness(0.8f);
 		}
 	}
 
