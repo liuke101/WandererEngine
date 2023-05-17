@@ -12,8 +12,8 @@ public:
     void SetLightConeInnerDegrees(float InLightConeInnerDegrees);
     void SetLightConeOuterDegrees(float InLightConeOuterDegrees);
     
-    float GetLightConeInnerDegrees() { return LightConeInnerDegrees; }
-    float GetLightConeOuterDegrees() { return LightConeOuterDegrees; }
+    float GetLightConeInnerDegrees() const { return LightConeInnerDegrees; }
+    float GetLightConeOuterDegrees() const { return LightConeOuterDegrees; }
 protected:
     float LightConeInnerDegrees; //spot，光锥内角(角度)
     float LightConeOuterDegrees; //spot，光锥外角(角度)

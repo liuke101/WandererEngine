@@ -5,6 +5,8 @@
 
 CSpotLightComponent::CSpotLightComponent()
     : Super()
+    , LightConeInnerDegrees(30.0f)
+    , LightConeOuterDegrees(60.0f)
 {
     // 读取模型资源
     string MeshPath = "../WandererEngine/Asset/SpotLight.obj";

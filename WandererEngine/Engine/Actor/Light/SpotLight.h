@@ -9,6 +9,12 @@ public:
     GSpotLight();
 
     virtual void Tick(float DeltaTime);
+
+    void SetLightConeInnerDegrees(float InLightConeInnerDegrees);
+    void SetLightConeOuterDegrees(float InLightConeOuterDegrees);
+
+    float GetLightConeInnerDegrees() const;
+    float GetLightConeOuterDegrees() const;
 };
 
 

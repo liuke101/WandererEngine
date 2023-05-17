@@ -94,8 +94,10 @@ int CDirectXRenderingEngine::PostInit()
 	{
 		SpotLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
 		SpotLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
-		SpotLight->SetLightintensity(fvector_3d(30.0f, 30.0f, 30.0f));
+		SpotLight->SetLightintensity(fvector_3d(1.0f, 1.0f, 1.0f));
 		SpotLight->SetFalloffEnd(130.0f);
+		SpotLight->SetLightConeInnerDegrees(30);
+		SpotLight->SetLightConeOuterDegrees(60);
 	}
 
     // ¹¹½¨Mesh

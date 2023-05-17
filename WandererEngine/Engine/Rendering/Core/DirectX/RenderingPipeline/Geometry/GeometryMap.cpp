@@ -186,7 +186,6 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 
                         LightConstantBuffer.SceneLights[i].LightConeInnerRadians = XMConvertToRadians(InSpotLightComponent->GetLightConeInnerDegrees());
                         LightConstantBuffer.SceneLights[i].LightConeOuterRadians = XMConvertToRadians(InSpotLightComponent->GetLightConeOuterDegrees());
-
                     }
                 }
             }

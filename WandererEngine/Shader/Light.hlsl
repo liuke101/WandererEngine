@@ -75,11 +75,26 @@ float CalucAttenuationFactor(Light L, float3 WorldNormal, float3 WorldVertexPos,
     {
         float3 LightVector = L.Position - WorldVertexPos;
         float Distance = length(LightVector);
-        if (Distance <= L.FalloffEnd)
+        float LL = max(0, dot(WorldLightPos, L.LightDirection));
+        
+        float theta1 = acos(LL);  
+        
+        if (theta1 <= L.LightConeInnerRadians)
         {
-            float SpotFactor = pow(max(0, dot(WorldLightPos, L.LightDirection)), 1.0f);
-            return CurveAttenuationFactor(L, Distance, 2.0f, 2.0f, 2.0f) * SpotFactor;
+            return L.LightIntensity.x;
         }
+        else if (L.LightConeInnerRadians < theta1 <= L.LightConeOuterRadians)
+        {
+            float OuterInnerDistance = L.LightConeOuterRadians - L.LightConeInnerRadians;
+            float CurrentDistance = OuterInnerDistance - (theta1 - OuterInnerDistance);
+            return CurrentDistance / OuterInnerDistance;
+
+        }
+        //if (Distance <= L.FalloffEnd)
+        //{
+        //    float SpotFactor = pow(LL, 1.0f);
+        //    return CurveAttenuationFactor(L, Distance, 2.0f, 2.0f, 2.0f) * SpotFactor;
+        //}
     }
     
     return 0;
