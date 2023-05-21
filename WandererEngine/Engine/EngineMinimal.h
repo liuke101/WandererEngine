@@ -22,6 +22,7 @@
 #include <Directxcolors.h>					// 各种颜色
 #include <Directxcollision.h>				// 碰撞
 #include "Rendering/DirectX12/d3dx12.h"		// DX12 API
+#include "Rendering/DirectX12/DDSTextureLoader.h" //DDS纹理
 #include "Debug/EngineDebug.h"
 
 

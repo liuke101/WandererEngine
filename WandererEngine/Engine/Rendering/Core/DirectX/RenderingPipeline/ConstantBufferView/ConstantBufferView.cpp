@@ -1,9 +1,9 @@
 ﻿#include "ConstantBufferView.h"
 
-void FConstantBufferView::CreateConstant(UINT ObjectSize, UINT ObjectCount)
+void FConstantBufferView::CreateConstant(UINT ObjectSize, UINT ObjectCount, bool bConstanBuffe)
 {
     Constant = make_shared<FRenderingResourcesUpdate>();
-    Constant->Init(GetD3dDevice().Get(), ObjectSize, ObjectCount);
+    Constant->Init(GetD3dDevice().Get(), ObjectSize, ObjectCount, bConstanBuffe);
 }
 
 void FConstantBufferView::Update(int Index, const void* InData)
@@ -16,7 +16,7 @@ void FConstantBufferView::BuildCBV(CD3DX12_CPU_DESCRIPTOR_HANDLE InDescriptorHan
     // 获取指定类型描述符堆的句柄增量的大小
     UINT IncrementSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-    D3D12_GPU_VIRTUAL_ADDRESS BufferAddress = Constant->GetBuffer()->GetGPUVirtualAddress();    // 缓冲区的起始地址(即索引为0的那个常量缓冲区的地址)
+    D3D12_GPU_VIRTUAL_ADDRESS BufferAddress = Constant->GetUploadBuffer()->GetGPUVirtualAddress();    // 缓冲区的起始地址(即索引为0的那个常量缓冲区的地址)
 
     for(int i = 0; i < InConstantBufferNum; ++i)
     {

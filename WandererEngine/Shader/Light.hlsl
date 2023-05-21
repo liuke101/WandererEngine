@@ -46,16 +46,16 @@ float LinearAttenuationFactor(Light L, float Distance)
 // 曲线衰减（更平滑柔和）
 float CurveAttenuationFactor(Light L, float Distance, float C, float I, float Q)
 {
-    return  1.0f / (C + I * Distance + pow(Q, 2.0f) * Distance);
+    return  1.0 / (C + I * Distance + pow(Q, 2.0) * Distance);
 }
 
 // 计算衰减因子
-float CalucAttenuationFactor(Light L, float3 WorldNormal, float3 WorldVertexPos, float3 WorldLightPos)
+float CalucAttenuationFactor(Light L,float3 WorldVertexPos, float3 WorldLightPos)
 {
     // 平行光不做处理
     if(L.LightType == 0)
     {
-        return float3(1.0f, 1.0f, 1.0f);
+        return 1.0;
     }
     
     // 点光源计算衰减
@@ -85,9 +85,9 @@ float CalucAttenuationFactor(Light L, float3 WorldNormal, float3 WorldVertexPos,
         }
         else if (L.LightConeInnerRadians < theta1 <= L.LightConeOuterRadians)
         {
-            float OuterInnerDistance = L.LightConeOuterRadians - L.LightConeInnerRadians;
-            float CurrentDistance = OuterInnerDistance - (theta1 - OuterInnerDistance);
-            return CurrentDistance / OuterInnerDistance;
+            float OuterInnerDifference = L.LightConeOuterRadians - L.LightConeInnerRadians;
+            float CurrentDifference = OuterInnerDifference - (theta1 - OuterInnerDifference);
+            return CurrentDifference / OuterInnerDifference;
 
         }
         //if (Distance <= L.FalloffEnd)

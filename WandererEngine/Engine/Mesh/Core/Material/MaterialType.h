@@ -25,6 +25,5 @@ enum EMaterialDisplayStatusType
     DefaultDisplay = 0,
     PointDisplay = 1, 
     WireframeDisplay = 2,
-
     TriangleDisplay = 4
 };

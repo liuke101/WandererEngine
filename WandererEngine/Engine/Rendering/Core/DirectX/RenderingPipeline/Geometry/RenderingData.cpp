@@ -10,6 +10,7 @@ FRenderingData::FRenderingData()
     , IndexOffsetPosition(0)
     , IndexFormat(DXGI_FORMAT_R16_UINT)
     , ModelMatrix(EngineMath::IdentityMatrix4x4())
+    , TextureTransformation(EngineMath::IdentityMatrix4x4())
     , Mesh(NULL)
 {
 }

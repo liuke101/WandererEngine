@@ -9,7 +9,7 @@ public:
     ~FRenderingResourcesUpdate();
 
     // 初始化常量缓冲区 
-    void Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount);
+    void Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount, bool bConstanBuffe = true);
 
     // 更新常量缓冲区
     void Update(int Index, const void* InData);
@@ -19,7 +19,7 @@ public:
     // 根据已知元素大小来计算常量缓冲区大小（256B的整数倍）
     UINT GetConstantBufferByteSize();
 
-    ID3D12Resource* GetBuffer() { return UploadBuffer.Get(); }
+    ID3D12Resource* GetUploadBuffer() { return UploadBuffer.Get(); }
 private:
     ComPtr<ID3D12Resource> UploadBuffer;    // 上传堆
     UINT ElementSize;                       // 元素大小

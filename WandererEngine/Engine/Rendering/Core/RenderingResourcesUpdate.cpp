@@ -13,11 +13,19 @@ FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
     }
 }
 
-void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount)
+void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElementSize, UINT InElementCount, bool bConstanBuffe)
 {
     // 创建常量缓冲区
     assert(InDevice);
-    ElementSize = GetConstantBufferByteSize(InElementSize);
+
+    if (bConstanBuffe)
+    {
+        ElementSize = GetConstantBufferByteSize(InElementSize);
+    }
+    else
+    {
+        ElementSize = InElementSize;
+    }
 
     CD3DX12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);    // 常量缓冲区创建在上传堆，能通过CPU更新常量
     CD3DX12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(ElementSize * InElementCount);

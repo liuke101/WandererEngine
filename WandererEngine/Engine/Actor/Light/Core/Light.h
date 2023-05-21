@@ -21,7 +21,7 @@ public:
     virtual void SetScale(const fvector_3d& InNewScale);
 
 public:
-    void SetLightintensity(const fvector_3d& InNewLightintensity);
+    void SetLightIntensity(const fvector_3d& InNewLightintensity);
 
 protected:
     virtual void SetLightComponent(CLightComponent* InNewComponent);

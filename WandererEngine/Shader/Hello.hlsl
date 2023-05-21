@@ -1,9 +1,19 @@
 #include "Material.hlsl"
 #include "Light.hlsl"
 
+SamplerState SimpleTextureState : register(s0);
+
+Texture2D SimpleTexture2DMap[TEXTURE2D_MAP_NUM] : register(t4);
+
 cbuffer MeshConstantBuffer : register(b0) //b0-b14
 {
     float4x4 M;
+    float4x4 TextureTransformation;
+
+    uint MaterialIndex;
+    uint x1;    // 占位
+    uint x2;
+    uint x3;
 }
 
 cbuffer ViewportConstantBuffer : register(b1)
@@ -12,22 +22,21 @@ cbuffer ViewportConstantBuffer : register(b1)
     float4x4 VP;
 }
 
-cbuffer MaterialConstantBuffer : register(b2)
+struct MaterialConstantBuffer
 {
     int MaterialType;
-    int x1;
-    int x2;
+    float Roughness;
+    int BasecolorIndex;
     int x3;
     
     float4 BaseColor;
 
-    float Roughness;
-    float xx1;
-    float xx2;
-    float xx3;
+    float4x4 MaterialTransformation;
+};
 
-    float4x4 TransformInfo;
-}
+StructuredBuffer<MaterialConstantBuffer> Materials : register(t0, space1);
+
+
 
 cbuffer LightConstantBuffer : register(b3)
 {
@@ -39,6 +48,8 @@ struct a2v
     float3 vertex : POSITION;
     float4 color : COLOR;
     float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float2 uv : TEXCOORD;
 };
 
 struct v2f
@@ -47,16 +58,22 @@ struct v2f
     float4 color : COLOR;
     float3 normal : NORMAL;
     float4 worldpos : POSITION;
+    float3 tangent : TANGENT;
+    float2 uv : TEXCOORD;
 };
+
+
 
 v2f VertexShaderMain(a2v v)
 {
+    MaterialConstantBuffer MaterialCB = Materials[MaterialIndex];
+
     v2f o;
     float4x4 MVP = mul(M, VP);
     o.pos = mul(float4(v.vertex, 1.0), MVP); // 顶点坐标变换到裁剪空间
 
     
-    if (MaterialType == 13) // LocalNormal
+    if (MaterialCB.MaterialType == 13) // LocalNormal
     {
         o.normal = v.normal;
     }
@@ -66,25 +83,39 @@ v2f VertexShaderMain(a2v v)
     }
 
     o.worldpos = mul(float4(v.vertex, 1.0), M); // 变换到世界空间
+    o.tangent = v.tangent;
     o.color = v.color;
 
-    
+    float4 uv = mul(float4(v.uv, 0.0, 1.0), TextureTransformation);
+    o.uv = mul(uv, MaterialCB.MaterialTransformation).xy;
+
     return o;
 }
 
 float4 PixelShaderMain(v2f o) : SV_TARGET
 {
+    MaterialConstantBuffer MaterialCB = Materials[MaterialIndex];
     // 主要是为了整合材质，直接用BaseColor也可以
     FMaterial Material;
-    Material.BaseColor = BaseColor;
+
+    if(MaterialCB.BasecolorIndex == -1)
+    {
+        Material.BaseColor = MaterialCB.BaseColor;
+    }
+    else
+    {
+        Material.BaseColor = MaterialCB.BaseColor * SimpleTexture2DMap[MaterialCB.BasecolorIndex].Sample(SimpleTextureState, o.uv); //纹理采样
+    }
+
+    
 
     // BaseColor
-    if (MaterialType == 12)
+    if (MaterialCB.MaterialType == 12)
     {
         return Material.BaseColor;
     }
     // LocalNormal或WorldNormal
-    else if (MaterialType == 13 || MaterialType == 14)
+    else if (MaterialCB.MaterialType == 13 || MaterialCB.MaterialType == 14)
     {
         return float4(o.normal, 1.0);
     }
@@ -100,7 +131,7 @@ float4 PixelShaderMain(v2f o) : SV_TARGET
     float3 Diffuse = { 0.0, 0.0, 0.0 };
 
     float3 Specular = { 0.0, 0.0, 0.0 };
-    float SpecularEXP = 32 * (1 - saturate(Roughness));
+    float SpecularEXP = 32 * (1 - saturate(MaterialCB.Roughness));
     float SpecularScale = 10;
 
     float3 Fresnel = { 0.0, 0.0, 0.0 };
@@ -121,43 +152,43 @@ float4 PixelShaderMain(v2f o) : SV_TARGET
             float NH = dot(N, H);
 
             // 衰减因子
-            float AttenuationFactor = CalucAttenuationFactor(SceneLights[i], N, o.worldpos.xyz, L);
+            float AttenuationFactor = CalucAttenuationFactor(SceneLights[i], o.worldpos.xyz, L);
 
             // Lambert
-            if (MaterialType == 0)
+            if (MaterialCB.MaterialType == 0)
             {
                 Diffuse = max(0, NL);
             }
             //HalfLambert
-            else if (MaterialType == 1)
+            else if (MaterialCB.MaterialType == 1)
             {
                 Diffuse = (NL * 0.5) + 0.5;
             }
             //phong
-            else if (MaterialType == 2)
+            else if (MaterialCB.MaterialType == 2)
             {
                 Diffuse = (NL * 0.5) + 0.5;
                 Specular = pow(max(0, VR), SpecularEXP) * SpecularScale;
             }
             // BlinnPhong
-            else if (MaterialType == 3)
+            else if (MaterialCB.MaterialType == 3)
             {
                 Diffuse = (NL * 0.5) + 0.5;
                 Specular = pow(max(0, NH), SpecularEXP) * SpecularScale;
             }
             // WarpLight
-            else if (MaterialType == 4)
+            else if (MaterialCB.MaterialType == 4)
             {
                 float warp = 5;
                 Diffuse = max(0, (NL + warp) / (1 + warp));
             }
             // Minnaert
-            else if (MaterialType == 5)
+            else if (MaterialCB.MaterialType == 5)
             {
-                Diffuse = max(0, pow((NL * NV), Roughness) * NL);
+                Diffuse = max(0, pow((NL * NV), MaterialCB.Roughness) * NL);
             }
             // Banded
-            else if (MaterialType == 6)
+            else if (MaterialCB.MaterialType == 6)
             {
                 float Layer = 5;
                 float3 Banded = floor(((NL * 0.5) + 0.5) * Layer) / Layer;
@@ -167,7 +198,7 @@ float4 PixelShaderMain(v2f o) : SV_TARGET
                 Diffuse = lerp(ColorA, ColorB, Banded);
             }
             // Fresnel
-            else if (MaterialType == 100)
+            else if (MaterialCB.MaterialType == 100)
             {
                 Fresnel = FresnelSchlick(F0, FresnelEXP, N, V);
             }

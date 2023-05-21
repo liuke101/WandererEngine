@@ -6,6 +6,10 @@
 #include "../ConstantBufferView/ConstantBufferView.h"
 #include "../../../../../Core/Viewport/ViewportInfo.h"
 
+
+class CMaterial;
+class FRenderingTextureResourcesUpdate;
+
 /* 几何体 */
 struct FGeometry : public IDirectXDeviceInterface_Struct
 {
@@ -53,19 +57,21 @@ public:
 	void PostDraw(float DeltaTime);
 
 	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
-
+	void UpdateMaterialSRV(float DeltaTime, const FViewportInfo& ViewportInfo);
 	// 构建全部模型的Mesh
 	void BuildMesh(CMeshComponent* InMesh, const FMeshRenderingData& MeshData);
+
+	// 读取贴图
+	void LoadTexture();
 
 	// 构建全部模型
 	void Build();
 
-	// 构建CBV堆（常量缓冲区描述符堆）
-	void BuildCBVHeap();
+	// 构建描述符堆
+	void BuildDescriptorHeap();
 
 	// 构建CBV（常量缓冲区视图）
 	void BuildMeshObjectCBV();
-	void BuildMaterialObjectCBV();
 	void BuildLightObjectCBV();
 	void BuildViewportCBV();
 
@@ -73,18 +79,28 @@ public:
 	UINT GetDrawMeshObjectNumber();
 	UINT GetDrawMaterialObjectNumber();
 	UINT GetDrawLightObjectNumber();
-	
 
+	// 获得贴图数量
+	UINT GetDrawTextureResourcesNumber();
+
+	// 构建SRV
+	void BuildMaterialSRV();
+	void BuildTextureSRV();
 public:
 	// 渲染Mesh
 	void DrawMesh(float DeltaTime);
+	// 渲染Material
+	void DrawMaterial(float DeltaTime);
 	// 渲染Light
 	void DrawLight(float DeltaTime);
 	// 渲染Viewport
 	void DrawViewport(float DeltaTime);
-
+	// 渲染Texture
+	void DrawTexture(float DeltaTime);
+	
 public:
 	ID3D12DescriptorHeap* GetHeap() const { return DescriptorHeap.GetHeap(); }
+	
 protected:
 	map<int, FGeometry> Geometrys;
 	FDescriptorHeap DescriptorHeap;	  // CBV堆
@@ -92,4 +108,7 @@ protected:
 	FConstantBufferView ViewportCBV;
 	FConstantBufferView MaterialCBV;
 	FConstantBufferView LightCBV;
+
+	std::shared_ptr<FRenderingTextureResourcesUpdate> RenderingTextureResources;
+	std::vector<CMaterial*> Materials;
 };

@@ -25,5 +25,6 @@ public:
 	UINT GetIndexSizeInBytes() const { return IndexCount * IndexTypeSize; };
 
 	XMFLOAT4X4 ModelMatrix;							// 模型变换矩阵
+	XMFLOAT4X4 TextureTransformation;				// 纹理变换矩阵
 	CMeshComponent* Mesh;
 };

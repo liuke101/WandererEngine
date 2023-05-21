@@ -74,31 +74,32 @@ int CDirectXRenderingEngine::PostInit()
 	/*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
 	//构建灯光
 	//平行光
-	// if(GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
-	// {
-	// 	ParallelLight->SetPosition(XMFLOAT3(10.0f, 2.0f, 10.0f));
-	// 	ParallelLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
-	// }
+	  if(GParallelLight* ParallelLight = World->CreateActorObject<GParallelLight>())
+	  {
+	  	ParallelLight->SetPosition(XMFLOAT3(10.0f, 2.0f, 10.0f));
+	  	ParallelLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+		ParallelLight->SetLightIntensity(fvector_3d(1.1f, 1.1f, 1.1f));
+	  }
 
 	// 点光源
 	// if(GPointLight* PointLight = World->CreateActorObject<GPointLight>())
 	// {
 	// 	PointLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
 	// 	PointLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
-	// 	PointLight->SetLightintensity(fvector_3d(30.0f, 30.0f, 30.0f));
+	// 	PointLight->SetLightIntensity(fvector_3d(30.0f, 30.0f, 30.0f));
 	// 	PointLight->SetFalloffEnd(30.0f);
 	// }
 
 	// 聚光灯
-	if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
-	{
-		SpotLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
-		SpotLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
-		SpotLight->SetLightintensity(fvector_3d(1.0f, 1.0f, 1.0f));
-		SpotLight->SetFalloffEnd(130.0f);
-		SpotLight->SetLightConeInnerDegrees(30);
-		SpotLight->SetLightConeOuterDegrees(60);
-	}
+	// if (GSpotLight* SpotLight = World->CreateActorObject<GSpotLight>())
+	// {
+	// 	SpotLight->SetPosition(XMFLOAT3(10.0f, 5.0f, 10.0f));
+	// 	SpotLight->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));
+	// 	SpotLight->SetLightIntensity(fvector_3d(1.0f, 1.0f, 1.0f));
+	// 	SpotLight->SetFalloffEnd(130.0f);
+	// 	SpotLight->SetLightConeInnerDegrees(30);
+	// 	SpotLight->SetLightConeOuterDegrees(60);
+	// }
 
     // 构建Mesh
 	if (GPlaneMesh* PlaneMesh = World->CreateActorObject<GPlaneMesh>())
@@ -108,10 +109,12 @@ int CDirectXRenderingEngine::PostInit()
 		PlaneMesh->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
 		PlaneMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*PlaneMesh->GetMaterials())[0])
-		{
+		{ 
+			InMaterial->SetBaseColor("Basecolor"); //贴图名词，不需要加.dss后缀
 			InMaterial->SetMaterialType(HalfLambert);
 			InMaterial->SetBaseColor(fvector_4d(0.5f, 0.5f, 0.5f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
+			
 		}
 	}
 
@@ -152,6 +155,7 @@ int CDirectXRenderingEngine::PostInit()
 		SphereMesh->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
 		if (CMaterial* InMaterial = (*SphereMesh->GetMaterials())[0])
 		{
+			InMaterial->SetBaseColor("BaseColor"); 
 			InMaterial->SetMaterialType(HalfLambert);
 			InMaterial->SetBaseColor(fvector_4d(0.9f, 0.8f, 0.9f, 1.0f));
 			InMaterial->SetRoughness(0.8f);
@@ -242,33 +246,6 @@ int CDirectXRenderingEngine::PostInit()
 		}
 	}
 
-
-	
-
-
-	// if (GMesh* Cone = MeshManage->CreateConeMeshComponent(1.f, 5.f, 20.0f, 20.0f))
-	// {
-	// 	Cone->SetPosition(XMFLOAT3(1.0f, 1.0f, 1.0f));		// 设置位置
-	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-	// }
-
-	// string MeshObj1Path = "../WandererEngine/Monkey.obj";  // 路径为对应exe程序的相对位置
-	// if (GMesh* Cone = MeshManage->CreateCustomMeshComponent(MeshObj1Path))
-	// {
-	// 	Cone->SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));		// 设置位置
-	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-	// }
-	//
-	// string MeshObj2Path = "../WandererEngine/Teapot.obj";  // 路径为对应exe程序的相对位置
-	// if (GMesh* Cone = MeshManage->CreateCustomMeshComponent(MeshObj2Path))
-	// {
-	// 	Cone->SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));		// 设置位置
-	// 	Cone->SetRotation(fvector_3d(0.0f, 0.0f, 0.0f));	// 设置旋转
-	// 	Cone->SetScale(fvector_3d(1.0f, 1.0f, 1.0f));		// 设置缩放
-	// }
-	// —————————————————————————————————————————————————————————————————
 
     MeshManage->BuildMesh();
 

@@ -10,13 +10,17 @@ SIZE_T FShader::GetBufferSize() const
     return ShaderCode->GetBufferSize();
 }
 
-void FShader::BuildShaders(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion)
+void FShader::BuildShaders(
+    const wstring& InFileName, 
+    const string& InEntryFunName, 
+    const string& InShadersVersion,
+    const D3D_SHADER_MACRO* InShaderMacro)
 {
     ComPtr<ID3DBlob> ErrorShaderMsg;
         
     HRESULT CompileFromFile = D3DCompileFromFile(          // 将HLSL代码编译为给定目标的字节码。
         InFileName.c_str(),                                // HLSL源代码文件名
-        nullptr,                                           // 定义着色器宏 D3D_SHADER_MACRO 结构的可选数组，这里不使用
+        InShaderMacro,                                     // 定义着色器宏 D3D_SHADER_MACRO 结构的可选数组
         D3D_COMPILE_STANDARD_FILE_INCLUDE,                 // 指向编译器用来处理包含文件的 ID3DInclude 接口的可选指针，这里指向默认包含处理程序的指针
         InEntryFunName.c_str(),                            // 着色器的入口函数名
         InShadersVersion.c_str(),                          // 着色器类型和版本

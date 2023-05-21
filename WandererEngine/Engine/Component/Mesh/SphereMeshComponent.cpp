@@ -8,8 +8,8 @@ CSphereMeshComponent::CSphereMeshComponent()
 
 void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadius, uint32_t InAxialSubdivision, uint32_t InHeightSubdivision)
 {
-    FVertex NorthPoleVertex(XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 1.0f, 0.0f));     // 北极点（顶面顶点/第一个顶点）
-    FVertex SouthPoleVertex(XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, -1.0f, 0.0f));    // 南极点（底面顶点/最后一个顶点）
+    FVertex NorthPoleVertex(XMFLOAT3(0.f, InRadius, 0.f), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT2(0.5f,0.0f));     // 北极点（顶面顶点/第一个顶点）
+    FVertex SouthPoleVertex(XMFLOAT3(0.f, -InRadius, 0.f), XMFLOAT4(Colors::White), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT2(0.0f,0.5f));    // 南极点（底面顶点/最后一个顶点）
 
     /*———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————*/
     // 【构建顶点】
@@ -41,8 +41,21 @@ void CSphereMeshComponent::CreateMesh(FMeshRenderingData& MeshData, float InRadi
                 XMFLOAT4(Colors::White)));
 
             int VertexIndex = MeshData.VertexData.size() - 1;
-            XMVECTOR VertexPos = XMLoadFloat3(&MeshData.VertexData[VertexIndex].Position);
-            XMStoreFloat3(&MeshData.VertexData[VertexIndex].Normal, XMVector3Normalize(VertexPos));
+            FVertex& InVertex = MeshData.VertexData[VertexIndex];
+            // 顶点位置
+            XMVECTOR VertexPos = XMLoadFloat3(&InVertex.Position);
+            XMStoreFloat3(&InVertex.Normal, XMVector3Normalize(VertexPos));
+
+            // 球面坐标求切线
+            InVertex.Tangent.x = -InRadius * sinf(theta) * sinf(beta);
+            InVertex.Tangent.y = 0.0f;
+            InVertex.Tangent.z = InRadius * sinf(theta) * cosf(beta);
+            XMVECTOR Tangent = XMLoadFloat3(&InVertex.Tangent);
+            XMStoreFloat3(&InVertex.Tangent, XMVector3Normalize(Tangent));
+
+            // 中间部分的uv
+            InVertex.TexCoord.x = theta / XM_2PI;
+            InVertex.TexCoord.y = beta / XM_PI;
         }
     }
 

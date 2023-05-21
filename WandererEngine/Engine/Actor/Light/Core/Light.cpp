@@ -40,7 +40,7 @@ void GLight::SetScale(const fvector_3d& InNewScale)
     }
 }
 
-void GLight::SetLightintensity(const fvector_3d& InNewLightintensity)
+void GLight::SetLightIntensity(const fvector_3d& InNewLightintensity)
 {
     if (LightComponent)
     {
